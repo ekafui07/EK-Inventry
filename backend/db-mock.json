@@ -1,0 +1,178 @@
+{
+  "gear": [
+    {
+      "id": "g1",
+      "name": "Sony FX3 Cinema Camera",
+      "category": "Cameras",
+      "serialNumber": "SN-FX3-9821",
+      "dailyRate": 150,
+      "status": "Available"
+    },
+    {
+      "id": "g2",
+      "name": "Aputure 600d Pro LED",
+      "category": "Lighting",
+      "serialNumber": "SN-AP-600D",
+      "dailyRate": 90,
+      "status": "Available"
+    },
+    {
+      "id": "g3",
+      "name": "Zoom H6 Audio Recorder",
+      "category": "Audio",
+      "serialNumber": "SN-ZH6-0012",
+      "dailyRate": 35,
+      "status": "Available"
+    },
+    {
+      "id": "g4",
+      "name": "Sennheiser MKH416 Mic",
+      "category": "Audio",
+      "serialNumber": "SN-SEN-416",
+      "dailyRate": 40,
+      "status": "Available"
+    },
+    {
+      "id": "g5",
+      "name": "Manfrotto 504HD Tripod",
+      "category": "Support & Grip",
+      "serialNumber": "SN-MAN-504",
+      "dailyRate": 25,
+      "status": "Available"
+    },
+    {
+      "id": "g_1788190218113",
+      "name": "IPHONE 15",
+      "category": "Cameras",
+      "serialNumber": "fmfmmfmmfm",
+      "dailyRate": 2000,
+      "status": "Available"
+    }
+  ],
+  "clients": [
+    {
+      "id": "c1",
+      "name": "John Doe (Apex Films)",
+      "email": "john@apexfilms.com",
+      "phone": "+1 555-019-2834"
+    },
+    {
+      "id": "c2",
+      "name": "Sarah Jenkins (Bright Media)",
+      "email": "sarah@brightmedia.co",
+      "phone": "+1 555-014-9922"
+    },
+    {
+      "id": "c_1788188762886",
+      "name": "forin boy",
+      "email": "kafui.edw124@gmail.com",
+      "phone": "+232 02029956687"
+    }
+  ],
+  "bookings": [
+    {
+      "id": "b1",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2026-08-29",
+      "endDate": "2026-09-03",
+      "status": "Returned"
+    },
+    {
+      "id": "b_1788188227274",
+      "gearId": "g1",
+      "clientId": "c2",
+      "startDate": "2026-09-10",
+      "endDate": "2026-09-12",
+      "status": "Returned"
+    },
+    {
+      "id": "b_1788188523621",
+      "gearId": "g3",
+      "clientId": "c1",
+      "startDate": "2026-08-31",
+      "endDate": "2026-09-01",
+      "status": "Returned"
+    },
+    {
+      "id": "b_1788189280647",
+      "gearId": "g3",
+      "clientId": "c1",
+      "startDate": "2026-08-31",
+      "endDate": "2026-09-01",
+      "status": "Returned"
+    },
+    {
+      "id": "b_1788189365557",
+      "gearId": "g2",
+      "clientId": "c2",
+      "startDate": "2026-08-31",
+      "endDate": "2026-09-01",
+      "status": "Returned"
+    },
+    {
+      "id": "b_1788190326304",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2026-09-03",
+      "endDate": "2026-09-30",
+      "status": "Returned"
+    },
+    {
+      "id": "b_1788191075753",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2026-08-31",
+      "endDate": "2026-09-02",
+      "status": "Returned"
+    },
+    {
+      "id": "b_1788191726230",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2026-08-31",
+      "endDate": "2026-09-01",
+      "status": "Returned"
+    },
+    {
+      "id": "b_1788193668914_0",
+      "gearId": "g3",
+      "clientId": "c1",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-02",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1788193843712_0",
+      "gearId": "g1",
+      "clientId": "c2",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-02",
+      "status": "Active"
+    },
+    {
+      "id": "b_1788193843712_1",
+      "gearId": "g2",
+      "clientId": "c2",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-02",
+      "status": "Active"
+    },
+    {
+      "id": "b_1788194364006_0",
+      "gearId": "g4",
+      "clientId": "c1",
+      "startDate": "2026-08-31",
+      "endDate": "2026-09-03",
+      "status": "Returned"
+    },
+    {
+      "id": "b_1788194364006_1",
+      "gearId": "g5",
+      "clientId": "c1",
+      "startDate": "2026-08-31",
+      "endDate": "2026-09-03",
+      "status": "Returned"
+    }
+  ]
+}

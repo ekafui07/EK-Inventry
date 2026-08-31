@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EK GearFlow | Professional Media Rental Registry</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- App Container -->
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <i data-lucide="aperture" class="brand-icon"></i>
+        <div class="brand-text">
+          <h1>EK GearFlow</h1>
+          <span>Media Registry</span>
+        </div>
+      </div>
+      
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-tab="inventory">
+          <i data-lucide="database"></i>
+          <span>Gear Inventory</span>
+        </button>
+        <button class="nav-item" data-tab="rentals">
+          <i data-lucide="calendar-range"></i>
+          <span>Rentals</span>
+        </button>
+        <button class="nav-item" data-tab="clients">
+          <i data-lucide="users"></i>
+          <span>Client Directory</span>
+        </button>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="avatar">EK</div>
+          <div class="user-info">
+            <span class="user-name">EK Admin</span>
+            <span class="user-role">Operations Manager</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Action Bar -->
+      <header class="top-bar">
+        <div class="search-box">
+          <i data-lucide="search" class="search-icon"></i>
+          <input type="text" id="global-search" placeholder="Quick search serials, clients, or gear...">
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-secondary" id="btn-add-client">
+            <i data-lucide="user-plus"></i> Add Client
+          </button>
+          <button class="btn btn-secondary" id="btn-add-gear">
+            <i data-lucide="plus-circle"></i> Add Gear
+          </button>
+          <button class="btn btn-primary" id="btn-quick-rent">
+            <i data-lucide="key-round"></i> New Rental
+          </button>
+        </div>
+      </header>
+
+      <!-- View Containers -->
+      <div class="view-panel active" id="view-dashboard">
+        <!-- Dashboard Statistics Row -->
+        <section class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon icon-available">
+              <i data-lucide="check-circle"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Available Gear</h3>
+              <p class="stat-value" id="stat-avail-count">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon icon-rented">
+              <i data-lucide="film"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Out on Shoot</h3>
+              <p class="stat-value" id="stat-rented-count">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon icon-maintenance">
+              <i data-lucide="wrench"></i>
+            </div>
+            <div class="stat-info">
+              <h3>In Service</h3>
+              <p class="stat-value" id="stat-maint-count">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon icon-overdue">
+              <i data-lucide="alert-triangle"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Overdue Returns</h3>
+              <p class="stat-value" id="stat-overdue-count">0</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Dashboard Split Screen -->
+        <div class="dashboard-split">
+          <!-- Recent Activity / Upcoming Returns -->
+          <div class="panel-card flex-2">
+            <div class="panel-header">
+              <h2>Current Rentals Timeline</h2>
+              <span class="badge" id="active-rentals-badge">0 active</span>
+            </div>
+            <div class="timeline-container">
+              <div class="table-wrapper">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Gear Item</th>
+                      <th>Client</th>
+                      <th>Out Date</th>
+                      <th>Due Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashboard-rentals-list">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions / Quick Stats -->
+          <div class="panel-card flex-1">
+            <div class="panel-header">
+              <h2>Category Distribution</h2>
+            </div>
+            <div class="category-list" id="dashboard-category-chart">
+              <!-- Dynamic category counters -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inventory View -->
+      <div class="view-panel" id="view-inventory">
+        <div class="panel-header-row">
+          <h2>Master Gear Inventory</h2>
+          <div class="filter-bar">
+            <button class="filter-tab active" data-filter="all">All</button>
+            <button class="filter-tab" data-filter="Available">Available</button>
+            <button class="filter-tab" data-filter="Rented">Rented</button>
+            <button class="filter-tab" data-filter="Maintenance">In Service</button>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Serial Number</th>
+                <th>Daily Rate</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-list">
+              <!-- Dynamic -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Active Rentals View -->
+      <div class="view-panel" id="view-rentals">
+        <div class="panel-header-row">
+          <h2>Rentals Tracker</h2>
+          <div class="filter-bar" id="rentals-filter-bar">
+            <button class="filter-tab active" data-rent-filter="all">All</button>
+            <button class="filter-tab" data-rent-filter="Booked">Booked</button>
+            <button class="filter-tab" data-rent-filter="Active">Active</button>
+            <button class="filter-tab" data-rent-filter="Returned">Returned</button>
+            <button class="filter-tab" data-rent-filter="Overdue">Overdue</button>
+            <button class="filter-tab" data-rent-filter="Cancelled">Cancelled</button>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Client / Renter</th>
+                <th>Gear Item</th>
+                <th>Rental Period</th>
+                <th>Daily Price</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="rentals-list">
+              <!-- Dynamic -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Client Directory View -->
+      <div class="view-panel" id="view-clients">
+        <div class="panel-header-row">
+          <h2>Client Directory</h2>
+        </div>
+        <div class="client-grid" id="clients-list">
+          <!-- Dynamic grid of clients -->
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- MODALS -->
+
+  <!-- Add Gear Modal -->
+  <div class="modal-backdrop" id="modal-add-gear">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Add New Gear to Inventory</h2>
+        <button class="modal-close"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-add-gear" class="modal-form">
+        <div class="form-group">
+          <label for="gear-name">Gear Name & Model</label>
+          <input type="text" id="gear-name" required placeholder="e.g. Sony FX3 Cinema Camera">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="gear-category">Category</label>
+            <select id="gear-category" required>
+              <option value="Cameras">Cameras</option>
+              <option value="Lenses">Lenses</option>
+              <option value="Lighting">Lighting</option>
+              <option value="Audio">Audio</option>
+              <option value="Support & Grip">Support & Grip</option>
+              <option value="Power & Cables">Power & Cables</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="gear-serial">Serial Number</label>
+            <input type="text" id="gear-serial" required placeholder="e.g. SN-87192837">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="gear-rate">Daily Rental Rate (GH₵)</label>
+          <input type="number" id="gear-rate" required min="0" placeholder="e.g. 150">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Gear</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Client Modal -->
+  <div class="modal-backdrop" id="modal-add-client">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Register Client Details</h2>
+        <button class="modal-close"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-add-client" class="modal-form">
+        <div class="form-group">
+          <label for="client-name">Full Name / Production Co</label>
+          <input type="text" id="client-name" required placeholder="e.g. John Doe (Apex Films)">
+        </div>
+        <div class="form-group">
+          <label for="client-email">Email Address</label>
+          <input type="email" id="client-email" required placeholder="name@production.com">
+        </div>
+        <div class="form-group">
+          <label for="client-phone">Phone Number</label>
+          <input type="tel" id="client-phone" required placeholder="e.g. +1 555-019-2834">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Client</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Check-Out / New Rental Modal -->
+  <div class="modal-backdrop" id="modal-checkout">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Check Out Gear</h2>
+        <button class="modal-close"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-checkout" class="modal-form">
+        <div class="form-group">
+          <label>Select Gear Item(s)</label>
+          <div id="checkout-gear-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div class="gear-select-row" style="display: flex; gap: 0.5rem; align-items: center;">
+              <select class="checkout-gear-select" required style="flex: 1;">
+                <option value="" disabled selected>Choose available gear...</option>
+                <!-- Dynamic available gear -->
+              </select>
+              <button type="button" class="btn btn-secondary btn-remove-gear" style="padding: 0.6rem; display: none;" title="Remove item">
+                <i data-lucide="trash-2" style="width:16px; height:16px; color: var(--color-danger)"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary" id="btn-add-gear-row" style="margin-top: 0.5rem; font-size: 0.8rem; padding: 0.5rem 1rem; align-self: flex-start;">
+            <i data-lucide="plus" style="width:14px; height:14px"></i> Add Item
+          </button>
+        </div>
+        <div class="form-group">
+          <label for="checkout-client">Renter (Client)</label>
+          <select id="checkout-client" required>
+            <option value="" disabled selected>Select client...</option>
+            <!-- Dynamic clients -->
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="checkout-start">Rental Start Date</label>
+            <input type="date" id="checkout-start" required>
+          </div>
+          <div class="form-group">
+            <label for="checkout-end">Expected Return Date</label>
+            <input type="date" id="checkout-end" required>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Process Checkout</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notification Banner -->
+  <div id="toast-notification" class="toast hidden">
+    <span id="toast-message">Action completed successfully.</span>
+  </div>
+
+  <!-- Custom App Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
