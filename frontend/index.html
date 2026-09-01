@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,18 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Custom CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <!-- App Container -->
   <div class="app-container">
-    
+
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
       <div class="brand">
@@ -26,7 +29,7 @@
           <span>Media Registry</span>
         </div>
       </div>
-      
+
       <nav class="nav-menu">
         <button class="nav-item active" data-tab="dashboard">
           <i data-lucide="layout-dashboard"></i>
@@ -45,7 +48,7 @@
           <span>Client Directory</span>
         </button>
       </nav>
-      
+
       <div class="sidebar-footer">
         <div class="user-profile">
           <div class="avatar">EK</div>
@@ -59,7 +62,7 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-      
+
       <!-- Top Action Bar -->
       <header class="top-bar">
         <div class="search-box">
@@ -88,7 +91,7 @@
               <i data-lucide="check-circle"></i>
             </div>
             <div class="stat-info">
-              <h3>Available Gear</h3>
+              <h3>Available</h3>
               <p class="stat-value" id="stat-avail-count">0</p>
             </div>
           </div>
@@ -97,7 +100,7 @@
               <i data-lucide="film"></i>
             </div>
             <div class="stat-info">
-              <h3>Out on Shoot</h3>
+              <h3>Deployed</h3>
               <p class="stat-value" id="stat-rented-count">0</p>
             </div>
           </div>
@@ -323,12 +326,14 @@
                 <option value="" disabled selected>Choose available gear...</option>
                 <!-- Dynamic available gear -->
               </select>
-              <button type="button" class="btn btn-secondary btn-remove-gear" style="padding: 0.6rem; display: none;" title="Remove item">
+              <button type="button" class="btn btn-secondary btn-remove-gear" style="padding: 0.6rem; display: none;"
+                title="Remove item">
                 <i data-lucide="trash-2" style="width:16px; height:16px; color: var(--color-danger)"></i>
               </button>
             </div>
           </div>
-          <button type="button" class="btn btn-secondary" id="btn-add-gear-row" style="margin-top: 0.5rem; font-size: 0.8rem; padding: 0.5rem 1rem; align-self: flex-start;">
+          <button type="button" class="btn btn-secondary" id="btn-add-gear-row"
+            style="margin-top: 0.5rem; font-size: 0.8rem; padding: 0.5rem 1rem; align-self: flex-start;">
             <i data-lucide="plus" style="width:14px; height:14px"></i> Add Item
           </button>
         </div>
@@ -365,4 +370,5 @@
   <!-- Custom App Logic -->
   <script src="app.js"></script>
 </body>
+
 </html>
