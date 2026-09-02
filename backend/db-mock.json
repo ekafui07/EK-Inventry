@@ -6,7 +6,7 @@
       "category": "Cameras",
       "serialNumber": "SN-FX3-9821",
       "dailyRate": 150,
-      "status": "Available"
+      "status": "Rented"
     },
     {
       "id": "g2",
@@ -14,15 +14,16 @@
       "category": "Lighting",
       "serialNumber": "SN-AP-600D",
       "dailyRate": 90,
-      "status": "Available"
+      "status": "Rented"
     },
     {
       "id": "g3",
-      "name": "Zoom H6 Audio Recorder",
+      "name": "Zoom H6 Audio Recorder (Updated)",
       "category": "Audio",
       "serialNumber": "SN-ZH6-0012",
-      "dailyRate": 35,
-      "status": "Available"
+      "dailyRate": 500,
+      "status": "Available",
+      "assetTag": "AUD-001"
     },
     {
       "id": "g4",
@@ -41,21 +42,16 @@
       "status": "Available"
     },
     {
-      "id": "g_1788190218113",
-      "name": "IPHONE 15",
-      "category": "Cameras",
-      "serialNumber": "fmfmmfmmfm",
-      "dailyRate": 2000,
+      "id": "g_1788326034417",
+      "name": "iPhone 14 Pro",
+      "assetTag": "IP-001",
+      "category": "Phone",
+      "serialNumber": "AB94J4N4BD2SD",
+      "dailyRate": 8000,
       "status": "Available"
     }
   ],
   "clients": [
-    {
-      "id": "c1",
-      "name": "John Doe (Apex Films)",
-      "email": "john@apexfilms.com",
-      "phone": "+1 555-019-2834"
-    },
     {
       "id": "c2",
       "name": "Sarah Jenkins (Bright Media)",

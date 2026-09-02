@@ -181,10 +181,12 @@
               <tr>
                 <th>Item Name</th>
                 <th>Category</th>
+                <th>Asset Tag</th>
                 <th>Serial Number</th>
                 <th>Daily Rate</th>
                 <th>Status</th>
                 <th>Actions</th>
+                <th>Modify</th>
               </tr>
             </thead>
             <tbody id="inventory-list">
@@ -255,20 +257,17 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="gear-category">Category</label>
-            <select id="gear-category" required>
-              <option value="Cameras">Cameras</option>
-              <option value="Lenses">Lenses</option>
-              <option value="Lighting">Lighting</option>
-              <option value="Audio">Audio</option>
-              <option value="Support & Grip">Support & Grip</option>
-              <option value="Power & Cables">Power & Cables</option>
-            </select>
+            <label for="gear-asset-tag">Asset Tag</label>
+            <input type="text" id="gear-asset-tag" placeholder="e.g. CAM-001">
           </div>
           <div class="form-group">
-            <label for="gear-serial">Serial Number</label>
-            <input type="text" id="gear-serial" required placeholder="e.g. SN-87192837">
+            <label for="gear-category">Category</label>
+            <input type="text" id="gear-category" required placeholder="e.g. Cameras">
           </div>
+        </div>
+        <div class="form-group">
+          <label for="gear-serial">Serial Number</label>
+          <input type="text" id="gear-serial" required placeholder="e.g. SN-87192837">
         </div>
         <div class="form-group">
           <label for="gear-rate">Daily Rental Rate (GH₵)</label>
@@ -357,6 +356,74 @@
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
           <button type="submit" class="btn btn-primary">Process Checkout</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Gear Modal -->
+  <div class="modal-backdrop" id="modal-edit-gear">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Edit Gear Details</h2>
+        <button class="modal-close"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-edit-gear" class="modal-form">
+        <input type="hidden" id="edit-gear-id">
+        <div class="form-group">
+          <label for="edit-gear-name">Gear Name & Model</label>
+          <input type="text" id="edit-gear-name" required placeholder="e.g. Sony FX3 Cinema Camera">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-gear-asset-tag">Asset Tag</label>
+            <input type="text" id="edit-gear-asset-tag" placeholder="e.g. CAM-001">
+          </div>
+          <div class="form-group">
+            <label for="edit-gear-category">Category</label>
+            <input type="text" id="edit-gear-category" required placeholder="e.g. Cameras">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="edit-gear-serial">Serial Number</label>
+          <input type="text" id="edit-gear-serial" required placeholder="e.g. SN-87192837">
+        </div>
+        <div class="form-group">
+          <label for="edit-gear-rate">Daily Rental Rate (GH₵)</label>
+          <input type="number" id="edit-gear-rate" required min="0" placeholder="e.g. 150">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Client Modal -->
+  <div class="modal-backdrop" id="modal-edit-client">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Edit Client Details</h2>
+        <button class="modal-close"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-edit-client" class="modal-form">
+        <input type="hidden" id="edit-client-id">
+        <div class="form-group">
+          <label for="edit-client-name">Full Name / Production Co</label>
+          <input type="text" id="edit-client-name" required placeholder="e.g. John Doe (Apex Films)">
+        </div>
+        <div class="form-group">
+          <label for="edit-client-email">Email Address</label>
+          <input type="email" id="edit-client-email" required placeholder="name@production.com">
+        </div>
+        <div class="form-group">
+          <label for="edit-client-phone">Phone Number</label>
+          <input type="tel" id="edit-client-phone" required placeholder="e.g. +1 555-019-2834">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
         </div>
       </form>
     </div>

@@ -106,6 +106,7 @@ async function addGear(item) {
   const newGear = {
     id: item.id || 'g_' + Date.now(),
     name: item.name,
+    assetTag: item.assetTag || '',
     category: item.category,
     serialNumber: item.serialNumber,
     dailyRate: Number(item.dailyRate),
@@ -126,25 +127,68 @@ async function addGear(item) {
   return newGear;
 }
 
-// Update Gear Status
-async function updateGearStatus(id, status) {
+// Update Gear (status only OR full edit)
+async function updateGear(id, fields) {
   if (!isLambda) {
     const db = readLocalDb();
     const gearItem = db.gear.find(g => g.id === id);
-    if (gearItem) {
-      gearItem.status = status;
-      writeLocalDb(db);
-    }
+    if (!gearItem) return null;
+    if (fields.name !== undefined) gearItem.name = fields.name;
+    if (fields.assetTag !== undefined) gearItem.assetTag = fields.assetTag;
+    if (fields.category !== undefined) gearItem.category = fields.category;
+    if (fields.serialNumber !== undefined) gearItem.serialNumber = fields.serialNumber;
+    if (fields.dailyRate !== undefined) gearItem.dailyRate = Number(fields.dailyRate);
+    if (fields.status !== undefined) gearItem.status = fields.status;
+    writeLocalDb(db);
     return gearItem;
   }
+
+  const updateParts = [];
+  const exprNames = {};
+  const exprValues = {};
+  if (fields.name !== undefined)         { updateParts.push('#n = :name');       exprNames['#n'] = 'name';             exprValues[':name'] = fields.name; }
+  if (fields.assetTag !== undefined)     { updateParts.push('assetTag = :at');   exprValues[':at'] = fields.assetTag; }
+  if (fields.category !== undefined)     { updateParts.push('category = :cat');  exprValues[':cat'] = fields.category; }
+  if (fields.serialNumber !== undefined) { updateParts.push('serialNumber = :sn'); exprValues[':sn'] = fields.serialNumber; }
+  if (fields.dailyRate !== undefined)    { updateParts.push('dailyRate = :dr');  exprValues[':dr'] = Number(fields.dailyRate); }
+  if (fields.status !== undefined)       { updateParts.push('#s = :status');     exprNames['#s'] = 'status';           exprValues[':status'] = fields.status; }
 
   await docClient.send(new UpdateCommand({
     TableName: GEAR_TABLE,
     Key: { id },
-    UpdateExpression: 'set #s = :status',
-    ExpressionAttributeNames: { '#s': 'status' },
-    ExpressionAttributeValues: { ':status': status }
+    UpdateExpression: 'set ' + updateParts.join(', '),
+    ExpressionAttributeNames: Object.keys(exprNames).length ? exprNames : undefined,
+    ExpressionAttributeValues: exprValues
   }));
+  return { id, ...fields };
+}
+
+// Delete Gear (blocked if active/overdue bookings exist)
+async function deleteGear(id) {
+  const allBookings = await getBookings();
+  const todayStr = new Date().toISOString().split('T')[0];
+  const isBlocked = allBookings.some(b =>
+    b.gearId === id &&
+    b.status !== 'Returned' &&
+    b.status !== 'Cancelled' &&
+    b.endDate >= todayStr
+  );
+
+  if (isBlocked) {
+    throw new Error('Gear is currently rented out or overdue and cannot be deleted.');
+  }
+
+  if (!isLambda) {
+    const db = readLocalDb();
+    const index = db.gear.findIndex(g => g.id === id);
+    if (index === -1) return { success: false };
+    db.gear.splice(index, 1);
+    writeLocalDb(db);
+    return { success: true };
+  }
+
+  await docClient.send(new DeleteCommand({ TableName: GEAR_TABLE, Key: { id } }));
+  return { success: true };
 }
 
 // Fetch Clients
@@ -177,6 +221,65 @@ async function addClient(clientData) {
     Item: newClient
   }));
   return newClient;
+}
+
+// Update Client
+async function updateClient(id, clientData) {
+  if (!isLambda) {
+    const db = readLocalDb();
+    const client = db.clients.find(c => c.id === id);
+    if (!client) return null;
+    if (clientData.name !== undefined) client.name = clientData.name;
+    if (clientData.email !== undefined) client.email = clientData.email;
+    if (clientData.phone !== undefined) client.phone = clientData.phone;
+    writeLocalDb(db);
+    return client;
+  }
+
+  await docClient.send(new UpdateCommand({
+    TableName: CLIENTS_TABLE,
+    Key: { id },
+    UpdateExpression: 'set #n = :name, email = :email, phone = :phone',
+    ExpressionAttributeNames: { '#n': 'name' },
+    ExpressionAttributeValues: {
+      ':name': clientData.name,
+      ':email': clientData.email,
+      ':phone': clientData.phone
+    }
+  }));
+  return { id, ...clientData };
+}
+
+// Delete Client
+async function deleteClient(id) {
+  // Guard: block deletion if client has active or upcoming bookings
+  const allBookings = await getBookings();
+  const todayStr = new Date().toISOString().split('T')[0];
+  const hasActiveBookings = allBookings.some(b =>
+    b.clientId === id &&
+    b.status !== 'Returned' &&
+    b.status !== 'Cancelled' &&
+    b.endDate >= todayStr
+  );
+
+  if (hasActiveBookings) {
+    throw new Error('Client has active or upcoming rentals and cannot be deleted.');
+  }
+
+  if (!isLambda) {
+    const db = readLocalDb();
+    const index = db.clients.findIndex(c => c.id === id);
+    if (index === -1) return { success: false };
+    db.clients.splice(index, 1);
+    writeLocalDb(db);
+    return { success: true };
+  }
+
+  await docClient.send(new DeleteCommand({
+    TableName: CLIENTS_TABLE,
+    Key: { id }
+  }));
+  return { success: true };
 }
 
 // Fetch Bookings
@@ -240,7 +343,7 @@ async function createBooking(bookingData) {
 
     // If starts today or past, mark Rented. If future booking, keep Available in shop today!
     if (isOutToday) {
-      await updateGearStatus(gId, 'Rented');
+      await updateGear(gId, { status: 'Rented' });
     }
 
     // Save Booking
@@ -289,7 +392,7 @@ async function returnBooking(bookingId) {
         ExpressionAttributeNames: { '#s': 'status' },
         ExpressionAttributeValues: { ':status': 'Returned' }
       }));
-      await updateGearStatus(gearId, 'Available');
+      await updateGear(gearId, { status: 'Available' });
     }
   }
 
@@ -325,7 +428,7 @@ async function cancelBooking(bookingId) {
         ExpressionAttributeNames: { '#s': 'status' },
         ExpressionAttributeValues: { ':status': 'Cancelled' }
       }));
-      await updateGearStatus(gearId, 'Available');
+      await updateGear(gearId, { status: 'Available' });
     }
   }
 
@@ -349,9 +452,14 @@ app.post('/api/gear', async (req, res) => {
 
 app.put('/api/gear/:id', async (req, res) => {
   try {
-    await updateGearStatus(req.params.id, req.body.status);
-    res.json({ success: true });
+    const updated = await updateGear(req.params.id, req.body);
+    if (!updated) return res.status(404).json({ error: 'Gear not found' });
+    res.json(updated);
   } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.delete('/api/gear/:id', async (req, res) => {
+  try { res.json(await deleteGear(req.params.id)); } catch (err) { res.status(400).json({ error: err.message }); }
 });
 
 app.get('/api/clients', async (req, res) => {
@@ -360,6 +468,18 @@ app.get('/api/clients', async (req, res) => {
 
 app.post('/api/clients', async (req, res) => {
   try { res.status(201).json(await addClient(req.body)); } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.put('/api/clients/:id', async (req, res) => {
+  try {
+    const updated = await updateClient(req.params.id, req.body);
+    if (!updated) return res.status(404).json({ error: 'Client not found' });
+    res.json(updated);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.delete('/api/clients/:id', async (req, res) => {
+  try { res.json(await deleteClient(req.params.id)); } catch (err) { res.status(400).json({ error: err.message }); }
 });
 
 app.get('/api/bookings', async (req, res) => {

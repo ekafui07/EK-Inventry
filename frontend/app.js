@@ -2,7 +2,6 @@
 
 // API Configuration
 const API_BASE_URL = 'http://localhost:3000/api';
-let useMockMode = false; // Will auto-detect if backend is unavailable
 
 // Application State
 let state = {
@@ -14,31 +13,6 @@ let state = {
 let activeTab = 'dashboard'; // Track the active view panel
 let activeRentalsFilter = 'all'; // Track the rentals status view filter
 
-// Seed Data (Used for LocalStorage Mock Mode fallback)
-const SEED_GEAR = [
-  { id: 'g1', name: 'Sony FX3 Cinema Camera', category: 'Cameras', serialNumber: 'SN-FX3-9821', dailyRate: 150, status: 'Available' },
-  { id: 'g2', name: 'Aputure 600d Pro LED', category: 'Lighting', serialNumber: 'SN-AP-600D', dailyRate: 90, status: 'Available' },
-  { id: 'g3', name: 'Zoom H6 Audio Recorder', category: 'Audio', serialNumber: 'SN-ZH6-0012', dailyRate: 35, status: 'Available' },
-  { id: 'g4', name: 'Sennheiser MKH416 Mic', category: 'Audio', serialNumber: 'SN-SEN-416', dailyRate: 40, status: 'Maintenance' },
-  { id: 'g5', name: 'Manfrotto 504HD Tripod', category: 'Support & Grip', serialNumber: 'SN-MAN-504', dailyRate: 25, status: 'Available' }
-];
-
-const SEED_CLIENTS = [
-  { id: 'c1', name: 'John Doe (Apex Films)', email: 'john@apexfilms.com', phone: '+1 555-019-2834' },
-  { id: 'c2', name: 'Sarah Jenkins (Bright Media)', email: 'sarah@brightmedia.co', phone: '+1 555-014-9922' }
-];
-
-const SEED_BOOKINGS = [
-  {
-    id: 'b1',
-    gearId: 'g1',
-    clientId: 'c1',
-    startDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 2 days ago
-    endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // due in 3 days
-    status: 'Returned'
-  }
-];
-
 // Initialize Application
 document.addEventListener('DOMContentLoaded', async () => {
   setupNavigation();
@@ -47,61 +21,42 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupSearch();
   setupCheckoutFormDynamicRows();
   setupRentalsFilter();
+
+  // Expose action functions to global scope for inline onclick= handlers
+  window.toggleMaintenance = toggleMaintenance;
+  window.returnGear = returnGear;
+  window.cancelBookingAction = cancelBookingAction;
+  window.editGear = editGear;
+  window.deleteGear = deleteGear;
+  window.editClient = editClient;
+  window.deleteClient = deleteClient;
   
-  // Try to check backend availability, then load data
-  await detectModeAndLoad();
+  // Load data from backend API
+  await refreshData();
   
   // Initialize Lucide Icons
   lucide.createIcons();
 });
 
-// Detect if Live Backend API is available
-async function detectModeAndLoad() {
-  try {
-    const res = await fetch(`${API_BASE_URL}/gear`, { method: 'GET', signal: AbortSignal.timeout(1500) });
-    if (res.ok) {
-      console.log('Connected to AWS/Local backend API.');
-      useMockMode = false;
-    } else {
-      throw new Error('Backend responded with error');
-    }
-  } catch (err) {
-    console.warn('Backend server not detected or unreachable. Falling back to local storage mock database.');
-    useMockMode = true;
-    initializeLocalStorage();
-  }
-  await refreshData();
-}
-
-// Initialize Mock LocalStorage Data
-function initializeLocalStorage() {
-  if (!localStorage.getItem('EK_GEAR')) {
-    localStorage.setItem('EK_GEAR', JSON.stringify(SEED_GEAR));
-    localStorage.setItem('EK_CLIENTS', JSON.stringify(SEED_CLIENTS));
-    localStorage.setItem('EK_BOOKINGS', JSON.stringify(SEED_BOOKINGS));
-  }
-}
-
-// Fetch all data from backend (or localStorage) and update UI
+// Fetch all data from backend API and update UI
 async function refreshData(query = '') {
-  if (useMockMode) {
-    state.gear = JSON.parse(localStorage.getItem('EK_GEAR')) || [];
-    state.clients = JSON.parse(localStorage.getItem('EK_CLIENTS')) || [];
-    state.bookings = JSON.parse(localStorage.getItem('EK_BOOKINGS')) || [];
-  } else {
-    try {
-      const [gearRes, clientsRes, bookingsRes] = await Promise.all([
-        fetch(`${API_BASE_URL}/gear`),
-        fetch(`${API_BASE_URL}/clients`),
-        fetch(`${API_BASE_URL}/bookings`)
-      ]);
-      state.gear = await gearRes.json();
-      state.clients = await clientsRes.json();
-      state.bookings = await bookingsRes.json();
-    } catch (err) {
-      showToast('Error connecting to backend API', 'danger');
-      return;
+  try {
+    const [gearRes, clientsRes, bookingsRes] = await Promise.all([
+      fetch(`${API_BASE_URL}/gear`),
+      fetch(`${API_BASE_URL}/clients`),
+      fetch(`${API_BASE_URL}/bookings`)
+    ]);
+
+    if (!gearRes.ok || !clientsRes.ok || !bookingsRes.ok) {
+      throw new Error('Server returned an error');
     }
+
+    state.gear = await gearRes.json();
+    state.clients = await clientsRes.json();
+    state.bookings = await bookingsRes.json();
+  } catch (err) {
+    showToast('Cannot connect to backend API (http://localhost:3000)', 'danger');
+    return;
   }
 
   // Recompute gear availability status based on current active bookings today
@@ -259,31 +214,53 @@ function setupForms() {
     e.preventDefault();
     const gearData = {
       name: document.getElementById('gear-name').value,
+      assetTag: document.getElementById('gear-asset-tag').value.trim().toUpperCase(),
       category: document.getElementById('gear-category').value,
       serialNumber: document.getElementById('gear-serial').value,
       dailyRate: Number(document.getElementById('gear-rate').value),
       status: 'Available'
     };
 
-    if (useMockMode) {
-      gearData.id = 'g' + (state.gear.length + 1) + Math.floor(Math.random() * 100);
-      state.gear.push(gearData);
-      saveMockState();
-      showToast('Gear added to local inventory');
-    } else {
-      try {
-        const res = await fetch(`${API_BASE_URL}/gear`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(gearData)
-        });
-        if (!res.ok) throw new Error('API Error');
-        showToast('Gear registered in database');
-      } catch (err) {
-        showToast('Error registering gear', 'danger');
-      }
+    try {
+      const res = await fetch(`${API_BASE_URL}/gear`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(gearData)
+      });
+      if (!res.ok) throw new Error('API Error');
+      showToast('Gear registered in database');
+    } catch (err) {
+      showToast('Error registering gear', 'danger');
     }
     closeModal('modal-add-gear');
+    e.target.reset();
+    await refreshData();
+  });
+
+  // Edit Gear
+  document.getElementById('form-edit-gear').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('edit-gear-id').value;
+    const gearData = {
+      name: document.getElementById('edit-gear-name').value,
+      assetTag: document.getElementById('edit-gear-asset-tag').value.trim().toUpperCase(),
+      category: document.getElementById('edit-gear-category').value,
+      serialNumber: document.getElementById('edit-gear-serial').value,
+      dailyRate: Number(document.getElementById('edit-gear-rate').value)
+    };
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/gear/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(gearData)
+      });
+      if (!res.ok) throw new Error('API Error');
+      showToast('Gear updated in database');
+    } catch (err) {
+      showToast('Error updating gear', 'danger');
+    }
+    closeModal('modal-edit-gear');
     e.target.reset();
     await refreshData();
   });
@@ -297,25 +274,44 @@ function setupForms() {
       phone: document.getElementById('client-phone').value
     };
 
-    if (useMockMode) {
-      clientData.id = 'c' + (state.clients.length + 1) + Math.floor(Math.random() * 100);
-      state.clients.push(clientData);
-      saveMockState();
-      showToast('Client registered successfully');
-    } else {
-      try {
-        const res = await fetch(`${API_BASE_URL}/clients`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(clientData)
-        });
-        if (!res.ok) throw new Error('API Error');
-        showToast('Client stored in database');
-      } catch (err) {
-        showToast('Error storing client', 'danger');
-      }
+    try {
+      const res = await fetch(`${API_BASE_URL}/clients`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(clientData)
+      });
+      if (!res.ok) throw new Error('API Error');
+      showToast('Client stored in database');
+    } catch (err) {
+      showToast('Error storing client', 'danger');
     }
     closeModal('modal-add-client');
+    e.target.reset();
+    await refreshData();
+  });
+
+  // Edit Client
+  document.getElementById('form-edit-client').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('edit-client-id').value;
+    const clientData = {
+      name: document.getElementById('edit-client-name').value,
+      email: document.getElementById('edit-client-email').value,
+      phone: document.getElementById('edit-client-phone').value
+    };
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/clients/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(clientData)
+      });
+      if (!res.ok) throw new Error('API Error');
+      showToast('Client updated in database');
+    } catch (err) {
+      showToast('Error updating client', 'danger');
+    }
+    closeModal('modal-edit-client');
     e.target.reset();
     await refreshData();
   });
@@ -427,46 +423,28 @@ function setupForms() {
 
 // --- Dynamic Check-In (Return Gear) ---
 async function returnGear(bookingId) {
-  if (useMockMode) {
-    const booking = state.bookings.find(b => b.id === bookingId);
-    if (booking) {
-      booking.status = 'Returned';
-      saveMockState();
-      showToast('Gear checked in successfully');
-    }
-  } else {
-    try {
-      const res = await fetch(`${API_BASE_URL}/bookings/${bookingId}/return`, {
-        method: 'PUT'
-      });
-      if (!res.ok) throw new Error('API Error');
-      showToast('Gear checked back into inventory');
-    } catch (err) {
-      showToast('Error updating return', 'danger');
-    }
+  try {
+    const res = await fetch(`${API_BASE_URL}/bookings/${bookingId}/return`, {
+      method: 'PUT'
+    });
+    if (!res.ok) throw new Error('API Error');
+    showToast('Gear checked back into inventory');
+  } catch (err) {
+    showToast('Error updating return', 'danger');
   }
   await refreshData();
 }
 
 // --- Cancel Future Booking ---
 async function cancelBookingAction(bookingId) {
-  if (useMockMode) {
-    const booking = state.bookings.find(b => b.id === bookingId);
-    if (booking) {
-      booking.status = 'Cancelled';
-      saveMockState();
-      showToast('Booking cancelled successfully');
-    }
-  } else {
-    try {
-      const res = await fetch(`${API_BASE_URL}/bookings/${bookingId}/cancel`, {
-        method: 'PUT'
-      });
-      if (!res.ok) throw new Error('API Error');
-      showToast('Booking cancelled successfully');
-    } catch (err) {
-      showToast('Error cancelling booking', 'danger');
-    }
+  try {
+    const res = await fetch(`${API_BASE_URL}/bookings/${bookingId}/cancel`, {
+      method: 'PUT'
+    });
+    if (!res.ok) throw new Error('API Error');
+    showToast('Booking cancelled successfully');
+  } catch (err) {
+    showToast('Error cancelling booking', 'danger');
   }
   await refreshData();
 }
@@ -478,22 +456,16 @@ async function toggleMaintenance(gearId) {
 
   const newStatus = item.status === 'Maintenance' ? 'Available' : 'Maintenance';
   
-  if (useMockMode) {
-    item.status = newStatus;
-    saveMockState();
-    showToast(`Gear is now ${newStatus}`);
-  } else {
-    try {
-      const res = await fetch(`${API_BASE_URL}/gear/${gearId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus })
-      });
-      if (!res.ok) throw new Error('API Error');
-      showToast(`Gear status updated to ${newStatus}`);
-    } catch (err) {
-      showToast('Error toggling maintenance status', 'danger');
-    }
+  try {
+    const res = await fetch(`${API_BASE_URL}/gear/${gearId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus })
+    });
+    if (!res.ok) throw new Error('API Error');
+    showToast(`Gear status updated to ${newStatus}`);
+  } catch (err) {
+    showToast('Error toggling maintenance status', 'danger');
   }
   await refreshData();
 }
@@ -573,8 +545,9 @@ function renderInventory(filter = 'all', query = '') {
   }
   
   if (query) {
-    items = items.filter(g => 
+    items = items.filter(g =>
       g.name.toLowerCase().includes(query) ||
+      (g.assetTag || '').toLowerCase().includes(query) ||
       g.serialNumber.toLowerCase().includes(query) ||
       g.category.toLowerCase().includes(query)
     );
@@ -597,14 +570,33 @@ function renderInventory(filter = 'all', query = '') {
           <i data-lucide="${actionIcon}" style="width:12px; height:12px"></i> ${actionText}
          </button>`;
 
+    // Modify column: Edit always available; Delete blocked if Rented or Overdue
+    const isInUse = item.status === 'Rented';
+    const deleteBtn = isInUse
+      ? `<button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; opacity:0.4; cursor:not-allowed;" disabled title="Cannot delete — gear is currently rented out">
+           <i data-lucide="trash-2" style="width:12px; height:12px"></i> Delete
+         </button>`
+      : `<button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-danger); border-color: rgba(239,68,68,0.3);" onclick="deleteGear('${item.id}')" title="Delete gear">
+           <i data-lucide="trash-2" style="width:12px; height:12px"></i> Delete
+         </button>`;
+
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><strong>${item.name}</strong></td>
       <td>${item.category}</td>
+      <td><code>${item.assetTag || '—'}</code></td>
       <td><code>${item.serialNumber}</code></td>
       <td>GH₵${item.dailyRate}/day</td>
       <td><span class="status-pill ${statusClass}">${item.status}</span></td>
       <td>${toggleButton}</td>
+      <td>
+        <div style="display:flex; gap:0.4rem; align-items:center;">
+          <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem;" onclick="editGear('${item.id}')" title="Edit gear">
+            <i data-lucide="pencil" style="width:12px; height:12px"></i> Edit
+          </button>
+          ${deleteBtn}
+        </div>
+      </td>
     `;
     tbody.appendChild(tr);
   });
@@ -731,6 +723,14 @@ function renderClients(query = '') {
       <div class="client-details">
         <div class="client-detail-item"><i data-lucide="mail"></i> <span>${client.email}</span></div>
         <div class="client-detail-item"><i data-lucide="phone"></i> <span>${client.phone}</span></div>
+      </div>
+      <div class="client-actions">
+        <button class="btn btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.78rem;" onclick="editClient('${client.id}')">
+          <i data-lucide="pencil" style="width:13px; height:13px"></i> Edit
+        </button>
+        <button class="btn btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.78rem; color: var(--color-danger); border-color: rgba(239,68,68,0.3);" onclick="deleteClient('${client.id}')">
+          <i data-lucide="trash-2" style="width:13px; height:13px"></i> Delete
+        </button>
       </div>
     `;
     container.appendChild(card);
@@ -884,4 +884,106 @@ function setupRentalsFilter() {
     activeRentalsFilter = tab.getAttribute('data-rent-filter');
     refreshData();
   });
+}
+
+// --- Client Edit & Delete Actions ---
+
+function editClient(id) {
+  const client = state.clients.find(c => c.id === id);
+  if (!client) return;
+
+  document.getElementById('edit-client-id').value = client.id;
+  document.getElementById('edit-client-name').value = client.name;
+  document.getElementById('edit-client-email').value = client.email;
+  document.getElementById('edit-client-phone').value = client.phone;
+
+  openModal('modal-edit-client');
+}
+
+async function deleteClient(id) {
+  const client = state.clients.find(c => c.id === id);
+  if (!client) return;
+
+  // Block deletion if client has any Active or Booked rentals
+  const hasActiveBookings = state.bookings.some(b =>
+    b.clientId === id && (b.status === 'Active' || b.status === 'Booked' ||
+      // Also catch future bookings stored without explicit 'Booked' status
+      (b.status !== 'Returned' && b.status !== 'Cancelled' &&
+        new Date(b.endDate) >= new Date(new Date().toISOString().split('T')[0]))
+    )
+  );
+
+  if (hasActiveBookings) {
+    showToast(`Cannot delete "${client.name}" — they have active or upcoming rentals.`, 'danger');
+    return;
+  }
+
+  const confirmed = window.confirm(`Delete client "${client.name}"? This cannot be undone.`);
+  if (!confirmed) return;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/clients/${id}`, { method: 'DELETE' });
+    if (!res.ok) {
+      const err = await res.json();
+      showToast(err.error || 'Error deleting client', 'danger');
+      return;
+    }
+    showToast('Client removed from database');
+  } catch (err) {
+    showToast('Error deleting client', 'danger');
+    return;
+  }
+  await refreshData();
+}
+
+// --- Gear Edit & Delete Actions ---
+
+function editGear(id) {
+  const item = state.gear.find(g => g.id === id);
+  if (!item) return;
+
+  document.getElementById('edit-gear-id').value = item.id;
+  document.getElementById('edit-gear-name').value = item.name;
+  document.getElementById('edit-gear-asset-tag').value = item.assetTag || '';
+  document.getElementById('edit-gear-category').value = item.category;
+  document.getElementById('edit-gear-serial').value = item.serialNumber;
+  document.getElementById('edit-gear-rate').value = item.dailyRate;
+
+  openModal('modal-edit-gear');
+}
+
+async function deleteGear(id) {
+  const item = state.gear.find(g => g.id === id);
+  if (!item) return;
+
+  // Block if gear is currently rented out or overdue
+  const todayStr = new Date().toISOString().split('T')[0];
+  const isBlocked = state.bookings.some(b =>
+    b.gearId === id &&
+    b.status !== 'Returned' &&
+    b.status !== 'Cancelled' &&
+    b.endDate >= todayStr
+  );
+
+  if (isBlocked) {
+    showToast(`Cannot delete "${item.name}" — it is currently rented out or overdue.`, 'danger');
+    return;
+  }
+
+  const confirmed = window.confirm(`Delete "${item.name}"? This cannot be undone.`);
+  if (!confirmed) return;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/gear/${id}`, { method: 'DELETE' });
+    if (!res.ok) {
+      const err = await res.json();
+      showToast(err.error || 'Error deleting gear', 'danger');
+      return;
+    }
+    showToast('Gear removed from database');
+  } catch (err) {
+    showToast('Error deleting gear', 'danger');
+    return;
+  }
+  await refreshData();
 }

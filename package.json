@@ -1,0 +1,11 @@
+{
+  "name": "ek-gearflow-root",
+  "version": "1.0.0",
+  "description": "EK GearFlow - Media Rental Registry Root Runner",
+  "scripts": {
+    "start": "npx concurrently \"npm --prefix backend start\" \"python3 -m http.server 5500 --directory frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

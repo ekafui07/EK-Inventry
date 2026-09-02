@@ -690,6 +690,20 @@ body {
   height: 14px;
 }
 
+.client-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+  margin-top: auto;
+}
+
+.client-actions .btn {
+  flex: 1;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
 /* Modals */
 .modal-backdrop {
   position: fixed;
@@ -774,6 +788,7 @@ body {
 
 .form-row .form-group {
   flex: 1;
+  min-width: 0;
 }
 
 .form-group label {
