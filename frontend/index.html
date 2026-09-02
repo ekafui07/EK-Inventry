@@ -17,8 +17,8 @@
 </head>
 
 <body>
-  <!-- App Container -->
-  <div class="app-container">
+  <!-- App Container (Hidden until authenticated) -->
+  <div class="app-container" style="display: none;">
 
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
@@ -47,15 +47,22 @@
           <i data-lucide="users"></i>
           <span>Client Directory</span>
         </button>
+        <button class="nav-item" data-tab="users" id="nav-users">
+          <i data-lucide="shield-check"></i>
+          <span>Staff &amp; Permissions</span>
+        </button>
       </nav>
 
       <div class="sidebar-footer">
         <div class="user-profile">
-          <div class="avatar">EK</div>
+          <div class="avatar" id="user-avatar-text">EK</div>
           <div class="user-info">
-            <span class="user-name">EK Admin</span>
-            <span class="user-role">Operations Manager</span>
+            <span class="user-name" id="user-display-name">EK Admin</span>
+            <span class="user-role" id="user-display-title">Operations Manager</span>
           </div>
+          <button id="btn-logout" class="btn-icon" title="Log Out" style="margin-left:auto; background:transparent; border:none; color:var(--text-muted); cursor:pointer; padding: 4px;">
+            <i data-lucide="log-out" style="width:18px; height:18px;"></i>
+          </button>
         </div>
       </div>
     </aside>
@@ -235,6 +242,19 @@
         </div>
         <div class="client-grid" id="clients-list">
           <!-- Dynamic grid of clients -->
+        </div>
+      </div>
+
+      <!-- Staff & Permissions View -->
+      <div class="view-panel" id="view-users">
+        <div class="panel-header-row">
+          <h2>Staff &amp; Permission Management</h2>
+          <button class="btn btn-primary" id="btn-add-user">
+            <i data-lucide="user-plus"></i> Add Staff Member
+          </button>
+        </div>
+        <div class="client-grid" id="users-list">
+          <!-- Dynamic grid of staff members -->
         </div>
       </div>
 
@@ -428,6 +448,215 @@
       </form>
     </div>
   </div>
+
+  <!-- Add Staff User Modal -->
+  <div class="modal-backdrop" id="modal-add-user">
+    <div class="modal" style="max-width: 520px;">
+      <div class="modal-header">
+        <h2>Register Staff Account</h2>
+        <button class="modal-close"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-add-user" class="modal-form">
+        <div class="form-group">
+          <label for="user-name">Full Name</label>
+          <input type="text" id="user-name" required placeholder="e.g. Sarah Jenkins">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="user-email">Email Address</label>
+            <input type="email" id="user-email" required placeholder="staff@ekgearflow.com">
+          </div>
+          <div class="form-group">
+            <label for="user-title">Job Title</label>
+            <input type="text" id="user-title" required placeholder="e.g. Rental Desk Agent">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="user-account-type">Account Type</label>
+          <select id="user-account-type" required>
+            <option value="Staff" selected>Staff Member</option>
+            <option value="Admin">Administrator</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Assigned Task Permissions</label>
+          <div class="permissions-checkbox-group" style="display:flex; flex-direction:column; gap:0.5rem; background:rgba(255,255,255,0.03); padding:0.85rem; border-radius:8px; border:1px solid var(--border-color);">
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="manage_gear"> <span>Manage Gear Inventory (Add/Edit/Delete/Maintenance)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="manage_clients"> <span>Manage Clients (Add/Edit/Delete)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="create_rentals" checked> <span>Process Checkouts &amp; Reservations</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="return_rentals" checked> <span>Process Check-Ins &amp; Cancellations</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="manage_users"> <span>Manage Staff Accounts &amp; Permissions</span></label>
+          </div>
+        </div>
+        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:-0.25rem;">Note: Initial password will be set to default <code>12345</code>. Staff must change it upon first login.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Staff User Modal -->
+  <div class="modal-backdrop" id="modal-edit-user">
+    <div class="modal" style="max-width: 520px;">
+      <div class="modal-header">
+        <h2>Edit Staff Profile &amp; Permissions</h2>
+        <button class="modal-close"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-edit-user" class="modal-form">
+        <input type="hidden" id="edit-user-id">
+        <div class="form-group">
+          <label for="edit-user-name">Full Name</label>
+          <input type="text" id="edit-user-name" required placeholder="e.g. Sarah Jenkins">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-user-email">Email Address</label>
+            <input type="email" id="edit-user-email" required placeholder="staff@ekgearflow.com">
+          </div>
+          <div class="form-group">
+            <label for="edit-user-title">Job Title</label>
+            <input type="text" id="edit-user-title" required placeholder="e.g. Rental Desk Agent">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="edit-user-account-type">Account Type</label>
+          <select id="edit-user-account-type" required>
+            <option value="Staff">Staff Member</option>
+            <option value="Admin">Administrator</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Assigned Task Permissions</label>
+          <div class="permissions-checkbox-group" style="display:flex; flex-direction:column; gap:0.5rem; background:rgba(255,255,255,0.03); padding:0.85rem; border-radius:8px; border:1px solid var(--border-color);">
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="manage_gear"> <span>Manage Gear Inventory (Add/Edit/Delete/Maintenance)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="manage_clients"> <span>Manage Clients (Add/Edit/Delete)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="create_rentals"> <span>Process Checkouts &amp; Reservations</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="return_rentals"> <span>Process Check-Ins &amp; Cancellations</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="manage_users"> <span>Manage Staff Accounts &amp; Permissions</span></label>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Mandatory Force Change Password Modal -->
+  <div class="modal-backdrop" id="modal-force-change-password" style="z-index: 10000; background: rgba(0,0,0,0.85);">
+    <div class="modal" style="max-width: 420px;">
+      <div class="modal-header">
+        <h2 style="color: var(--color-primary);">Password Reset Required</h2>
+      </div>
+      <form id="form-force-change-password" class="modal-form">
+        <p style="font-size: 0.85rem; color: var(--text-muted);">You are currently using a default or reset password. You must set a new secure password before proceeding.</p>
+        <div class="form-group">
+          <label for="force-new-password">New Password</label>
+          <input type="password" id="force-new-password" required minlength="4" placeholder="Enter new password">
+        </div>
+        <div class="form-group">
+          <label for="force-confirm-password">Confirm New Password</label>
+          <input type="password" id="force-confirm-password" required minlength="4" placeholder="Re-enter new password">
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Update Password &amp; Continue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Forgot Password Request Modal -->
+  <div class="modal-backdrop" id="modal-forgot-password">
+    <div class="modal" style="max-width: 420px;">
+      <div class="modal-header">
+        <h2>Reset Password</h2>
+        <button class="modal-close"><i data-lucide="x"></i></button>
+      </div>
+      <form id="form-forgot-password" class="modal-form">
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Enter your registered account email address. Your password will be reset to default <code>12345</code>.</p>
+        <div class="form-group">
+          <label for="forgot-email">Email Address</label>
+          <input type="email" id="forgot-email" required placeholder="your.name@company.com">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Reset Password to 12345</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Split-Screen Modern Auth Page Overlay -->
+  <div id="login-screen-overlay" class="login-split-container">
+    
+    <!-- Left Hero Illustration Side -->
+    <div class="login-hero-side">
+      <div class="login-hero-content">
+        <div class="brand" style="justify-content: center; margin-bottom: 2rem;">
+          <i data-lucide="aperture" class="brand-icon" style="width:42px; height:42px; color:#0284c7;"></i>
+          <div class="brand-text" style="text-align: left;">
+            <h1 style="font-size: 1.8rem; color:#0f172a;">EK GearFlow</h1>
+            <span style="font-size: 0.85rem; color: #64748b;">Media Rental Registry</span>
+          </div>
+        </div>
+        <img src="illustration.jpg" alt="Media Equipment Management" class="login-hero-illustration">
+        <div class="login-hero-text">
+          <h3>Professional Media Inventory &amp; Rental System</h3>
+          <p>Real-time gear tracking, double-booking prevention, and task-based staff permissions.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Blue Container Side with Floating Login Card -->
+    <div class="login-form-side">
+      <div class="login-card-floating">
+        
+        <div class="login-card-header">
+          <h2>Hello!</h2>
+          <p>Sign In to Access Your Workspace</p>
+        </div>
+
+        <!-- Admin / Staff Role Selector Toggle -->
+        <div class="login-type-toggle">
+          <button type="button" class="login-toggle-btn active" data-login-type="Staff">Staff Login</button>
+          <button type="button" class="login-toggle-btn" data-login-type="Admin">Admin Login</button>
+        </div>
+
+        <form id="form-login" class="modal-form">
+          <input type="hidden" id="login-account-type" value="Staff">
+          
+          <div class="form-group icon-input-group">
+            <label for="login-email">Email Address</label>
+            <div class="input-wrapper">
+              <i data-lucide="mail" class="input-icon"></i>
+              <input type="email" id="login-email" required placeholder="name@company.com">
+            </div>
+          </div>
+
+          <div class="form-group icon-input-group">
+            <label for="login-password">Password</label>
+            <div class="input-wrapper">
+              <i data-lucide="lock" class="input-icon"></i>
+              <input type="password" id="login-password" required placeholder="••••••••">
+            </div>
+          </div>
+
+          <div class="forgot-link-row">
+            <a href="#" id="link-forgot-password">Forgot Password?</a>
+          </div>
+
+          <button type="submit" class="btn btn-login-submit">Sign In to Dashboard</button>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
+
 
   <!-- Notification Banner -->
   <div id="toast-notification" class="toast hidden">

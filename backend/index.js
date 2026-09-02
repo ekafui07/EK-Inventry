@@ -103,12 +103,28 @@ async function getGear() {
 
 // Add Gear
 async function addGear(item) {
+  if (!item.name || typeof item.name !== 'string' || item.name.trim().length < 2) {
+    throw new Error('Invalid Gear Name: Must be at least 2 characters long.');
+  }
+  if (!item.assetTag || typeof item.assetTag !== 'string' || item.assetTag.trim().length < 2) {
+    throw new Error('Invalid Asset Tag: Required.');
+  }
+  if (!item.category || typeof item.category !== 'string' || item.category.trim().length < 2) {
+    throw new Error('Invalid Category: Required.');
+  }
+  if (!item.serialNumber || typeof item.serialNumber !== 'string' || item.serialNumber.trim().length < 2) {
+    throw new Error('Invalid Serial Number: Required.');
+  }
+  if (isNaN(item.dailyRate) || Number(item.dailyRate) <= 0) {
+    throw new Error('Invalid Daily Rate: Must be a positive number greater than 0.');
+  }
+
   const newGear = {
     id: item.id || 'g_' + Date.now(),
-    name: item.name,
-    assetTag: item.assetTag || '',
-    category: item.category,
-    serialNumber: item.serialNumber,
+    name: item.name.trim(),
+    assetTag: item.assetTag.trim().toUpperCase(),
+    category: item.category.trim(),
+    serialNumber: item.serialNumber.trim(),
     dailyRate: Number(item.dailyRate),
     status: item.status || 'Available'
   };
@@ -198,6 +214,167 @@ async function getClients() {
   }
   const result = await docClient.send(new ScanCommand({ TableName: CLIENTS_TABLE }));
   return result.Items || [];
+}
+
+// --- USER & AUTH CONTROLLER LOGIC ---
+
+async function getUsers() {
+  if (!isLambda) {
+    const db = readLocalDb();
+    if (!db.users) db.users = [];
+    return db.users.map(({ password, ...u }) => u);
+  }
+  const result = await docClient.send(new ScanCommand({ TableName: 'EK_Users' }));
+  return (result.Items || []).map(({ password, ...u }) => u);
+}
+
+async function loginUser({ email, password, accountType }) {
+  const db = readLocalDb();
+  if (!db.users) db.users = [];
+  const user = db.users.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
+  
+  if (!user) {
+    throw new Error('Invalid email or password');
+  }
+
+  if (user.status === 'Banned') {
+    throw new Error('Your account has been suspended by an Administrator.');
+  }
+
+  if (accountType && user.accountType.toLowerCase() !== accountType.toLowerCase()) {
+    throw new Error(`This account is registered as ${user.accountType}, not ${accountType}.`);
+  }
+
+  if (user.password !== password) {
+    throw new Error('Invalid email or password');
+  }
+
+  const { password: _, ...userSession } = user;
+  return userSession;
+}
+
+async function addUser(userData) {
+  const db = readLocalDb();
+  if (!db.users) db.users = [];
+
+  const existing = db.users.find(u => u.email.toLowerCase() === userData.email.trim().toLowerCase());
+  if (existing) {
+    throw new Error('A staff member with this email already exists.');
+  }
+
+  const newUser = {
+    id: userData.id || 'u_' + Date.now(),
+    name: userData.name,
+    email: userData.email.trim(),
+    password: userData.password || '12345',
+    title: userData.title || 'Staff Member',
+    accountType: userData.accountType || 'Staff',
+    permissions: userData.permissions || ['manage_clients', 'create_rentals', 'return_rentals'],
+    status: 'Active',
+    mustChangePassword: userData.mustChangePassword !== undefined ? userData.mustChangePassword : true
+  };
+
+  db.users.push(newUser);
+  writeLocalDb(db);
+
+  const { password: _, ...savedUser } = newUser;
+  return savedUser;
+}
+
+async function updateUser(id, fields) {
+  const db = readLocalDb();
+  if (!db.users) db.users = [];
+
+  const user = db.users.find(u => u.id === id);
+  if (!user) return null;
+
+  if (fields.name !== undefined) user.name = fields.name;
+  if (fields.email !== undefined) user.email = fields.email.trim();
+  if (fields.title !== undefined) user.title = fields.title;
+  if (fields.accountType !== undefined) user.accountType = fields.accountType;
+  if (fields.permissions !== undefined) user.permissions = fields.permissions;
+  if (fields.status !== undefined) user.status = fields.status;
+
+  writeLocalDb(db);
+  const { password: _, ...updatedUser } = user;
+  return updatedUser;
+}
+
+async function resetUserPassword(id) {
+  const db = readLocalDb();
+  if (!db.users) db.users = [];
+
+  const user = db.users.find(u => u.id === id);
+  if (!user) throw new Error('User not found');
+
+  user.password = '12345';
+  user.mustChangePassword = true;
+  writeLocalDb(db);
+
+  return { success: true, message: 'Password reset to 12345' };
+}
+
+async function forgotPasswordReset(email) {
+  const db = readLocalDb();
+  if (!db.users) db.users = [];
+
+  const user = db.users.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
+  if (!user) throw new Error('No user account found with that email address.');
+
+  user.password = '12345';
+  user.mustChangePassword = true;
+  writeLocalDb(db);
+
+  return { success: true, message: 'Password has been reset to 12345' };
+}
+
+async function changeUserPassword(id, newPassword) {
+  const db = readLocalDb();
+  if (!db.users) db.users = [];
+
+  const user = db.users.find(u => u.id === id);
+  if (!user) throw new Error('User not found');
+
+  if (!newPassword || newPassword.trim().length < 4) {
+    throw new Error('New password must be at least 4 characters long.');
+  }
+
+  if (newPassword === '12345') {
+    throw new Error('Please choose a password other than the default 12345.');
+  }
+
+  user.password = newPassword;
+  user.mustChangePassword = false;
+  writeLocalDb(db);
+
+  const { password: _, ...updatedUser } = user;
+  return updatedUser;
+}
+
+async function toggleUserStatus(id, status) {
+  const db = readLocalDb();
+  if (!db.users) db.users = [];
+
+  const user = db.users.find(u => u.id === id);
+  if (!user) throw new Error('User not found');
+
+  user.status = status;
+  writeLocalDb(db);
+
+  const { password: _, ...updatedUser } = user;
+  return updatedUser;
+}
+
+async function deleteUser(id) {
+  const db = readLocalDb();
+  if (!db.users) db.users = [];
+
+  const index = db.users.findIndex(u => u.id === id);
+  if (index === -1) return { success: false };
+
+  db.users.splice(index, 1);
+  writeLocalDb(db);
+  return { success: true };
 }
 
 // Add Client
@@ -501,6 +678,53 @@ app.put('/api/bookings/:id/return', async (req, res) => {
 
 app.put('/api/bookings/:id/cancel', async (req, res) => {
   try { res.json(await cancelBooking(req.params.id)); } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// --- AUTH & USER ROUTES ---
+
+app.post('/api/login', async (req, res) => {
+  try {
+    const userSession = await loginUser(req.body);
+    res.json(userSession);
+  } catch (err) {
+    res.status(401).json({ error: err.message });
+  }
+});
+
+app.get('/api/users', async (req, res) => {
+  try { res.json(await getUsers()); } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.post('/api/users', async (req, res) => {
+  try { res.status(201).json(await addUser(req.body)); } catch (err) { res.status(400).json({ error: err.message }); }
+});
+
+app.put('/api/users/:id', async (req, res) => {
+  try {
+    const updated = await updateUser(req.params.id, req.body);
+    if (!updated) return res.status(404).json({ error: 'User not found' });
+    res.json(updated);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.delete('/api/users/:id', async (req, res) => {
+  try { res.json(await deleteUser(req.params.id)); } catch (err) { res.status(400).json({ error: err.message }); }
+});
+
+app.post('/api/users/:id/reset-password', async (req, res) => {
+  try { res.json(await resetUserPassword(req.params.id)); } catch (err) { res.status(400).json({ error: err.message }); }
+});
+
+app.post('/api/forgot-password', async (req, res) => {
+  try { res.json(await forgotPasswordReset(req.body.email)); } catch (err) { res.status(400).json({ error: err.message }); }
+});
+
+app.post('/api/users/:id/change-password', async (req, res) => {
+  try { res.json(await changeUserPassword(req.params.id, req.body.newPassword)); } catch (err) { res.status(400).json({ error: err.message }); }
+});
+
+app.put('/api/users/:id/status', async (req, res) => {
+  try { res.json(await toggleUserStatus(req.params.id, req.body.status)); } catch (err) { res.status(400).json({ error: err.message }); }
 });
 
 // Start server locally if not inside Lambda

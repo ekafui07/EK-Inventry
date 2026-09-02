@@ -59,10 +59,10 @@
       "phone": "+1 555-014-9922"
     },
     {
-      "id": "c_1788188762886",
-      "name": "forin boy",
-      "email": "kafui.edw124@gmail.com",
-      "phone": "+232 02029956687"
+      "id": "c_1788330458528",
+      "name": "GLIGHA EDWIN",
+      "email": "edwingliagh124@hmail.com",
+      "phone": "20235498948894"
     }
   ],
   "bookings": [
@@ -169,6 +169,39 @@
       "startDate": "2026-08-31",
       "endDate": "2026-09-03",
       "status": "Returned"
+    }
+  ],
+  "users": [
+    {
+      "id": "u1",
+      "name": "EK Admin",
+      "email": "admin@ekgearflow.com",
+      "password": "admin123",
+      "title": "Operations Manager",
+      "accountType": "Admin",
+      "permissions": [
+        "manage_gear",
+        "manage_clients",
+        "create_rentals",
+        "return_rentals",
+        "manage_users"
+      ],
+      "status": "Active",
+      "mustChangePassword": false
+    },
+    {
+      "id": "u2",
+      "name": "Sarah Adjei",
+      "email": "Sarah@ekgearflow.com",
+      "password": "BerlinB1213@",
+      "title": "Senior Desk Specialist",
+      "accountType": "Staff",
+      "permissions": [
+        "manage_gear",
+        "manage_clients"
+      ],
+      "status": "Active",
+      "mustChangePassword": false
     }
   ]
 }

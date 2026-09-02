@@ -7,14 +7,18 @@ const API_BASE_URL = 'http://localhost:3000/api';
 let state = {
   gear: [],
   clients: [],
-  bookings: []
+  bookings: [],
+  users: []
 };
+
+let currentUser = null; // Currently logged in user session
 
 let activeTab = 'dashboard'; // Track the active view panel
 let activeRentalsFilter = 'all'; // Track the rentals status view filter
 
 // Initialize Application
 document.addEventListener('DOMContentLoaded', async () => {
+  setupAuth();
   setupNavigation();
   setupModals();
   setupForms();
@@ -30,10 +34,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   window.deleteGear = deleteGear;
   window.editClient = editClient;
   window.deleteClient = deleteClient;
-  
+  window.editUser = editUser;
+  window.deleteUserAction = deleteUserAction;
+  window.resetUserPasswordAction = resetUserPasswordAction;
+  window.toggleUserStatusAction = toggleUserStatusAction;
+
+  // Check auth session
+  checkAuthSession();
+
   // Load data from backend API
   await refreshData();
-  
+
   // Initialize Lucide Icons
   lucide.createIcons();
 });
@@ -41,10 +52,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Fetch all data from backend API and update UI
 async function refreshData(query = '') {
   try {
-    const [gearRes, clientsRes, bookingsRes] = await Promise.all([
+    const [gearRes, clientsRes, bookingsRes, usersRes] = await Promise.all([
       fetch(`${API_BASE_URL}/gear`),
       fetch(`${API_BASE_URL}/clients`),
-      fetch(`${API_BASE_URL}/bookings`)
+      fetch(`${API_BASE_URL}/bookings`),
+      fetch(`${API_BASE_URL}/users`)
     ]);
 
     if (!gearRes.ok || !clientsRes.ok || !bookingsRes.ok) {
@@ -54,6 +66,9 @@ async function refreshData(query = '') {
     state.gear = await gearRes.json();
     state.clients = await clientsRes.json();
     state.bookings = await bookingsRes.json();
+    if (usersRes.ok) {
+      state.users = await usersRes.json();
+    }
   } catch (err) {
     showToast('Cannot connect to backend API (http://localhost:3000)', 'danger');
     return;
@@ -78,8 +93,10 @@ async function refreshData(query = '') {
   renderInventory('all', query);
   renderRentalsList(query);
   renderClients(query);
+  renderUsers(query);
   populateCheckoutDropdowns();
   renderCategoryChart();
+  applyPermissions();
 }
 
 // Save back to LocalStorage (in Mock Mode only)
@@ -125,6 +142,7 @@ function setupModals() {
   const modalTriggers = [
     { trigger: 'btn-add-gear', modal: 'modal-add-gear' },
     { trigger: 'btn-add-client', modal: 'modal-add-client' },
+    { trigger: 'btn-add-user', modal: 'modal-add-user' },
     { trigger: 'btn-quick-rent', modal: 'modal-checkout' }
   ];
   
@@ -138,6 +156,9 @@ function setupModals() {
 
   // Setup close buttons and backdrop clicks
   document.querySelectorAll('.modal-backdrop').forEach(modal => {
+    // Force password change modal cannot be closed by backdrop or cancel
+    if (modal.id === 'modal-force-change-password') return;
+
     modal.querySelector('.modal-close')?.addEventListener('click', () => closeModal(modal.id));
     modal.querySelector('.modal-cancel')?.addEventListener('click', () => closeModal(modal.id));
     modal.addEventListener('click', (e) => {
@@ -207,19 +228,94 @@ function closeModal(modalId) {
   }, 300);
 }
 
+// --- STRICT FORM INPUT VALIDATION MODULE ---
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_REGEX = /^[+]*[(]?[0-9]{1,4}[)]?[-\s./0-9]{6,15}$/;
+
+function validateGearPayload(data) {
+  if (!data.name || data.name.trim().length < 2) {
+    return 'Gear Name must be at least 2 characters long.';
+  }
+  if (!data.assetTag || data.assetTag.trim().length < 2) {
+    return 'Asset Tag is required (e.g., CAM-001).';
+  }
+  if (!data.category || data.category.trim().length < 2) {
+    return 'Category is required.';
+  }
+  if (!data.serialNumber || data.serialNumber.trim().length < 2) {
+    return 'Serial Number is required.';
+  }
+  if (isNaN(data.dailyRate) || data.dailyRate <= 0) {
+    return 'Daily Rate must be a valid number greater than 0.';
+  }
+  return null;
+}
+
+function validateClientPayload(data) {
+  if (!data.name || data.name.trim().length < 2) {
+    return 'Client Full Name must be at least 2 characters long.';
+  }
+  if (!data.email || !EMAIL_REGEX.test(data.email.trim())) {
+    return 'Please enter a valid email address (e.g., client@company.com).';
+  }
+  if (!data.phone || !PHONE_REGEX.test(data.phone.trim())) {
+    return 'Please enter a valid phone number (minimum 7 digits).';
+  }
+  return null;
+}
+
+function validateUserPayload(data) {
+  if (!data.name || data.name.trim().length < 2) {
+    return 'Staff Name must be at least 2 characters long.';
+  }
+  if (!data.email || !EMAIL_REGEX.test(data.email.trim())) {
+    return 'Please enter a valid email address.';
+  }
+  if (!data.title || data.title.trim().length < 2) {
+    return 'Job Title is required.';
+  }
+  return null;
+}
+
+function validateCheckoutPayload(data) {
+  if (!data.clientId) {
+    return 'Please select a registered client.';
+  }
+  if (!data.gearIds || data.gearIds.length === 0) {
+    return 'Please select at least one gear item for checkout.';
+  }
+  if (!data.startDate || !data.endDate) {
+    return 'Both start date and end date are required.';
+  }
+  if (new Date(data.startDate) > new Date(data.endDate)) {
+    return 'Rental start date cannot be after the return date.';
+  }
+  return null;
+}
+
 // --- Form Handling ---
 function setupForms() {
   // Add Gear
   document.getElementById('form-add-gear').addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!hasPermission('manage_gear')) {
+      showToast('Permission Denied: You do not have permission to add gear.', 'danger');
+      return;
+    }
     const gearData = {
-      name: document.getElementById('gear-name').value,
+      name: document.getElementById('gear-name').value.trim(),
       assetTag: document.getElementById('gear-asset-tag').value.trim().toUpperCase(),
-      category: document.getElementById('gear-category').value,
-      serialNumber: document.getElementById('gear-serial').value,
+      category: document.getElementById('gear-category').value.trim(),
+      serialNumber: document.getElementById('gear-serial').value.trim(),
       dailyRate: Number(document.getElementById('gear-rate').value),
       status: 'Available'
     };
+
+    const valErr = validateGearPayload(gearData);
+    if (valErr) {
+      showToast(valErr, 'danger');
+      return;
+    }
 
     try {
       const res = await fetch(`${API_BASE_URL}/gear`, {
@@ -227,10 +323,14 @@ function setupForms() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(gearData)
       });
-      if (!res.ok) throw new Error('API Error');
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || 'Error registering gear');
+      }
       showToast('Gear registered in database');
     } catch (err) {
-      showToast('Error registering gear', 'danger');
+      showToast(err.message, 'danger');
+      return;
     }
     closeModal('modal-add-gear');
     e.target.reset();
@@ -240,14 +340,24 @@ function setupForms() {
   // Edit Gear
   document.getElementById('form-edit-gear').addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!hasPermission('manage_gear')) {
+      showToast('Permission Denied: You do not have permission to edit gear.', 'danger');
+      return;
+    }
     const id = document.getElementById('edit-gear-id').value;
     const gearData = {
-      name: document.getElementById('edit-gear-name').value,
+      name: document.getElementById('edit-gear-name').value.trim(),
       assetTag: document.getElementById('edit-gear-asset-tag').value.trim().toUpperCase(),
-      category: document.getElementById('edit-gear-category').value,
-      serialNumber: document.getElementById('edit-gear-serial').value,
+      category: document.getElementById('edit-gear-category').value.trim(),
+      serialNumber: document.getElementById('edit-gear-serial').value.trim(),
       dailyRate: Number(document.getElementById('edit-gear-rate').value)
     };
+
+    const valErr = validateGearPayload(gearData);
+    if (valErr) {
+      showToast(valErr, 'danger');
+      return;
+    }
 
     try {
       const res = await fetch(`${API_BASE_URL}/gear/${id}`, {
@@ -255,10 +365,14 @@ function setupForms() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(gearData)
       });
-      if (!res.ok) throw new Error('API Error');
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || 'Error updating gear');
+      }
       showToast('Gear updated in database');
     } catch (err) {
-      showToast('Error updating gear', 'danger');
+      showToast(err.message, 'danger');
+      return;
     }
     closeModal('modal-edit-gear');
     e.target.reset();
@@ -268,11 +382,21 @@ function setupForms() {
   // Add Client
   document.getElementById('form-add-client').addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!hasPermission('manage_clients')) {
+      showToast('Permission Denied: You do not have permission to add clients.', 'danger');
+      return;
+    }
     const clientData = {
-      name: document.getElementById('client-name').value,
-      email: document.getElementById('client-email').value,
-      phone: document.getElementById('client-phone').value
+      name: document.getElementById('client-name').value.trim(),
+      email: document.getElementById('client-email').value.trim(),
+      phone: document.getElementById('client-phone').value.trim()
     };
+
+    const valErr = validateClientPayload(clientData);
+    if (valErr) {
+      showToast(valErr, 'danger');
+      return;
+    }
 
     try {
       const res = await fetch(`${API_BASE_URL}/clients`, {
@@ -280,10 +404,14 @@ function setupForms() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(clientData)
       });
-      if (!res.ok) throw new Error('API Error');
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || 'Error storing client');
+      }
       showToast('Client stored in database');
     } catch (err) {
-      showToast('Error storing client', 'danger');
+      showToast(err.message, 'danger');
+      return;
     }
     closeModal('modal-add-client');
     e.target.reset();
@@ -293,12 +421,22 @@ function setupForms() {
   // Edit Client
   document.getElementById('form-edit-client').addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!hasPermission('manage_clients')) {
+      showToast('Permission Denied: You do not have permission to edit clients.', 'danger');
+      return;
+    }
     const id = document.getElementById('edit-client-id').value;
     const clientData = {
-      name: document.getElementById('edit-client-name').value,
-      email: document.getElementById('edit-client-email').value,
-      phone: document.getElementById('edit-client-phone').value
+      name: document.getElementById('edit-client-name').value.trim(),
+      email: document.getElementById('edit-client-email').value.trim(),
+      phone: document.getElementById('edit-client-phone').value.trim()
     };
+
+    const valErr = validateClientPayload(clientData);
+    if (valErr) {
+      showToast(valErr, 'danger');
+      return;
+    }
 
     try {
       const res = await fetch(`${API_BASE_URL}/clients/${id}`, {
@@ -306,10 +444,14 @@ function setupForms() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(clientData)
       });
-      if (!res.ok) throw new Error('API Error');
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || 'Error updating client');
+      }
       showToast('Client updated in database');
     } catch (err) {
-      showToast('Error updating client', 'danger');
+      showToast(err.message, 'danger');
+      return;
     }
     closeModal('modal-edit-client');
     e.target.reset();
@@ -319,15 +461,14 @@ function setupForms() {
   // Check-Out Gear
   document.getElementById('form-checkout').addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!hasPermission('create_rentals')) {
+      showToast('Permission Denied: You do not have permission to process checkouts.', 'danger');
+      return;
+    }
     
     // Collect all selected gear IDs
     const gearSelects = document.querySelectorAll('.checkout-gear-select');
     const gearIds = Array.from(gearSelects).map(s => s.value).filter(val => val);
-    
-    if (gearIds.length === 0) {
-      showToast('Please select at least one gear item', 'danger');
-      return;
-    }
 
     const bookingData = {
       gearIds: gearIds,
@@ -337,9 +478,9 @@ function setupForms() {
       status: 'Active'
     };
 
-    // Date Overlap Validation
-    if (new Date(bookingData.startDate) > new Date(bookingData.endDate)) {
-      showToast('Start date must be before end date', 'danger');
+    const valErr = validateCheckoutPayload(bookingData);
+    if (valErr) {
+      showToast(valErr, 'danger');
       return;
     }
 
@@ -563,14 +704,20 @@ function renderInventory(filter = 'all', query = '') {
     const actionText = item.status === 'Maintenance' ? 'Put In Service' : 'Send to Repair';
     const actionIcon = item.status === 'Maintenance' ? 'check-circle' : 'wrench';
     
-    // Disable check-out toggle if rented out
-    const toggleButton = item.status === 'Rented' 
-      ? `<span style="font-size: 0.75rem; color: var(--text-muted)">Rented Out</span>` 
-      : `<button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem" onclick="toggleMaintenance('${item.id}')">
-          <i data-lucide="${actionIcon}" style="width:12px; height:12px"></i> ${actionText}
-         </button>`;
 
-    // Modify column: Edit always available; Delete blocked if Rented or Overdue
+
+    const canManageGear = hasPermission('manage_gear');
+
+    // Disable check-out toggle if rented out or user lacks permission
+    const toggleButton = !canManageGear
+      ? `<span style="font-size: 0.75rem; color: var(--text-muted)">${item.status}</span>`
+      : (item.status === 'Rented' 
+        ? `<span style="font-size: 0.75rem; color: var(--text-muted)">Rented Out</span>` 
+        : `<button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem" onclick="toggleMaintenance('${item.id}')">
+            <i data-lucide="${actionIcon}" style="width:12px; height:12px"></i> ${actionText}
+           </button>`);
+
+    // Modify column: Edit & Delete available only if user has manage_gear permission
     const isInUse = item.status === 'Rented';
     const deleteBtn = isInUse
       ? `<button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; opacity:0.4; cursor:not-allowed;" disabled title="Cannot delete — gear is currently rented out">
@@ -579,6 +726,17 @@ function renderInventory(filter = 'all', query = '') {
       : `<button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-danger); border-color: rgba(239,68,68,0.3);" onclick="deleteGear('${item.id}')" title="Delete gear">
            <i data-lucide="trash-2" style="width:12px; height:12px"></i> Delete
          </button>`;
+
+    const modifyCellHtml = canManageGear ? `
+      <td>
+        <div style="display:flex; gap:0.4rem; align-items:center;">
+          <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem;" onclick="editGear('${item.id}')" title="Edit gear">
+            <i data-lucide="pencil" style="width:12px; height:12px"></i> Edit
+          </button>
+          ${deleteBtn}
+        </div>
+      </td>
+    ` : `<td><span style="font-size: 0.75rem; color: var(--text-muted)">—</span></td>`;
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -589,14 +747,7 @@ function renderInventory(filter = 'all', query = '') {
       <td>GH₵${item.dailyRate}/day</td>
       <td><span class="status-pill ${statusClass}">${item.status}</span></td>
       <td>${toggleButton}</td>
-      <td>
-        <div style="display:flex; gap:0.4rem; align-items:center;">
-          <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem;" onclick="editGear('${item.id}')" title="Edit gear">
-            <i data-lucide="pencil" style="width:12px; height:12px"></i> Edit
-          </button>
-          ${deleteBtn}
-        </div>
-      </td>
+      ${modifyCellHtml}
     `;
     tbody.appendChild(tr);
   });
@@ -659,19 +810,22 @@ function renderRentalsList(query = '') {
     const calculatedStatus = getBookingStatus(booking);
     const statusClass = calculatedStatus.toLowerCase();
 
+    const canReturn = hasPermission('return_rentals');
     let actionButton = '—';
-    if (calculatedStatus === 'Booked') {
-      actionButton = `
-        <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-danger); border-color: rgba(239, 68, 68, 0.3);" onclick="cancelBookingAction('${booking.id}')" title="Void Reservation">
-          <i data-lucide="x-circle" style="width:12px; height:12px"></i> Cancel
-        </button>
-      `;
-    } else if (calculatedStatus === 'Active' || calculatedStatus === 'Overdue') {
-      actionButton = `
-        <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-success); border-color: rgba(16, 185, 129, 0.3);" onclick="returnGear('${booking.id}')" title="Return Gear">
-          <i data-lucide="check-square" style="width:12px; height:12px"></i> Check In
-        </button>
-      `;
+    if (canReturn) {
+      if (calculatedStatus === 'Booked') {
+        actionButton = `
+          <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-danger); border-color: rgba(239, 68, 68, 0.3);" onclick="cancelBookingAction('${booking.id}')" title="Void Reservation">
+            <i data-lucide="x-circle" style="width:12px; height:12px"></i> Cancel
+          </button>
+        `;
+      } else if (calculatedStatus === 'Active' || calculatedStatus === 'Overdue') {
+        actionButton = `
+          <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-success); border-color: rgba(16, 185, 129, 0.3);" onclick="returnGear('${booking.id}')" title="Return Gear">
+            <i data-lucide="check-square" style="width:12px; height:12px"></i> Check In
+          </button>
+        `;
+      }
     }
 
     const tr = document.createElement('tr');
@@ -708,8 +862,21 @@ function renderClients(query = '') {
     return;
   }
 
+  const canManageClients = hasPermission('manage_clients');
+
   clients.forEach(client => {
     const initials = client.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    const actionsHtml = canManageClients ? `
+      <div class="client-actions">
+        <button class="btn btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.78rem;" onclick="editClient('${client.id}')">
+          <i data-lucide="pencil" style="width:13px; height:13px"></i> Edit
+        </button>
+        <button class="btn btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.78rem; color: var(--color-danger); border-color: rgba(239,68,68,0.3);" onclick="deleteClient('${client.id}')">
+          <i data-lucide="trash-2" style="width:13px; height:13px"></i> Delete
+        </button>
+      </div>
+    ` : '';
+
     const card = document.createElement('div');
     card.className = 'client-card';
     card.innerHTML = `
@@ -724,14 +891,7 @@ function renderClients(query = '') {
         <div class="client-detail-item"><i data-lucide="mail"></i> <span>${client.email}</span></div>
         <div class="client-detail-item"><i data-lucide="phone"></i> <span>${client.phone}</span></div>
       </div>
-      <div class="client-actions">
-        <button class="btn btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.78rem;" onclick="editClient('${client.id}')">
-          <i data-lucide="pencil" style="width:13px; height:13px"></i> Edit
-        </button>
-        <button class="btn btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.78rem; color: var(--color-danger); border-color: rgba(239,68,68,0.3);" onclick="deleteClient('${client.id}')">
-          <i data-lucide="trash-2" style="width:13px; height:13px"></i> Delete
-        </button>
-      </div>
+      ${actionsHtml}
     `;
     container.appendChild(card);
   });
@@ -886,9 +1046,111 @@ function setupRentalsFilter() {
   });
 }
 
+// --- Permissions Helper ---
+function hasPermission(permKey) {
+  if (!currentUser) return false;
+  if (currentUser.accountType === 'Admin') return true;
+  const perms = currentUser.permissions || [];
+  return perms.includes(permKey);
+}
+
+// --- Dynamic UI Permission Guard ---
+function applyPermissions() {
+  if (!currentUser) return;
+
+  // Manage Users Tab
+  const navUsers = document.getElementById('nav-users');
+  if (navUsers) {
+    navUsers.style.display = hasPermission('manage_users') ? 'flex' : 'none';
+  }
+
+  // Manage Gear Buttons
+  const btnAddGear = document.getElementById('btn-add-gear');
+  if (btnAddGear) {
+    btnAddGear.style.display = hasPermission('manage_gear') ? 'inline-flex' : 'none';
+  }
+
+  // Manage Clients Buttons
+  const btnAddClient = document.getElementById('btn-add-client');
+  if (btnAddClient) {
+    btnAddClient.style.display = hasPermission('manage_clients') ? 'inline-flex' : 'none';
+  }
+
+  // Create Rentals Button
+  const btnQuickRent = document.getElementById('btn-quick-rent');
+  if (btnQuickRent) {
+    btnQuickRent.style.display = hasPermission('create_rentals') ? 'inline-flex' : 'none';
+  }
+}
+
+// --- Dynamic Check-In (Return Gear) ---
+async function returnGear(bookingId) {
+  if (!hasPermission('return_rentals')) {
+    showToast('Permission Denied: You do not have permission to process returns.', 'danger');
+    return;
+  }
+  try {
+    const res = await fetch(`${API_BASE_URL}/bookings/${bookingId}/return`, {
+      method: 'PUT'
+    });
+    if (!res.ok) throw new Error('API Error');
+    showToast('Gear checked back into inventory');
+  } catch (err) {
+    showToast('Error updating return', 'danger');
+  }
+  await refreshData();
+}
+
+// --- Cancel Future Booking ---
+async function cancelBookingAction(bookingId) {
+  if (!hasPermission('return_rentals')) {
+    showToast('Permission Denied: You do not have permission to cancel bookings.', 'danger');
+    return;
+  }
+  try {
+    const res = await fetch(`${API_BASE_URL}/bookings/${bookingId}/cancel`, {
+      method: 'PUT'
+    });
+    if (!res.ok) throw new Error('API Error');
+    showToast('Booking cancelled successfully');
+  } catch (err) {
+    showToast('Error cancelling booking', 'danger');
+  }
+  await refreshData();
+}
+
+// --- Toggle Maintenance Mode ---
+async function toggleMaintenance(gearId) {
+  if (!hasPermission('manage_gear')) {
+    showToast('Permission Denied: You do not have permission to manage gear.', 'danger');
+    return;
+  }
+  const item = state.gear.find(g => g.id === gearId);
+  if (!item) return;
+
+  const newStatus = item.status === 'Maintenance' ? 'Available' : 'Maintenance';
+  
+  try {
+    const res = await fetch(`${API_BASE_URL}/gear/${gearId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus })
+    });
+    if (!res.ok) throw new Error('API Error');
+    showToast(`Gear status updated to ${newStatus}`);
+  } catch (err) {
+    showToast('Error toggling maintenance status', 'danger');
+  }
+  await refreshData();
+}
+
 // --- Client Edit & Delete Actions ---
 
 function editClient(id) {
+  if (!hasPermission('manage_clients')) {
+    showToast('Permission Denied: You do not have permission to edit clients.', 'danger');
+    return;
+  }
   const client = state.clients.find(c => c.id === id);
   if (!client) return;
 
@@ -901,6 +1163,10 @@ function editClient(id) {
 }
 
 async function deleteClient(id) {
+  if (!hasPermission('manage_clients')) {
+    showToast('Permission Denied: You do not have permission to delete clients.', 'danger');
+    return;
+  }
   const client = state.clients.find(c => c.id === id);
   if (!client) return;
 
@@ -939,6 +1205,10 @@ async function deleteClient(id) {
 // --- Gear Edit & Delete Actions ---
 
 function editGear(id) {
+  if (!hasPermission('manage_gear')) {
+    showToast('Permission Denied: You do not have permission to edit gear.', 'danger');
+    return;
+  }
   const item = state.gear.find(g => g.id === id);
   if (!item) return;
 
@@ -953,6 +1223,10 @@ function editGear(id) {
 }
 
 async function deleteGear(id) {
+  if (!hasPermission('manage_gear')) {
+    showToast('Permission Denied: You do not have permission to delete gear.', 'danger');
+    return;
+  }
   const item = state.gear.find(g => g.id === id);
   if (!item) return;
 
@@ -987,3 +1261,420 @@ async function deleteGear(id) {
   }
   await refreshData();
 }
+
+// --- AUTHENTICATION & PERMISSION LOGIC ---
+
+function setupAuth() {
+  // Login Type Toggle Pills (Staff vs Admin)
+  const toggleBtns = document.querySelectorAll('.login-toggle-btn');
+  toggleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      toggleBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const type = btn.getAttribute('data-login-type');
+      document.getElementById('login-account-type').value = type;
+    });
+  });
+
+  // Login Form Submit
+  document.getElementById('form-login').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    const accountType = document.getElementById('login-account-type').value;
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, accountType })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        showToast(data.error || 'Login failed', 'danger');
+        return;
+      }
+
+      // Save user session
+      currentUser = data;
+      sessionStorage.setItem('EK_CURRENT_USER', JSON.stringify(currentUser));
+
+      // Show app container and hide login overlay
+      document.querySelector('.app-container').style.display = 'flex';
+      document.getElementById('login-screen-overlay').style.display = 'none';
+
+      // Update sidebar profile
+      updateSidebarUserProfile();
+
+      // Check if forced password change is required
+      if (currentUser.mustChangePassword) {
+        openModal('modal-force-change-password');
+      }
+
+      showToast(`Welcome back, ${currentUser.name}!`);
+      applyPermissions();
+      await refreshData();
+    } catch (err) {
+      showToast('Error connecting to backend API', 'danger');
+    }
+  });
+
+  // Forgot Password Trigger & Handler
+  document.getElementById('link-forgot-password').addEventListener('click', (e) => {
+    e.preventDefault();
+    openModal('modal-forgot-password');
+  });
+
+  document.getElementById('form-forgot-password').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('forgot-email').value;
+    try {
+      const res = await fetch(`${API_BASE_URL}/forgot-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error resetting password');
+
+      showToast('Password has been reset to default 12345. Please log in.');
+      closeModal('modal-forgot-password');
+      e.target.reset();
+    } catch (err) {
+      showToast(err.message, 'danger');
+    }
+  });
+
+  // Mandatory Force Change Password Submit
+  document.getElementById('form-force-change-password').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const newPass = document.getElementById('force-new-password').value;
+    const confirmPass = document.getElementById('force-confirm-password').value;
+
+    if (newPass !== confirmPass) {
+      showToast('Passwords do not match', 'danger');
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/users/${currentUser.id}/change-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newPassword: newPass })
+      });
+      const updatedUser = await res.json();
+      if (!res.ok) throw new Error(updatedUser.error || 'Error updating password');
+
+      currentUser = updatedUser;
+      sessionStorage.setItem('EK_CURRENT_USER', JSON.stringify(currentUser));
+
+      closeModal('modal-force-change-password');
+      e.target.reset();
+      showToast('Password updated successfully! Welcome to EK GearFlow.');
+    } catch (err) {
+      showToast(err.message, 'danger');
+    }
+  });
+
+  // Log Out Handler
+  document.getElementById('btn-logout').addEventListener('click', () => {
+    currentUser = null;
+    sessionStorage.removeItem('EK_CURRENT_USER');
+    document.querySelector('.app-container').style.display = 'none';
+    document.getElementById('login-screen-overlay').style.display = 'grid';
+    showToast('Logged out successfully');
+  });
+
+  // Register Add & Edit User Form Handlers in setupForms
+  document.getElementById('form-add-user').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!hasPermission('manage_users')) {
+      showToast('Permission Denied: You do not have permission to manage users.', 'danger');
+      return;
+    }
+    const checkedPerms = Array.from(document.querySelectorAll('input[name="add-perm"]:checked')).map(c => c.value);
+
+    const userData = {
+      name: document.getElementById('user-name').value.trim(),
+      email: document.getElementById('user-email').value.trim(),
+      title: document.getElementById('user-title').value.trim(),
+      accountType: document.getElementById('user-account-type').value,
+      permissions: checkedPerms,
+      password: '12345',
+      mustChangePassword: true
+    };
+
+    const valErr = validateUserPayload(userData);
+    if (valErr) {
+      showToast(valErr, 'danger');
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/users`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Error creating account');
+      }
+      showToast('Staff account created (Default Password: 12345)');
+    } catch (err) {
+      showToast(err.message, 'danger');
+      return;
+    }
+    closeModal('modal-add-user');
+    e.target.reset();
+    await refreshData();
+  });
+
+  document.getElementById('form-edit-user').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!hasPermission('manage_users')) {
+      showToast('Permission Denied: You do not have permission to manage users.', 'danger');
+      return;
+    }
+    const id = document.getElementById('edit-user-id').value;
+    const checkedPerms = Array.from(document.querySelectorAll('input[name="edit-perm"]:checked')).map(c => c.value);
+
+    const userData = {
+      name: document.getElementById('edit-user-name').value.trim(),
+      email: document.getElementById('edit-user-email').value.trim(),
+      title: document.getElementById('edit-user-title').value.trim(),
+      accountType: document.getElementById('edit-user-account-type').value,
+      permissions: checkedPerms
+    };
+
+    const valErr = validateUserPayload(userData);
+    if (valErr) {
+      showToast(valErr, 'danger');
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/users/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+      });
+      if (!res.ok) throw new Error('API Error');
+      const updatedStaff = await res.json();
+
+      // If the edited account is the currently logged-in user, update session live!
+      if (currentUser && currentUser.id === id) {
+        currentUser = { ...currentUser, ...updatedStaff };
+        sessionStorage.setItem('EK_CURRENT_USER', JSON.stringify(currentUser));
+        updateSidebarUserProfile();
+      }
+
+      showToast('Staff profile & permissions updated');
+    } catch (err) {
+      showToast('Error updating staff profile', 'danger');
+      return;
+    }
+    closeModal('modal-edit-user');
+    e.target.reset();
+    await refreshData();
+  });
+}
+
+function checkAuthSession() {
+  const saved = sessionStorage.getItem('EK_CURRENT_USER');
+  if (saved) {
+    try {
+      currentUser = JSON.parse(saved);
+      document.querySelector('.app-container').style.display = 'flex';
+      document.getElementById('login-screen-overlay').style.display = 'none';
+      updateSidebarUserProfile();
+
+      if (currentUser.mustChangePassword) {
+        openModal('modal-force-change-password');
+      }
+      applyPermissions();
+    } catch (e) {
+      currentUser = null;
+      document.querySelector('.app-container').style.display = 'none';
+      document.getElementById('login-screen-overlay').style.display = 'grid';
+    }
+  } else {
+    document.querySelector('.app-container').style.display = 'none';
+    document.getElementById('login-screen-overlay').style.display = 'grid';
+  }
+}
+
+function updateSidebarUserProfile() {
+  if (!currentUser) return;
+  const initials = currentUser.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  document.getElementById('user-avatar-text').innerText = initials || 'EK';
+  document.getElementById('user-display-name').innerText = currentUser.name;
+  document.getElementById('user-display-title').innerText = `${currentUser.title} (${currentUser.accountType})`;
+}
+
+
+
+// Render Staff Members Grid
+function renderUsers(query = '') {
+  const container = document.getElementById('users-list');
+  if (!container) return;
+  container.innerHTML = '';
+
+  let users = state.users || [];
+  if (query) {
+    users = users.filter(u =>
+      u.name.toLowerCase().includes(query) ||
+      u.email.toLowerCase().includes(query) ||
+      u.title.toLowerCase().includes(query)
+    );
+  }
+
+  if (users.length === 0) {
+    container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">No staff members found.</div>`;
+    return;
+  }
+
+  const permLabels = {
+    'manage_gear': 'Gear Inventory',
+    'manage_clients': 'Clients',
+    'create_rentals': 'Checkouts',
+    'return_rentals': 'Returns',
+    'manage_users': 'Staff Admin'
+  };
+
+  users.forEach(user => {
+    const isBanned = user.status === 'Banned';
+    const statusClass = isBanned ? 'overdue' : 'available';
+    const statusText = isBanned ? 'Banned' : 'Active';
+    const typeBadge = user.accountType === 'Admin' 
+      ? `<span style="font-size:0.7rem; font-weight:700; background:rgba(245,158,11,0.15); color:var(--color-primary); border:1px solid rgba(245,158,11,0.3); padding:2px 8px; border-radius:12px;">Admin</span>`
+      : `<span style="font-size:0.7rem; font-weight:600; background:rgba(59,130,246,0.15); color:#60a5fa; border:1px solid rgba(59,130,246,0.3); padding:2px 8px; border-radius:12px;">Staff</span>`;
+
+    const userPerms = (user.permissions || []).map(p => 
+      `<span style="font-size:0.68rem; background:rgba(255,255,255,0.06); color:var(--text-muted); padding:2px 6px; border-radius:4px; border:1px solid var(--border-color);">${permLabels[p] || p}</span>`
+    ).join(' ');
+
+    const card = document.createElement('div');
+    card.className = 'client-card';
+    if (isBanned) card.style.borderColor = 'rgba(239,68,68,0.4)';
+
+    card.innerHTML = `
+      <div class="client-header" style="align-items: flex-start;">
+        <div>
+          <h3>${user.name} ${typeBadge}</h3>
+          <p class="company">${user.title}</p>
+        </div>
+        <span class="status-pill ${statusClass}">${statusText}</span>
+      </div>
+      <div class="client-details">
+        <div class="detail-item"><i data-lucide="mail"></i> <span>${user.email}</span></div>
+      </div>
+      <div style="margin-top:0.75rem;">
+        <span style="font-size:0.72rem; color:var(--text-muted); display:block; margin-bottom:0.35rem; font-weight:600;">Assigned Permissions:</span>
+        <div style="display:flex; flex-wrap:wrap; gap:0.25rem;">
+          ${userPerms || '<span style="font-size:0.7rem; color:var(--text-muted)">None</span>'}
+        </div>
+      </div>
+      <div class="client-actions" style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem; display: flex; gap: 0.4rem; flex-wrap: wrap;">
+        <button class="btn btn-secondary" style="padding: 0.4rem 0.6rem; font-size: 0.72rem;" onclick="editUser('${user.id}')" title="Edit Profile & Permissions">
+          <i data-lucide="pencil" style="width:12px; height:12px"></i> Edit
+        </button>
+        ${currentUser && currentUser.id !== user.id ? `
+        <button class="btn btn-secondary" style="padding: 0.4rem 0.6rem; font-size: 0.72rem; color:var(--color-primary);" onclick="resetUserPasswordAction('${user.id}')" title="Reset password to default 12345">
+          <i data-lucide="key" style="width:12px; height:12px"></i> Reset Pass (12345)
+        </button>
+        <button class="btn btn-secondary" style="padding: 0.4rem 0.6rem; font-size: 0.72rem; ${isBanned ? 'color:#4ade80;' : 'color:var(--color-danger);'}" onclick="toggleUserStatusAction('${user.id}', '${isBanned ? 'Active' : 'Banned'}')" title="${isBanned ? 'Unban Account' : 'Ban Account'}">
+          <i data-lucide="${isBanned ? 'user-check' : 'user-x'}" style="width:12px; height:12px"></i> ${isBanned ? 'Unban' : 'Ban'}
+        </button>
+        <button class="btn btn-secondary" style="padding: 0.4rem 0.6rem; font-size: 0.72rem; color: var(--color-danger); border-color: rgba(239,68,68,0.3);" onclick="deleteUserAction('${user.id}')" title="Delete Account">
+          <i data-lucide="trash-2" style="width:12px; height:12px"></i>
+        </button>
+        ` : ''}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+  lucide.createIcons();
+}
+
+function editUser(id) {
+  const user = state.users.find(u => u.id === id);
+  if (!user) return;
+
+  document.getElementById('edit-user-id').value = user.id;
+  document.getElementById('edit-user-name').value = user.name;
+  document.getElementById('edit-user-email').value = user.email;
+  document.getElementById('edit-user-title').value = user.title;
+  document.getElementById('edit-user-account-type').value = user.accountType || 'Staff';
+
+  // Pre-check user permissions
+  const userPerms = user.permissions || [];
+  document.querySelectorAll('input[name="edit-perm"]').forEach(cb => {
+    cb.checked = userPerms.includes(cb.value);
+  });
+
+  openModal('modal-edit-user');
+}
+
+async function resetUserPasswordAction(id) {
+  const user = state.users.find(u => u.id === id);
+  if (!user) return;
+
+  const confirmReset = window.confirm(`Reset password for "${user.name}" to default "12345"? They will be forced to change it on their next login.`);
+  if (!confirmReset) return;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/users/${id}/reset-password`, { method: 'POST' });
+    if (!res.ok) throw new Error('API Error');
+    showToast(`Password for ${user.name} reset to 12345`);
+    await refreshData();
+  } catch (err) {
+    showToast('Error resetting password', 'danger');
+  }
+}
+
+async function toggleUserStatusAction(id, newStatus) {
+  const user = state.users.find(u => u.id === id);
+  if (!user) return;
+
+  const actionText = newStatus === 'Banned' ? 'Ban' : 'Unban';
+  const confirmAction = window.confirm(`${actionText} account for "${user.name}"?`);
+  if (!confirmAction) return;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/users/${id}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus })
+    });
+    if (!res.ok) throw new Error('API Error');
+    showToast(`Account status updated to ${newStatus}`);
+    await refreshData();
+  } catch (err) {
+    showToast('Error updating account status', 'danger');
+  }
+}
+
+async function deleteUserAction(id) {
+  const user = state.users.find(u => u.id === id);
+  if (!user) return;
+
+  if (currentUser && currentUser.id === id) {
+    showToast('You cannot delete your own active account!', 'danger');
+    return;
+  }
+
+  const confirmDelete = window.confirm(`Delete staff account "${user.name}"? This cannot be undone.`);
+  if (!confirmDelete) return;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/users/${id}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error('API Error');
+    showToast('Staff account deleted');
+    await refreshData();
+  } catch (err) {
+    showToast('Error deleting staff account', 'danger');
+  }
+}
+
