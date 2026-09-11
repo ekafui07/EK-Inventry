@@ -1,3 +1,80 @@
+
+// --- CUSTOM CONFIRM MODAL ---
+window.showConfirmModal = function(title, message, isDestructive = false) {
+  return new Promise((resolve) => {
+    document.getElementById('confirm-title').innerText = title;
+    document.getElementById('confirm-message').innerText = message;
+    
+    const btnOk = document.getElementById('btn-confirm-ok');
+    const btnCancel = document.getElementById('btn-confirm-cancel');
+    
+    if (isDestructive) {
+      btnOk.style.background = 'var(--color-danger)';
+      btnOk.style.borderColor = 'var(--color-danger)';
+    } else {
+      btnOk.style.background = 'var(--color-primary)';
+      btnOk.style.borderColor = 'var(--color-primary)';
+    }
+
+    // Clean up old listeners
+    const newBtnOk = btnOk.cloneNode(true);
+    btnOk.parentNode.replaceChild(newBtnOk, btnOk);
+    
+    newBtnOk.addEventListener('click', () => {
+      closeModal('modal-confirm');
+      resolve(true);
+    });
+    
+    const newBtnCancel = btnCancel.cloneNode(true);
+    btnCancel.parentNode.replaceChild(newBtnCancel, btnCancel);
+    
+    newBtnCancel.addEventListener('click', () => {
+      closeModal('modal-confirm');
+      resolve(false);
+    });
+
+    openModal('modal-confirm');
+  });
+};
+
+
+// --- API FETCH INTERCEPTOR ---
+const originalFetch = window.fetch;
+window.fetch = async (...args) => {
+  let [resource, config] = args;
+  
+  if (typeof resource === 'string' && !resource.includes('/login') && !resource.includes('/forgot-password')) {
+    const userJson = sessionStorage.getItem('EK_CURRENT_USER');
+    if (userJson) {
+      try {
+        const user = JSON.parse(userJson);
+        if (user && user.token) {
+          if (!config) config = {};
+          if (!config.headers) config.headers = {};
+          
+          if (config.headers instanceof Headers) {
+             config.headers.append('Authorization', `Bearer ${user.token}`);
+          } else {
+             config.headers['Authorization'] = `Bearer ${user.token}`;
+          }
+        }
+      } catch(e) {}
+    }
+  }
+  
+  const response = await originalFetch(resource, config);
+  
+  if (response.status === 401) {
+    const wasLoggedIn = !!sessionStorage.getItem('EK_CURRENT_USER');
+    sessionStorage.removeItem('EK_CURRENT_USER');
+    if (wasLoggedIn) {
+      location.reload();
+    }
+  }
+  
+  return response;
+};
+
 // EK GearFlow - Frontend Application Logic
 
 // API Configuration
@@ -43,7 +120,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   checkAuthSession();
 
   // Load data from backend API
-  await refreshData();
+  if (typeof currentUser !== 'undefined' && currentUser !== null) {
+    await refreshData();
+  }
 
   // Initialize Lucide Icons
   lucide.createIcons();
@@ -1184,7 +1263,7 @@ async function deleteClient(id) {
     return;
   }
 
-  const confirmed = window.confirm(`Delete client "${client.name}"? This cannot be undone.`);
+  const confirmed = await window.showConfirmModal('Delete Client', `Delete client "${client.name}"? This cannot be undone.`, true);
   if (!confirmed) return;
 
   try {
@@ -1244,7 +1323,7 @@ async function deleteGear(id) {
     return;
   }
 
-  const confirmed = window.confirm(`Delete "${item.name}"? This cannot be undone.`);
+  const confirmed = await window.showConfirmModal('Delete Gear', `Delete "${item.name}"? This cannot be undone.`, true);
   if (!confirmed) return;
 
   try {
@@ -1621,7 +1700,7 @@ async function resetUserPasswordAction(id) {
   const user = state.users.find(u => u.id === id);
   if (!user) return;
 
-  const confirmReset = window.confirm(`Reset password for "${user.name}" to default "12345"? They will be forced to change it on their next login.`);
+  const confirmReset = await window.showConfirmModal('Reset Password', `Reset password for "${user.name}" to default "12345"? They will be forced to change it on their next login.`, true);
   if (!confirmReset) return;
 
   try {
@@ -1639,7 +1718,7 @@ async function toggleUserStatusAction(id, newStatus) {
   if (!user) return;
 
   const actionText = newStatus === 'Banned' ? 'Ban' : 'Unban';
-  const confirmAction = window.confirm(`${actionText} account for "${user.name}"?`);
+  const confirmAction = await window.showConfirmModal(`${actionText} Account`, `Are you sure you want to ${actionText.toLowerCase()} the account for "${user.name}"?`, true);
   if (!confirmAction) return;
 
   try {
@@ -1665,7 +1744,7 @@ async function deleteUserAction(id) {
     return;
   }
 
-  const confirmDelete = window.confirm(`Delete staff account "${user.name}"? This cannot be undone.`);
+  const confirmDelete = await window.showConfirmModal('Delete Account', `Delete staff account "${user.name}"? This cannot be undone.`, true);
   if (!confirmDelete) return;
 
   try {

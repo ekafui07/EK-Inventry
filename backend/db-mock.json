@@ -6,7 +6,7 @@
       "category": "Cameras",
       "serialNumber": "SN-FX3-9821",
       "dailyRate": 150,
-      "status": "Rented"
+      "status": "Available"
     },
     {
       "id": "g2",
@@ -14,7 +14,7 @@
       "category": "Lighting",
       "serialNumber": "SN-AP-600D",
       "dailyRate": 90,
-      "status": "Rented"
+      "status": "Available"
     },
     {
       "id": "g3",
@@ -193,11 +193,10 @@
       "id": "u2",
       "name": "Sarah Adjei",
       "email": "Sarah@ekgearflow.com",
-      "password": "BerlinB1213@",
+      "password": "BerlinB1214@",
       "title": "Senior Desk Specialist",
       "accountType": "Staff",
       "permissions": [
-        "manage_gear",
         "manage_clients"
       ],
       "status": "Active",
