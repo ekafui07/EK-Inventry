@@ -1,7 +1,19 @@
 const http = require('http');
+const { app, seedInitialUsers } = require('./index.js');
 
-console.log('Starting local server for Auth & RBAC integration testing...');
-require('./index.js');
+let serverInstance = null;
+let testPort = 0;
+
+function startTestServer() {
+  return new Promise((resolve, reject) => {
+    const server = app.listen(0, () => {
+      testPort = server.address().port;
+      console.log(`Started isolated test server on ephemeral port ${testPort}...\n`);
+      resolve(server);
+    });
+    server.on('error', reject);
+  });
+}
 
 function request(method, path, data, token = null) {
   return new Promise((resolve, reject) => {
@@ -15,8 +27,8 @@ function request(method, path, data, token = null) {
     }
 
     const options = {
-      hostname: 'localhost',
-      port: 3000,
+      hostname: '127.0.0.1',
+      port: testPort,
       path,
       method,
       headers
@@ -49,7 +61,11 @@ function request(method, path, data, token = null) {
 }
 
 async function runAuthTests() {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  serverInstance = await startTestServer();
+  if (typeof seedInitialUsers === 'function') {
+    await seedInitialUsers();
+  }
+  await new Promise((resolve) => setTimeout(resolve, 200));
 
   console.log('\n====================================');
   console.log('RUNNING UPDATED AUTH & RBAC TEST SUITE');
@@ -176,12 +192,19 @@ async function runAuthTests() {
       throw new Error('Failed to fetch users list');
     }
 
+    // Clean up created test user
+    if (newStaffRes.body.user && newStaffRes.body.user.id) {
+      await request('DELETE', `/api/users/${newStaffRes.body.user.id}`, null, adminToken);
+    }
+
     console.log('====================================');
     console.log('ALL UPDATED RBAC & POLICY TESTS PASSED! 🎉');
     console.log('====================================\n');
+    if (serverInstance) serverInstance.close();
     process.exit(0);
   } catch (err) {
     console.error('\n❌ TEST SUITE FAILED:', err.message);
+    if (serverInstance) serverInstance.close();
     process.exit(1);
   }
 }

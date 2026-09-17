@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node test-double-booking.js"
+    "test": "node test-double-booking.js",
+    "test:rbac": "node test-auth-rbac.js",
+    "test:all": "node test-double-booking.js && node test-auth-rbac.js"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.500.0",

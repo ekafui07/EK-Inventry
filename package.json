@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "EK GearFlow - Media Rental Registry Root Runner",
   "scripts": {
-    "start": "npx concurrently \"npm --prefix backend start\" \"python3 -m http.server 8080 --directory frontend\""
+    "start": "npx concurrently \"npm --prefix backend start\" \"python3 -m http.server 8080 --directory frontend\"",
+    "test": "npm --prefix backend run test:all"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

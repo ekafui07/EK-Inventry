@@ -53,6 +53,12 @@
   ],
   "clients": [
     {
+      "id": "c1",
+      "name": "John Doe (Apex Films)",
+      "email": "john@apexfilms.com",
+      "phone": "+1 555-019-2834"
+    },
+    {
       "id": "c2",
       "name": "Sarah Jenkins (Bright Media)",
       "email": "sarah@brightmedia.co",
@@ -144,7 +150,7 @@
       "clientId": "c2",
       "startDate": "2026-09-01",
       "endDate": "2026-09-02",
-      "status": "Active"
+      "status": "Returned"
     },
     {
       "id": "b_1788193843712_1",
@@ -152,7 +158,7 @@
       "clientId": "c2",
       "startDate": "2026-09-01",
       "endDate": "2026-09-02",
-      "status": "Active"
+      "status": "Returned"
     },
     {
       "id": "b_1788194364006_0",
@@ -169,6 +175,206 @@
       "startDate": "2026-08-31",
       "endDate": "2026-09-03",
       "status": "Returned"
+    },
+    {
+      "id": "b_1789660502621_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789660502635_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-20",
+      "endDate": "2029-06-25",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789660502637_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789660502642_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789660507790_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2026-11-01",
+      "endDate": "2026-11-03",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789660563528_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789660563542_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-20",
+      "endDate": "2029-06-25",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789660563543_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789660563546_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789660564221_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2026-11-01",
+      "endDate": "2026-11-03",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789660569965_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789660569979_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-20",
+      "endDate": "2029-06-25",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789660569981_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789660569985_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789660570648_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2026-11-01",
+      "endDate": "2026-11-03",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789661282123_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789661282138_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-20",
+      "endDate": "2029-06-25",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789661282142_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789661282146_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789661282800_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2026-11-01",
+      "endDate": "2026-11-03",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789664928877_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789664928896_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-20",
+      "endDate": "2029-06-25",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789664928899_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789664928908_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789664929652_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2026-11-01",
+      "endDate": "2026-11-03",
+      "status": "Cancelled"
     }
   ],
   "users": [
@@ -176,7 +382,7 @@
       "id": "u1",
       "name": "EK Admin",
       "email": "admin@ekgearflow.com",
-      "password": "admin123",
+      "password": "$2b$10$7nOGyASZ1xC6IDblYpJU9OGiasxm1kU55IP7WQhK0y/H9L1EAyOZ.",
       "title": "Operations Manager",
       "accountType": "Admin",
       "permissions": [
@@ -196,11 +402,70 @@
       "password": "BerlinB1214@",
       "title": "Senior Desk Specialist",
       "accountType": "Staff",
+      "role": "staff",
       "permissions": [
-        "manage_clients"
+        "manage_clients",
+        "create_rentals",
+        "return_rentals",
+        "cancel_rentals"
       ],
       "status": "Active",
       "mustChangePassword": false
+    },
+    {
+      "id": "u4",
+      "name": "GearFlow Staff",
+      "email": "staff@gearflow.com",
+      "password": "$2b$10$FhmP2brfSYZudTMjcYZhN.3p5pgmjUIMqdDEPQFwCxLXqU32gH52e",
+      "title": "Desk Specialist",
+      "accountType": "Staff",
+      "role": "staff",
+      "permissions": [
+        "manage_clients",
+        "create_rentals",
+        "return_rentals",
+        "cancel_rentals"
+      ],
+      "status": "Active",
+      "mustChangePassword": false
+    },
+    {
+      "id": "u_1789660507897_f729",
+      "name": "Dave Operations",
+      "email": "dave_1789660507844@gearflow.com",
+      "password": "$2b$10$GtUvR8K1cbz0CHMzf9I7OeUm4ppTf7NrkIvaVGDdXAjrIdyNbxqPq",
+      "title": "Desk Specialist",
+      "accountType": "Staff",
+      "role": "staff",
+      "permissions": [
+        "manage_clients",
+        "create_rentals",
+        "return_rentals",
+        "cancel_rentals"
+      ],
+      "status": "Active",
+      "mustChangePassword": true,
+      "createdAt": "2026-09-17T15:55:07.897Z"
+    },
+    {
+      "id": "u_admin_gearflow",
+      "name": "GearFlow Admin",
+      "email": "admin@gearflow.com",
+      "title": "System Administrator",
+      "accountType": "Admin",
+      "role": "admin",
+      "permissions": [
+        "manage_clients",
+        "create_rentals",
+        "return_rentals",
+        "cancel_rentals",
+        "manage_gear",
+        "manage_users"
+      ],
+      "status": "Active",
+      "mustChangePassword": false,
+      "password": "$2b$10$5V5NuUNfZyEmoV692QQcVOXfdIf5s79zVPl43OVeylXvXyo8MJUwa",
+      "createdAt": "2026-09-17T17:08:48.520Z"
     }
   ]
 }

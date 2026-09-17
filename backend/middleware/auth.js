@@ -1,0 +1,97 @@
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecret_ek_key';
+
+/**
+ * Authentication middleware:
+ * Validates the JWT Bearer token and attaches the authenticated user to req.user.
+ */
+function authenticate(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  if (!authHeader) {
+    return res.status(401).json({ error: 'Authorization header required' });
+  }
+
+  const parts = authHeader.split(' ');
+  if (parts.length !== 2 || parts[0].toLowerCase() !== 'bearer') {
+    return res.status(401).json({ error: 'Malformed authorization header. Expected Bearer <token>' });
+  }
+
+  const token = parts[1];
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: 'Invalid or expired token' });
+    }
+
+    const role = (decoded.role || decoded.accountType || 'staff').toLowerCase();
+    const accountType = role === 'admin' ? 'Admin' : 'Staff';
+
+    req.user = {
+      id: decoded.id,
+      email: decoded.email,
+      role: role,
+      accountType: accountType,
+      permissions: decoded.permissions || []
+    };
+    req.authData = decoded; // backwards compatibility
+
+    next();
+  });
+}
+
+/**
+ * Role-Based Access Control (RBAC) middleware:
+ * Requires user to have one of the specified roles (e.g. 'admin', 'staff').
+ */
+function requireRole(...allowedRoles) {
+  const normalizedAllowed = allowedRoles.map(r => r.toLowerCase());
+  return (req, res, next) => {
+    if (!req.user || !req.user.role) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    if (normalizedAllowed.includes(req.user.role.toLowerCase())) {
+      return next();
+    }
+
+    return res.status(403).json({
+      error: `Forbidden: Requires one of [${allowedRoles.join(', ')}] role privileges.`
+    });
+  };
+}
+
+/**
+ * Permission-Based Access Control middleware:
+ * Admin bypasses automatically. Staff must possess the required permission.
+ */
+function requirePermission(...requiredPermissions) {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    // Admins have full access
+    if (req.user.role === 'admin') {
+      return next();
+    }
+
+    const userPerms = req.user.permissions || [];
+    const hasAll = requiredPermissions.every(perm => userPerms.includes(perm));
+
+    if (hasAll) {
+      return next();
+    }
+
+    return res.status(403).json({
+      error: `Forbidden: Missing required permissions: ${requiredPermissions.join(', ')}`
+    });
+  };
+}
+
+module.exports = {
+  authenticate,
+  verifyToken: authenticate, // backwards compatibility alias
+  requireRole,
+  requirePermission,
+  JWT_SECRET
+};

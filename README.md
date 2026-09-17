@@ -44,12 +44,16 @@ EK-Inventry/
 ├── backend/
 │   ├── index.js                  # Express API & AWS Lambda handler
 │   ├── db-mock.json              # Local mock database for offline development
-│   ├── package.json              # Dependencies & scripts
-│   └── test-double-booking.js    # Integration test suite for booking overlaps
+│   ├── middleware/
+│   │   └── auth.js               # JWT verification & RBAC permission checks
+│   ├── package.json              # Backend dependencies & scripts
+│   ├── test-double-booking.js    # Integration test suite for booking overlaps
+│   └── test-auth-rbac.js         # Integration test suite for Auth & RBAC
 ├── frontend/
 │   ├── index.html                # Main application interface
 │   ├── app.js                    # Client state management & API interaction
-│   └── style.css                 # Custom responsive stylesheet
+│   └── style.css                 # Custom responsive stylesheet with glassmorphism
+├── package.json                  # Root runner script (concurrent execution)
 └── README.md                     # Project documentation
 ```
 
@@ -59,48 +63,102 @@ EK-Inventry/
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (v16 or higher)
-- [Python 3](https://www.python.org/) (or any static HTTP file server)
+- [Python 3](https://www.python.org/) (for static web hosting)
 
-### 1. Start the Backend API Server
-Navigate to the `backend` directory and start the local server:
+---
+
+### ⚡ The Command That Works Every Time (One-Step Startup)
+
+Open your terminal in the root folder (`EK-Inventry/`) and run:
+
 ```bash
-cd backend
-npm install
 npm start
 ```
-> The API server will start at: `http://localhost:3000`
 
-### 2. Launch the Frontend
-In a separate terminal, serve the `frontend` directory:
-```bash
-cd frontend
-python3 -m http.server 8080
-```
-> Access the web application at: `http://localhost:8080`
+**That's it!** This single command automatically starts both services concurrently:
+1. ⚙️ **Backend API Server** &rarr; `http://localhost:3000`
+2. 💻 **Frontend Web App** &rarr; `http://localhost:8080`
+
+Open your browser and navigate to:
+### 👉 **[http://localhost:8080](http://localhost:8080)**
+
+---
+
+### 🔄 Alternative: Running in Separate Terminals
+
+If you prefer running the backend and frontend independently:
+
+1. **Terminal 1 (Backend API):**
+   ```bash
+   cd backend
+   npm install
+   npm start
+   ```
+   *(Running on `http://localhost:3000`)*
+
+2. **Terminal 2 (Frontend App):**
+   ```bash
+   cd frontend
+   python3 -m http.server 8080
+   ```
+   *(Running on `http://localhost:8080`)*
+
+---
+
+### 3. Default Login Credentials
+Sign in using one of the pre-configured accounts:
+
+| Role | Email | Password | Permissions / Access |
+| :--- | :--- | :--- | :--- |
+| **Admin** | `admin@ekgearflow.com` | `admin123` | Full system access, add/edit/delete gear & clients, manage staff |
+| **Staff** | `sarah@ekgearflow.com` | `BerlinB1214@` | Rental management, client directory, equipment check-in/return |
+| **Admin (Test)** | `admin@gearflow.com` | `Admin@123` | Automated testing & system administrator account |
+| **Staff (Test)** | `staff@gearflow.com` | `Staff@123` | Automated testing & desk specialist account |
+
+> **💡 Changing or Resetting the Admin Password:**
+> - **From the Web App:** Click **"Forgot Password?"** on the login screen, enter your email (`admin@ekgearflow.com`), and log in with the temporary default `12345`. The app will immediately display the password update prompt allowing you to set your custom password.
+> - **In Code:** Default seed credentials are located in `backend/index.js` inside the `seedInitialUsers()` function.
 
 ---
 
 ## 🔌 API Endpoints Reference
 
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/api/gear` | Retrieve list of all equipment |
-| `POST` | `/api/gear` | Register new equipment item |
-| `GET` | `/api/clients` | Retrieve all registered clients |
-| `POST` | `/api/clients` | Register a new client profile |
-| `GET` | `/api/bookings` | Retrieve all bookings with client & gear details |
-| `POST` | `/api/bookings` | Create a new booking (with double-booking check) |
-| `PUT` | `/api/bookings/:id/return` | Mark rented gear as returned |
-| `PUT` | `/api/bookings/:id/cancel` | Cancel an existing booking |
+| Method | Endpoint | Description | Access Level |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/login` | Authenticate user & obtain JWT token | Public |
+| `POST` | `/api/login` | Login alias (backward compatibility) | Public |
+| `GET` | `/api/auth/me` | Retrieve profile of authenticated user | Authenticated |
+| `GET` | `/api/gear` | Retrieve list of all equipment | Authenticated |
+| `POST` | `/api/gear` | Register new equipment item | Admin |
+| `PUT` | `/api/gear/:id` | Update equipment details | Admin |
+| `DELETE` | `/api/gear/:id` | Remove equipment item | Admin |
+| `GET` | `/api/clients` | Retrieve all registered clients | Authenticated |
+| `POST` | `/api/clients` | Register a new client profile | Staff / Admin |
+| `PUT` | `/api/clients/:id` | Update client profile | Staff / Admin |
+| `DELETE` | `/api/clients/:id` | Delete client profile | Admin |
+| `GET` | `/api/bookings` | Retrieve all bookings with details | Authenticated |
+| `POST` | `/api/bookings` | Create new booking (conflict checked) | Staff / Admin |
+| `PUT` | `/api/bookings/:id/return` | Mark rented gear as returned | Staff / Admin |
+| `PUT` | `/api/bookings/:id/cancel` | Cancel an existing booking | Staff / Admin |
+| `GET` | `/api/users` | List all system users | Admin |
+| `POST` | `/api/users` | Register new user (Single Admin policy) | Admin |
+| `PUT` | `/api/users/:id` | Update user profile | Admin or Self |
+| `DELETE` | `/api/users/:id` | Remove user (prevents deleting last admin) | Admin |
+| `POST` | `/api/users/:id/reset-password` | Reset user password to default | Admin |
+| `POST` | `/api/users/:id/change-password` | Change user password | Authenticated |
+| `PUT` | `/api/users/:id/status` | Activate or deactivate user | Admin |
 
 ---
 
 ## 🧪 Running Automated Tests
 
-To test the double-booking validation and schedule overlap rejection:
+Run the test suites in the `backend` directory:
+
 ```bash
 cd backend
-npm test
+npm test         # Double-booking conflict validation suite
+npm run test:rbac # Auth & RBAC integration test suite
+npm run test:all  # Run all test suites
 ```
 
 ---

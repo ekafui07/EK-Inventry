@@ -2,36 +2,63 @@
 // --- CUSTOM CONFIRM MODAL ---
 window.showConfirmModal = function(title, message, isDestructive = false) {
   return new Promise((resolve) => {
-    document.getElementById('confirm-title').innerText = title;
-    document.getElementById('confirm-message').innerText = message;
-    
+    const titleEl = document.getElementById('confirm-title');
+    const msgEl = document.getElementById('confirm-message');
     const btnOk = document.getElementById('btn-confirm-ok');
     const btnCancel = document.getElementById('btn-confirm-cancel');
+    const iconWrapper = document.getElementById('confirm-icon-wrapper');
+    const modalConfirm = document.getElementById('modal-confirm');
+
+    if (titleEl) titleEl.innerText = title;
+    if (msgEl) msgEl.innerText = message;
     
     if (isDestructive) {
-      btnOk.style.background = 'var(--color-danger)';
-      btnOk.style.borderColor = 'var(--color-danger)';
+      btnOk.className = 'btn btn-primary destructive';
+      btnOk.style.background = '#ef4444';
+      btnOk.style.borderColor = '#ef4444';
+      if (iconWrapper) {
+        iconWrapper.className = 'confirm-icon-wrapper';
+        iconWrapper.innerHTML = '<i data-lucide="alert-triangle"></i>';
+      }
     } else {
-      btnOk.style.background = 'var(--color-primary)';
-      btnOk.style.borderColor = 'var(--color-primary)';
+      btnOk.className = 'btn btn-primary primary';
+      btnOk.style.background = '#0ea5e9';
+      btnOk.style.borderColor = '#0ea5e9';
+      if (iconWrapper) {
+        iconWrapper.className = 'confirm-icon-wrapper primary';
+        iconWrapper.innerHTML = '<i data-lucide="help-circle"></i>';
+      }
     }
+
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+
+    let resolved = false;
+    const finish = (result) => {
+      if (resolved) return;
+      resolved = true;
+      closeModal('modal-confirm');
+      resolve(result);
+    };
 
     // Clean up old listeners
     const newBtnOk = btnOk.cloneNode(true);
     btnOk.parentNode.replaceChild(newBtnOk, btnOk);
-    
-    newBtnOk.addEventListener('click', () => {
-      closeModal('modal-confirm');
-      resolve(true);
-    });
+    newBtnOk.addEventListener('click', () => finish(true));
     
     const newBtnCancel = btnCancel.cloneNode(true);
     btnCancel.parentNode.replaceChild(newBtnCancel, btnCancel);
-    
-    newBtnCancel.addEventListener('click', () => {
-      closeModal('modal-confirm');
-      resolve(false);
-    });
+    newBtnCancel.addEventListener('click', () => finish(false));
+
+    // Handle backdrop click
+    const onBackdrop = (e) => {
+      if (e.target === modalConfirm) {
+        modalConfirm.removeEventListener('click', onBackdrop);
+        finish(false);
+      }
+    };
+    modalConfirm.addEventListener('click', onBackdrop);
 
     openModal('modal-confirm');
   });
@@ -70,6 +97,8 @@ window.fetch = async (...args) => {
     if (wasLoggedIn) {
       location.reload();
     }
+  } else if (response.status === 403) {
+    showToast('Permission Denied: You do not have permission for this action.', 'danger');
   }
   
   return response;
@@ -1128,7 +1157,7 @@ function setupRentalsFilter() {
 // --- Permissions Helper ---
 function hasPermission(permKey) {
   if (!currentUser) return false;
-  if (currentUser.accountType === 'Admin') return true;
+  if (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin')) return true;
   const perms = currentUser.permissions || [];
   return perms.includes(permKey);
 }
