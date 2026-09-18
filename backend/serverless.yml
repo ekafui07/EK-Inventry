@@ -11,6 +11,7 @@ provider:
     CLIENTS_TABLE: EK_Clients_${self:provider.stage}
     BOOKINGS_TABLE: EK_Bookings_${self:provider.stage}
     USERS_TABLE: EK_Users_${self:provider.stage}
+    AUDIT_TABLE: EK_AuditLogs_${self:provider.stage}
   iam:
     role:
       statements:
@@ -24,16 +25,45 @@ provider:
             - dynamodb:DeleteItem
           Resource:
             - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GEAR_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GEAR_TABLE}/index/*"
             - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CLIENTS_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CLIENTS_TABLE}/index/*"
             - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.BOOKINGS_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.BOOKINGS_TABLE}/index/*"
             - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}/index/*"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.AUDIT_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.AUDIT_TABLE}/index/*"
+
+package:
+  patterns:
+    - '!test*.js'
+    - '!test-runner.js'
+    - '!.git/**'
+    - '!db-mock.json'
+    - '!check-*.js'
+    - '!deploy-*.js'
+    - '!seed-*.js'
+    - '!*.md'
+    - 'index.js'
+    - 'middleware/**'
+    - 'src/**'
+    - 'node_modules/**'
 
 functions:
   api:
     handler: index.handler
     events:
       - http:
+          path: /api
+          method: any
+          cors: true
+      - http:
           path: /api/{proxy+}
+          method: any
+          cors: true
+      - http:
+          path: /{proxy+}
           method: any
           cors: true
 
@@ -58,9 +88,18 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+          - AttributeName: email
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: EmailIndex
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
         BillingMode: PAY_PER_REQUEST
 
     BookingsTable:
@@ -70,9 +109,26 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+          - AttributeName: gearId
+            AttributeType: S
+          - AttributeName: clientId
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: GearIdIndex
+            KeySchema:
+              - AttributeName: gearId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          - IndexName: ClientIdIndex
+            KeySchema:
+              - AttributeName: clientId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
         BillingMode: PAY_PER_REQUEST
 
     UsersTable:
@@ -82,7 +138,161 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+          - AttributeName: email
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: EmailIndex
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
         BillingMode: PAY_PER_REQUEST
+
+    AuditLogsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.AUDIT_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: category
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: CategoryIndex
+            KeySchema:
+              - AttributeName: category
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        TimeToLiveSpecification:
+          AttributeName: ttl
+          Enabled: true
+        BillingMode: PAY_PER_REQUEST
+
+    FrontendBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: !Sub ek-gearflow-frontend-${self:provider.stage}-${AWS::AccountId}
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    CloudFrontOriginAccessIdentity:
+      Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+      Properties:
+        CloudFrontOriginAccessIdentityConfig:
+          Comment: !Sub "OAI for ek-gearflow frontend ${self:provider.stage}"
+
+    FrontendBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref FrontendBucket
+        PolicyDocument:
+          Statement:
+            - Effect: Allow
+              Principal:
+                AWS: !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginAccessIdentity}"
+              Action: s3:GetObject
+              Resource: !Sub "arn:aws:s3:::${FrontendBucket}/*"
+
+    CloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Enabled: true
+          Comment: !Sub "EK GearFlow Unified CDN (${self:provider.stage})"
+          DefaultRootObject: index.html
+          HttpVersion: http2
+          Origins:
+            - Id: S3FrontendOrigin
+              DomainName: !GetAtt FrontendBucket.RegionalDomainName
+              S3OriginConfig:
+                OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
+            - Id: ApiGatewayOrigin
+              DomainName: !Sub "${ApiGatewayRestApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}"
+              OriginPath: !Sub "/${self:provider.stage}"
+              CustomOriginConfig:
+                HTTPPort: 80
+                HTTPSPort: 443
+                OriginProtocolPolicy: https-only
+                OriginSSLProtocols:
+                  - TLSv1.2
+          DefaultCacheBehavior:
+            TargetOriginId: S3FrontendOrigin
+            ViewerProtocolPolicy: redirect-to-https
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+            CachedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+            Compress: true
+            ForwardedValues:
+              QueryString: false
+              Cookies:
+                Forward: none
+            MinTTL: 0
+            DefaultTTL: 86400
+            MaxTTL: 31536000
+          CacheBehaviors:
+            - PathPattern: "api/*"
+              TargetOriginId: ApiGatewayOrigin
+              ViewerProtocolPolicy: redirect-to-https
+              AllowedMethods:
+                - DELETE
+                - GET
+                - HEAD
+                - OPTIONS
+                - PATCH
+                - POST
+                - PUT
+              CachedMethods:
+                - GET
+                - HEAD
+                - OPTIONS
+              ForwardedValues:
+                QueryString: true
+                Headers:
+                  - Authorization
+                  - Accept
+                  - Content-Type
+                  - Origin
+                  - Referer
+                Cookies:
+                  Forward: all
+              MinTTL: 0
+              DefaultTTL: 0
+              MaxTTL: 0
+          CustomErrorResponses:
+            - ErrorCode: 403
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+              ErrorCachingMinTTL: 0
+            - ErrorCode: 404
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+              ErrorCachingMinTTL: 0
+
+  Outputs:
+    FrontendBucketName:
+      Description: "S3 Bucket hosting the static frontend"
+      Value: !Ref FrontendBucket
+    CloudFrontDistributionId:
+      Description: "CloudFront Distribution ID"
+      Value: !Ref CloudFrontDistribution
+    CloudFrontDomainName:
+      Description: "CloudFront Distribution Domain Name (Website URL)"
+      Value: !GetAtt CloudFrontDistribution.DomainName
+
+

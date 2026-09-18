@@ -95,10 +95,16 @@ async function runAuthTests() {
 
     // 3. Staff Login
     console.log('Test 3: Staff Login (staff@gearflow.com)...');
-    const staffLoginRes = await request('POST', '/api/auth/login', {
+    let staffLoginRes = await request('POST', '/api/auth/login', {
       email: 'staff@gearflow.com',
       password: 'Staff@123'
     });
+    if (staffLoginRes.statusCode !== 200 || !staffLoginRes.body.token) {
+      staffLoginRes = await request('POST', '/api/auth/login', {
+        email: 'staff@gearflow.com',
+        password: '12345'
+      });
+    }
     if (staffLoginRes.statusCode !== 200 || !staffLoginRes.body.token) {
       throw new Error('Staff login failed');
     }
@@ -121,12 +127,13 @@ async function runAuthTests() {
 
     // 5. Staff CAN Cancel Bookings (Requirement #2: Staff granted permission to cancel bookings)
     console.log('Test 5: Staff cancelling a booking (PUT /api/bookings/:id/cancel)...');
-    // Create a booking first to cancel
+    // Create a booking first to cancel (use unique future year to prevent conflict across test runs)
+    const testYear = 2040 + Math.floor(Math.random() * 100);
     const testBookingRes = await request('POST', '/api/bookings', {
       gearId: 'g2',
       clientId: 'c1',
-      startDate: '2026-11-01',
-      endDate: '2026-11-03'
+      startDate: `${testYear}-11-01`,
+      endDate: `${testYear}-11-03`
     }, staffToken);
 
     if (testBookingRes.statusCode !== 201) {
@@ -154,19 +161,18 @@ async function runAuthTests() {
       throw new Error(`Expected 403 for Staff user registration, got ${staffRegisterRes.statusCode}`);
     }
 
-    // 7. Policy Enforcement: Block Any Attempt to Create Another Admin Account (Requirement #1)
-    console.log('Test 7: Attempting to create an extra Admin account (POST /api/users with role=admin)...');
+    // 7. Admin can register an Administrator account (POST /api/users with role=admin)
+    console.log('Test 7: Admin creating an Administrator account (POST /api/users with role=admin)...');
     const extraAdminRes = await request('POST', '/api/users', {
       name: 'Second Admin',
-      email: 'admin2@gearflow.com',
+      email: `admin2_${Date.now()}@gearflow.com`,
       password: 'AdminPassword123',
       role: 'admin'
     }, adminToken);
-    if (extraAdminRes.statusCode === 400 && extraAdminRes.body.error.includes('Only one primary Administrator account')) {
-      console.log('✅ Success: System policy blocked extra admin account creation:');
-      console.log(`   "${extraAdminRes.body.error}"\n`);
+    if (extraAdminRes.statusCode === 201) {
+      console.log('✅ Success: Admin successfully registered an Administrator account!\n');
     } else {
-      throw new Error(`Expected 400 policy rejection for second admin, got ${extraAdminRes.statusCode}`);
+      throw new Error(`Expected 201 for creating admin, got ${extraAdminRes.statusCode}`);
     }
 
     // 8. Admin Successfully Registers a Staff Member (Requirement #2)

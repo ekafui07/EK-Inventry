@@ -13,7 +13,7 @@
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 
 <body>
@@ -47,9 +47,13 @@
           <i data-lucide="users"></i>
           <span>Client Directory</span>
         </button>
-        <button class="nav-item" data-tab="users" id="nav-users">
+        <button class="nav-item" data-tab="users" id="nav-users" style="display: none;">
           <i data-lucide="shield-check"></i>
           <span>Staff &amp; Permissions</span>
+        </button>
+        <button class="nav-item" data-tab="audit" id="nav-audit" style="display: none;">
+          <i data-lucide="clipboard-list"></i>
+          <span>Audit Trail</span>
         </button>
       </nav>
 
@@ -225,6 +229,7 @@
                 <th>Rental Period</th>
                 <th>Daily Price</th>
                 <th>Status</th>
+                <th>Invoice</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -249,12 +254,108 @@
       <div class="view-panel" id="view-users">
         <div class="panel-header-row">
           <h2>Staff &amp; Permission Management</h2>
-          <button class="btn btn-primary" id="btn-add-user">
-            <i data-lucide="user-plus"></i> Add Staff Member
-          </button>
+          <div style="display: flex; gap: 0.75rem;">
+            <button class="btn btn-secondary" id="btn-open-audit-trail" style="display: none;">
+              <i data-lucide="clipboard-list"></i> System Audit Trail
+            </button>
+            <button class="btn btn-primary" id="btn-add-user">
+              <i data-lucide="user-plus"></i> Add Staff Member
+            </button>
+          </div>
         </div>
         <div class="client-grid" id="users-list">
           <!-- Dynamic grid of staff members -->
+        </div>
+      </div>
+
+      <!-- System Audit Trail View -->
+      <div class="view-panel" id="view-audit">
+        <div class="panel-header-row">
+          <div>
+            <h2>System Audit Trail &amp; Activity Log</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">
+              Restricted root administrator overview of all user actions across the platform
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.6rem; align-items: center;">
+            <button type="button" class="btn btn-secondary" id="btn-refresh-audit" style="padding: 0.5rem 0.9rem; font-size: 0.82rem;">
+              <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i> Refresh Logs
+            </button>
+          </div>
+        </div>
+
+        <!-- Audit Statistics Grid -->
+        <section class="stats-grid" style="margin-bottom: 1.5rem;">
+          <div class="stat-card">
+            <div class="stat-icon icon-rented">
+              <i data-lucide="activity"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="audit-stat-total">0</span>
+              <span class="stat-label">Total Events</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon icon-available">
+              <i data-lucide="database"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="audit-stat-inventory">0</span>
+              <span class="stat-label">Inventory Ops</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(139, 92, 246, 0.15); color: #a78bfa;">
+              <i data-lucide="calendar-range"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="audit-stat-rentals">0</span>
+              <span class="stat-label">Rental Operations</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
+              <i data-lucide="shield-check"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="audit-stat-staff">0</span>
+              <span class="stat-label">Security &amp; Staff</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Search & Category Filters -->
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
+          <div class="filter-tabs" id="audit-category-filters">
+            <button type="button" class="filter-tab active" data-audit-filter="All">All Events</button>
+            <button type="button" class="filter-tab" data-audit-filter="Inventory">Inventory</button>
+            <button type="button" class="filter-tab" data-audit-filter="Rentals">Rentals</button>
+            <button type="button" class="filter-tab" data-audit-filter="Clients">Clients</button>
+            <button type="button" class="filter-tab" data-audit-filter="Staff">Staff</button>
+            <button type="button" class="filter-tab" data-audit-filter="Auth">Auth</button>
+          </div>
+          <div class="search-box" style="max-width: 320px; width: 100%;">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="audit-search-input" placeholder="Search actor, action, details...">
+          </div>
+        </div>
+
+        <!-- Audit Timeline Table -->
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 170px;">Timestamp</th>
+                <th style="width: 220px;">Actor / User</th>
+                <th style="width: 140px;">Category</th>
+                <th>Activity Description</th>
+                <th style="width: 120px; text-align: right;">IP Address</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -270,28 +371,28 @@
         <h2>Add New Gear to Inventory</h2>
         <button class="modal-close"><i data-lucide="x"></i></button>
       </div>
-      <form id="form-add-gear" class="modal-form">
+      <form id="form-add-gear" class="modal-form" autocomplete="off">
         <div class="form-group">
           <label for="gear-name">Gear Name & Model</label>
-          <input type="text" id="gear-name" required placeholder="e.g. Sony FX3 Cinema Camera">
+          <input type="text" id="gear-name" required placeholder="e.g. Cinema Camera 6K" autocomplete="off">
         </div>
         <div class="form-row">
           <div class="form-group">
             <label for="gear-asset-tag">Asset Tag</label>
-            <input type="text" id="gear-asset-tag" placeholder="e.g. CAM-001">
+            <input type="text" id="gear-asset-tag" placeholder="e.g. EQ-101" autocomplete="off">
           </div>
           <div class="form-group">
             <label for="gear-category">Category</label>
-            <input type="text" id="gear-category" required placeholder="e.g. Cameras">
+            <input type="text" id="gear-category" required placeholder="e.g. Cameras, Lenses, Lighting" autocomplete="off">
           </div>
         </div>
         <div class="form-group">
           <label for="gear-serial">Serial Number</label>
-          <input type="text" id="gear-serial" required placeholder="e.g. SN-87192837">
+          <input type="text" id="gear-serial" required placeholder="e.g. SN-000000" autocomplete="off">
         </div>
         <div class="form-group">
           <label for="gear-rate">Daily Rental Rate (GH₵)</label>
-          <input type="number" id="gear-rate" required min="0" placeholder="e.g. 150">
+          <input type="number" id="gear-rate" required min="0" placeholder="e.g. 150" autocomplete="off">
         </div>
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
@@ -308,18 +409,18 @@
         <h2>Register Client Details</h2>
         <button class="modal-close"><i data-lucide="x"></i></button>
       </div>
-      <form id="form-add-client" class="modal-form">
+      <form id="form-add-client" class="modal-form" autocomplete="off">
         <div class="form-group">
           <label for="client-name">Full Name / Production Co</label>
-          <input type="text" id="client-name" required placeholder="e.g. John Doe (Apex Films)">
+          <input type="text" id="client-name" required placeholder="e.g. Jane Doe (Prime Productions)" autocomplete="off">
         </div>
         <div class="form-group">
           <label for="client-email">Email Address</label>
-          <input type="email" id="client-email" required placeholder="name@production.com">
+          <input type="email" id="client-email" required placeholder="client@domain.com" autocomplete="off">
         </div>
         <div class="form-group">
           <label for="client-phone">Phone Number</label>
-          <input type="tel" id="client-phone" required placeholder="e.g. +1 555-019-2834">
+          <input type="tel" id="client-phone" required placeholder="e.g. +233 20 000 0000" autocomplete="off">
         </div>
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
@@ -336,17 +437,16 @@
         <h2>Check Out Gear</h2>
         <button class="modal-close"><i data-lucide="x"></i></button>
       </div>
-      <form id="form-checkout" class="modal-form">
+      <form id="form-checkout" class="modal-form" autocomplete="off">
         <div class="form-group">
           <label>Select Gear Item(s)</label>
           <div id="checkout-gear-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
-            <div class="gear-select-row" style="display: flex; gap: 0.5rem; align-items: center;">
-              <select class="checkout-gear-select" required style="flex: 1;">
+            <div class="gear-select-row">
+              <select class="checkout-gear-select" required>
                 <option value="" disabled selected>Choose available gear...</option>
                 <!-- Dynamic available gear -->
               </select>
-              <button type="button" class="btn btn-secondary btn-remove-gear" style="padding: 0.6rem; display: none;"
-                title="Remove item">
+              <button type="button" class="btn-remove-gear" style="display: none;" title="Remove item">
                 <i data-lucide="trash-2" style="width:16px; height:16px; color: var(--color-danger)"></i>
               </button>
             </div>
@@ -381,6 +481,27 @@
     </div>
   </div>
 
+  <!-- Rental Invoice Modal -->
+  <div class="modal-backdrop" id="modal-invoice-preview">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="invoice-modal-title">Booking Rental Invoice</h2>
+        <button class="modal-close"><i data-lucide="x"></i></button>
+      </div>
+      <div class="invoice-preview-container">
+        <div class="invoice-document" id="printable-invoice-content">
+          <!-- Dynamic Invoice Content -->
+        </div>
+      </div>
+      <div class="modal-actions" style="margin-top: 0.5rem;">
+        <button type="button" class="btn btn-secondary modal-cancel">Close</button>
+        <button type="button" class="btn btn-primary" id="btn-trigger-print">
+          <i data-lucide="printer"></i> Print / Save as PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Edit Gear Modal -->
   <div class="modal-backdrop" id="modal-edit-gear">
     <div class="modal">
@@ -392,21 +513,21 @@
         <input type="hidden" id="edit-gear-id">
         <div class="form-group">
           <label for="edit-gear-name">Gear Name & Model</label>
-          <input type="text" id="edit-gear-name" required placeholder="e.g. Sony FX3 Cinema Camera">
+          <input type="text" id="edit-gear-name" required placeholder="e.g. Cinema Camera 6K">
         </div>
         <div class="form-row">
           <div class="form-group">
             <label for="edit-gear-asset-tag">Asset Tag</label>
-            <input type="text" id="edit-gear-asset-tag" placeholder="e.g. CAM-001">
+            <input type="text" id="edit-gear-asset-tag" placeholder="e.g. EQ-101">
           </div>
           <div class="form-group">
             <label for="edit-gear-category">Category</label>
-            <input type="text" id="edit-gear-category" required placeholder="e.g. Cameras">
+            <input type="text" id="edit-gear-category" required placeholder="e.g. Cameras, Lenses, Lighting">
           </div>
         </div>
         <div class="form-group">
           <label for="edit-gear-serial">Serial Number</label>
-          <input type="text" id="edit-gear-serial" required placeholder="e.g. SN-87192837">
+          <input type="text" id="edit-gear-serial" required placeholder="e.g. SN-000000">
         </div>
         <div class="form-group">
           <label for="edit-gear-rate">Daily Rental Rate (GH₵)</label>
@@ -431,15 +552,15 @@
         <input type="hidden" id="edit-client-id">
         <div class="form-group">
           <label for="edit-client-name">Full Name / Production Co</label>
-          <input type="text" id="edit-client-name" required placeholder="e.g. John Doe (Apex Films)">
+          <input type="text" id="edit-client-name" required placeholder="e.g. Jane Doe (Prime Productions)">
         </div>
         <div class="form-group">
           <label for="edit-client-email">Email Address</label>
-          <input type="email" id="edit-client-email" required placeholder="name@production.com">
+          <input type="email" id="edit-client-email" required placeholder="client@domain.com">
         </div>
         <div class="form-group">
           <label for="edit-client-phone">Phone Number</label>
-          <input type="tel" id="edit-client-phone" required placeholder="e.g. +1 555-019-2834">
+          <input type="tel" id="edit-client-phone" required placeholder="e.g. +233 20 000 0000">
         </div>
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
@@ -456,19 +577,19 @@
         <h2>Register Staff Account</h2>
         <button class="modal-close"><i data-lucide="x"></i></button>
       </div>
-      <form id="form-add-user" class="modal-form">
+      <form id="form-add-user" class="modal-form" autocomplete="off">
         <div class="form-group">
           <label for="user-name">Full Name</label>
-          <input type="text" id="user-name" required placeholder="e.g. Sarah Jenkins">
+          <input type="text" id="user-name" required placeholder="e.g. Alex Morgan" autocomplete="off">
         </div>
         <div class="form-row">
           <div class="form-group">
             <label for="user-email">Email Address</label>
-            <input type="email" id="user-email" required placeholder="staff@ekgearflow.com">
+            <input type="email" id="user-email" required placeholder="agent@ekgearflow.com" autocomplete="off">
           </div>
           <div class="form-group">
             <label for="user-title">Job Title</label>
-            <input type="text" id="user-title" required placeholder="e.g. Rental Desk Agent">
+            <input type="text" id="user-title" required placeholder="e.g. Inventory Specialist" autocomplete="off">
           </div>
         </div>
         <div class="form-group">
@@ -478,14 +599,20 @@
             <option value="Admin">Administrator</option>
           </select>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="add-user-permissions-group">
           <label>Assigned Task Permissions</label>
           <div class="permissions-checkbox-group" style="display:flex; flex-direction:column; gap:0.5rem; background:rgba(255,255,255,0.03); padding:0.85rem; border-radius:8px; border:1px solid var(--border-color);">
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="manage_gear"> <span>Manage Gear Inventory (Add/Edit/Delete/Maintenance)</span></label>
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="manage_clients"> <span>Manage Clients (Add/Edit/Delete)</span></label>
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="create_rentals" checked> <span>Process Checkouts &amp; Reservations</span></label>
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="return_rentals" checked> <span>Process Check-Ins &amp; Cancellations</span></label>
-            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="manage_users"> <span>Manage Staff Accounts &amp; Permissions</span></label>
+          </div>
+        </div>
+        <div id="add-user-admin-notice" style="display:none; background:rgba(2,132,199,0.1); border:1px solid rgba(2,132,199,0.25); border-radius:10px; padding:1rem; align-items:center; gap:0.75rem;">
+          <i data-lucide="shield-check" style="width:24px; height:24px; color:#38bdf8; flex-shrink:0;"></i>
+          <div style="font-size:0.85rem; color:#cbd5e1;">
+            <strong style="color:#f8fafc; display:block; margin-bottom:2px;">Full Administrative Privileges</strong>
+            Administrators have complete unrestricted access to all inventory, clients, rentals, and system settings by default.
           </div>
         </div>
         <p style="font-size:0.75rem; color:var(--text-muted); margin-top:-0.25rem;">Note: Initial password will be set to default <code>12345</code>. Staff must change it upon first login.</p>
@@ -501,40 +628,46 @@
   <div class="modal-backdrop" id="modal-edit-user">
     <div class="modal" style="max-width: 520px;">
       <div class="modal-header">
-        <h2>Edit Staff Profile &amp; Permissions</h2>
+        <h2 id="modal-edit-user-title">Edit Staff Profile &amp; Permissions</h2>
         <button class="modal-close"><i data-lucide="x"></i></button>
       </div>
-      <form id="form-edit-user" class="modal-form">
+      <form id="form-edit-user" class="modal-form" autocomplete="off">
         <input type="hidden" id="edit-user-id">
         <div class="form-group">
           <label for="edit-user-name">Full Name</label>
-          <input type="text" id="edit-user-name" required placeholder="e.g. Sarah Jenkins">
+          <input type="text" id="edit-user-name" required placeholder="e.g. Alex Morgan">
         </div>
         <div class="form-row">
           <div class="form-group">
             <label for="edit-user-email">Email Address</label>
-            <input type="email" id="edit-user-email" required placeholder="staff@ekgearflow.com">
+            <input type="email" id="edit-user-email" required placeholder="agent@ekgearflow.com">
           </div>
           <div class="form-group">
             <label for="edit-user-title">Job Title</label>
-            <input type="text" id="edit-user-title" required placeholder="e.g. Rental Desk Agent">
+            <input type="text" id="edit-user-title" required placeholder="e.g. Inventory Specialist">
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="edit-user-account-type-group">
           <label for="edit-user-account-type">Account Type</label>
           <select id="edit-user-account-type" required>
             <option value="Staff">Staff Member</option>
             <option value="Admin">Administrator</option>
           </select>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="edit-user-permissions-group">
           <label>Assigned Task Permissions</label>
           <div class="permissions-checkbox-group" style="display:flex; flex-direction:column; gap:0.5rem; background:rgba(255,255,255,0.03); padding:0.85rem; border-radius:8px; border:1px solid var(--border-color);">
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="manage_gear"> <span>Manage Gear Inventory (Add/Edit/Delete/Maintenance)</span></label>
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="manage_clients"> <span>Manage Clients (Add/Edit/Delete)</span></label>
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="create_rentals"> <span>Process Checkouts &amp; Reservations</span></label>
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="return_rentals"> <span>Process Check-Ins &amp; Cancellations</span></label>
-            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="manage_users"> <span>Manage Staff Accounts &amp; Permissions</span></label>
+          </div>
+        </div>
+        <div id="edit-user-admin-notice" style="display:none; background:rgba(2,132,199,0.1); border:1px solid rgba(2,132,199,0.25); border-radius:10px; padding:1rem; align-items:center; gap:0.75rem;">
+          <i data-lucide="shield-check" style="width:24px; height:24px; color:#38bdf8; flex-shrink:0;"></i>
+          <div style="font-size:0.85rem; color:#cbd5e1;">
+            <strong style="color:#f8fafc; display:block; margin-bottom:2px;">Full Administrative Privileges</strong>
+            Administrators have complete unrestricted access to all inventory, clients, rentals, and system settings by default.
           </div>
         </div>
         <div class="modal-actions">
@@ -568,26 +701,7 @@
     </div>
   </div>
 
-  <!-- Forgot Password Request Modal -->
-  <div class="modal-backdrop" id="modal-forgot-password">
-    <div class="modal" style="max-width: 420px;">
-      <div class="modal-header">
-        <h2>Reset Password</h2>
-        <button class="modal-close"><i data-lucide="x"></i></button>
-      </div>
-      <form id="form-forgot-password" class="modal-form">
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Enter your registered account email address. Your password will be reset to default <code>12345</code>.</p>
-        <div class="form-group">
-          <label for="forgot-email">Email Address</label>
-          <input type="email" id="forgot-email" required placeholder="your.name@company.com">
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
-          <button type="submit" class="btn btn-primary">Reset Password to 12345</button>
-        </div>
-      </form>
-    </div>
-  </div>
+
 
   <!-- Split-Screen Modern Auth Page Overlay -->
   <div id="login-screen-overlay" class="login-split-container">
@@ -644,10 +758,6 @@
             </div>
           </div>
 
-          <div class="forgot-link-row">
-            <a href="#" id="link-forgot-password">Forgot Password?</a>
-          </div>
-
           <button type="submit" class="btn btn-login-submit">Sign In to Dashboard</button>
         </form>
 
@@ -662,9 +772,6 @@
   <div id="toast-notification" class="toast hidden">
     <span id="toast-message">Action completed successfully.</span>
   </div>
-
-  <!-- Custom App Logic -->
-  <script src="app.js?v=2"></script>
 
   <!-- Custom Confirm Modal -->
   <div id="modal-confirm" class="modal-backdrop confirm-modal-backdrop" style="display: none;">
@@ -682,6 +789,16 @@
       </div>
     </div>
   </div>
+
+  <!-- Modular Frontend Architecture -->
+  <script src="js/utils.js?v=13"></script>
+  <script src="js/api.js?v=13"></script>
+  <script src="js/inventory.js?v=13"></script>
+  <script src="js/clients.js?v=13"></script>
+  <script src="js/rentals.js?v=13"></script>
+  <script src="js/staff.js?v=13"></script>
+  <script src="js/audit.js?v=13"></script>
+  <script src="app.js?v=13"></script>
 
 </body>
 

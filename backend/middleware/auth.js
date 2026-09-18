@@ -2,9 +2,15 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecret_ek_key';
 
+let userLookupFn = null;
+
+function setUserLookup(fn) {
+  userLookupFn = fn;
+}
+
 /**
  * Authentication middleware:
- * Validates the JWT Bearer token and attaches the authenticated user to req.user.
+ * Validates the JWT Bearer token, verifies active status against database, and attaches req.user.
  */
 function authenticate(req, res, next) {
   const authHeader = req.headers['authorization'];
@@ -18,9 +24,30 @@ function authenticate(req, res, next) {
   }
 
   const token = parts[1];
-  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+  jwt.verify(token, JWT_SECRET, async (err, decoded) => {
     if (err) {
       return res.status(401).json({ error: 'Invalid or expired token' });
+    }
+
+    // Active User & Instant Ban Enforcement Check
+    if (userLookupFn && (decoded.id || decoded.email)) {
+      try {
+        const liveUser = await userLookupFn(decoded.id, decoded.email);
+        if (liveUser) {
+          const status = (liveUser.status || '').toLowerCase();
+          if (status === 'banned' || status === 'inactive') {
+            return res.status(403).json({
+              error: 'This account has been banned or deactivated. Session terminated.'
+            });
+          }
+          // Synchronize latest live role, accountType, and permissions
+          if (liveUser.accountType) decoded.accountType = liveUser.accountType;
+          if (liveUser.role) decoded.role = liveUser.role;
+          if (liveUser.permissions) decoded.permissions = liveUser.permissions;
+        }
+      } catch (lookupErr) {
+        console.warn('[Auth Middleware] Live user status lookup notice:', lookupErr.message);
+      }
     }
 
     const role = (decoded.role || decoded.accountType || 'staff').toLowerCase();
@@ -93,5 +120,6 @@ module.exports = {
   verifyToken: authenticate, // backwards compatibility alias
   requireRole,
   requirePermission,
+  setUserLookup,
   JWT_SECRET
 };
