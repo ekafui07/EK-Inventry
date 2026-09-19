@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
+const { spawnSync } = require('child_process');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const { CloudFrontClient, CreateInvalidationCommand } = require('@aws-sdk/client-cloudfront');
 const { CloudFormationClient, DescribeStacksCommand } = require('@aws-sdk/client-cloudformation');
 
-// Command line arguments (e.g. node deploy-frontend.js --stage prod)
+// Command line arguments (e.g. node deploy-frontend.js --stage prod --skip-tests)
 const stageArg = process.argv.find((arg, i) => process.argv[i - 1] === '--stage') || 'prod';
+const skipTests = process.argv.includes('--skip-tests');
 const region = process.env.AWS_REGION || 'us-east-1';
 const stackName = `ek-gearflow-backend-${stageArg}`;
 
@@ -111,6 +113,20 @@ async function main() {
     const frontendDir = path.resolve(__dirname, '../frontend');
     if (!fs.existsSync(frontendDir)) {
       throw new Error(`Frontend directory not found at: ${frontendDir}`);
+    }
+
+    if (skipTests) {
+      console.log('⚠️ [0/4] Skipping pre-flight test suites (--skip-tests flag detected)...\n');
+    } else {
+      console.log('[0/4] Running pre-flight Contract Guardrails (8 test suites)...');
+      const testRes = spawnSync('node', ['test-runner.js'], {
+        cwd: __dirname,
+        stdio: 'inherit'
+      });
+      if (testRes.status !== 0) {
+        throw new Error('Contract Guardrails failed! Pre-flight test suite encountered regressions. Deployment aborted.');
+      }
+      console.log('  ✓ Contract Guardrails passed: All 8 test suites validated.\n');
     }
 
     const outputs = await getStackOutputs();

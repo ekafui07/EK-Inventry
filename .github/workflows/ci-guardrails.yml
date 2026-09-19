@@ -1,0 +1,42 @@
+name: CI Contract Guardrails
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  contract-guardrails:
+    name: Validate Contracts & Run Test Suites
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install Backend Dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Validate Frontend JavaScript Syntax
+        run: |
+          node --check frontend/app.js
+          node --check frontend/js/utils.js
+          node --check frontend/js/api.js
+          node --check frontend/js/inventory.js
+          node --check frontend/js/clients.js
+          node --check frontend/js/rentals.js
+          node --check frontend/js/staff.js
+          node --check frontend/js/audit.js
+
+      - name: Execute 8 Automated Test Suites
+        working-directory: backend
+        run: npm test
