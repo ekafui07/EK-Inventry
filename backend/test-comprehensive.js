@@ -1,5 +1,7 @@
 const http = require('http');
+const jwt = require('jsonwebtoken');
 const { app, seedInitialUsers } = require('./index.js');
+const { JWT_SECRET } = require('./middleware/auth');
 
 let serverInstance = null;
 let testPort = 0;
@@ -434,12 +436,13 @@ async function runComprehensiveTests() {
     // -------------------------------------------------------------------------
     console.log('\n--- 7. CLEANUP & DELETION POLICIES ---');
 
-    console.log('Test 7.1: Staff member blocked from deleting gear (Admin only)...');
-    const staffDeleteGear = await request('DELETE', `/api/gear/${testGear.id}`, null, staffToken);
+    console.log('Test 7.1: Staff member WITHOUT manage_gear blocked from deleting gear (403 Forbidden)...');
+    const noGearToken = jwt.sign({ id: 'u_no_gear', email: 'nogear@gearflow.com', role: 'staff', permissions: ['create_rentals'] }, JWT_SECRET);
+    const staffDeleteGear = await request('DELETE', `/api/gear/${testGear.id}`, null, noGearToken);
     if (staffDeleteGear.statusCode !== 403) {
-      throw new Error(`Expected 403 for staff deleting gear, got ${staffDeleteGear.statusCode}`);
+      throw new Error(`Expected 403 for staff without manage_gear deleting gear, got ${staffDeleteGear.statusCode}`);
     }
-    console.log('✅ Success: Staff blocked from deleting gear.');
+    console.log('✅ Success: Staff without manage_gear blocked from deleting gear.');
 
     console.log('Test 6.2: Admin successfully deleting test gear when returned...');
     const adminDeleteGear = await request('DELETE', `/api/gear/${testGear.id}`, null, adminToken);

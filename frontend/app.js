@@ -354,6 +354,7 @@ window.populateCheckoutDropdowns = populateCheckoutDropdowns;
 // Data Fetch & Synchronization
 async function refreshData(query = '') {
   try {
+    await syncLiveUserProfile();
     const isAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
     const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
     const requests = [
@@ -982,6 +983,41 @@ function setupAuth() {
   }
 }
 
+async function syncLiveUserProfile() {
+  if (!currentUser || !currentUser.token) return;
+  try {
+    const res = await fetch(`${API_URL}/auth/me`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.user) {
+        const live = data.user;
+        let changed = false;
+        if (JSON.stringify(currentUser.permissions || []) !== JSON.stringify(live.permissions || [])) {
+          currentUser.permissions = live.permissions || [];
+          changed = true;
+        }
+        if (currentUser.role !== live.role) {
+          currentUser.role = live.role;
+          changed = true;
+        }
+        if (currentUser.accountType !== live.accountType) {
+          currentUser.accountType = live.accountType;
+          changed = true;
+        }
+        if (changed) {
+          window.currentUser = currentUser;
+          sessionStorage.setItem('EK_CURRENT_USER', JSON.stringify(currentUser));
+          updateSidebarUserProfile();
+          applyPermissions();
+          if (typeof renderInventory === 'function') renderInventory();
+          if (typeof renderClients === 'function') renderClients();
+        }
+      }
+    }
+  } catch (err) {}
+}
+window.syncLiveUserProfile = syncLiveUserProfile;
+
 function checkAuthSession() {
   const saved = sessionStorage.getItem('EK_CURRENT_USER');
   if (saved) {
@@ -1002,6 +1038,7 @@ function checkAuthSession() {
         openModal('modal-force-change-password');
       }
       applyPermissions();
+      syncLiveUserProfile();
     } catch (e) {
       currentUser = null;
       window.currentUser = null;

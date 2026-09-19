@@ -11,6 +11,6 @@ const {
 router.get('/', authenticate, getClientsHandler);
 router.post('/', authenticate, requirePermission('manage_clients'), createClientHandler);
 router.put('/:id', authenticate, requirePermission('manage_clients'), updateClientHandler);
-router.delete('/:id', authenticate, requireRole('Admin'), deleteClientHandler);
+router.delete('/:id', authenticate, requirePermission('manage_clients'), deleteClientHandler);
 
 module.exports = router;

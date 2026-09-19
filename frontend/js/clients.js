@@ -54,7 +54,7 @@ function renderClients(query = '') {
     currentUser.role === 'admin' ||
     (currentUser.permissions && currentUser.permissions.includes('manage_clients'))
   );
-  const canDelete = currentUser && (currentUser.accountType === 'Admin' || currentUser.role === 'admin');
+  const canDelete = canManageClients;
   
   list.forEach(client => {
     const card = document.createElement('div');

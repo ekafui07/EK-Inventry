@@ -11,6 +11,6 @@ const {
 router.get('/', authenticate, getGearHandler);
 router.post('/', authenticate, requirePermission('manage_gear'), createGearHandler);
 router.put('/:id', authenticate, requirePermission('manage_gear'), updateGearHandler);
-router.delete('/:id', authenticate, requireRole('Admin'), deleteGearHandler);
+router.delete('/:id', authenticate, requirePermission('manage_gear'), deleteGearHandler);
 
 module.exports = router;

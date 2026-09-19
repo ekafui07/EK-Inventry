@@ -10,6 +10,7 @@ const {
 router.post('/auth/login', loginHandler);
 router.post('/login', loginHandler);
 router.get('/auth/me', authenticate, meHandler);
+router.get('/me', authenticate, meHandler);
 router.post('/forgot-password', forgotPasswordHandler);
 
 module.exports = router;
