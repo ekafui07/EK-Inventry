@@ -3206,6 +3206,31 @@ code {
   box-shadow: 0 10px 15px -3px rgba(16, 24, 40, 0.1), 0 4px 6px -4px rgba(16, 24, 40, 0.05);
 }
 
+/* Component-Level Error Boundary (Fault Isolation Box) */
+.component-error-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 8px;
+  color: var(--text-main);
+  margin: 0.5rem 0;
+  text-align: left;
+}
+
+[data-theme="light"] .component-error-box {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  color: #92400E;
+}
+
+[data-theme="light"] .component-error-box p {
+  color: #B45309 !important;
+}
+
 /* Print Media Query */
 @media print {
   body * {

@@ -158,3 +158,70 @@ function closeModal(modalId) {
   }, 300);
 }
 window.closeModal = closeModal;
+
+/**
+ * Component Error Boundary (Fault Isolation System)
+ * Prevents an unhandled runtime error in one view from crashing adjacent views.
+ */
+function safeComponentRender(componentName, renderFn, fallbackContainerId = null) {
+  try {
+    renderFn();
+  } catch (err) {
+    console.error(`[Error Boundary] Component "${componentName}" caught an isolated error:`, err);
+    if (fallbackContainerId) {
+      const container = document.getElementById(fallbackContainerId);
+      if (container) {
+        const isTable = container.tagName.toLowerCase() === 'tbody';
+        if (isTable) {
+          container.innerHTML = `
+            <tr>
+              <td colspan="10" style="padding: 2rem; text-align: center;">
+                <div class="component-error-box">
+                  <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="alert-triangle" style="width: 20px; height: 20px; color: var(--color-warning); flex-shrink: 0;"></i>
+                    <div style="text-align: left;">
+                      <strong style="display: block; font-size: 0.85rem;">Temporary issue displaying ${escapeHtmlText(componentName)}</strong>
+                      <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: var(--text-muted);">
+                        An isolated error occurred in this view. All other platform features are operating normally.
+                      </p>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="retryComponentRender('${escapeHtmlText(componentName)}', '${fallbackContainerId}')" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; white-space: nowrap;">
+                    <i data-lucide="refresh-cw" style="width: 12px; height: 12px;"></i> Retry View
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        } else {
+          container.innerHTML = `
+            <div class="component-error-box">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i data-lucide="alert-triangle" style="width: 20px; height: 20px; color: var(--color-warning); flex-shrink: 0;"></i>
+                <div style="text-align: left;">
+                  <strong style="display: block; font-size: 0.85rem;">Temporary issue displaying ${escapeHtmlText(componentName)}</strong>
+                  <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: var(--text-muted);">
+                    An isolated error occurred in this view. All other platform features are operating normally.
+                  </p>
+                </div>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="retryComponentRender('${escapeHtmlText(componentName)}', '${fallbackContainerId}')" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; white-space: nowrap;">
+                <i data-lucide="refresh-cw" style="width: 12px; height: 12px;"></i> Retry View
+              </button>
+            </div>
+          `;
+        }
+        if (window.lucide) lucide.createIcons();
+      }
+    }
+  }
+}
+window.safeComponentRender = safeComponentRender;
+
+function retryComponentRender(componentName, containerId) {
+  if (typeof refreshData === 'function') {
+    refreshData();
+  }
+}
+window.retryComponentRender = retryComponentRender;
+

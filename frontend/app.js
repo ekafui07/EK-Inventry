@@ -415,16 +415,16 @@ async function refreshData(query = '') {
     g.status = isOutToday ? 'Rented' : 'Available';
   });
   
-  updateStats();
-  renderDashboardRentals(query);
-  renderInventory(window.activeInventoryFilter || 'all', query);
-  renderRentalsList(query);
-  renderClients(query);
-  renderUsers(query);
-  renderAuditTrail(activeAuditCategory, query);
-  populateCheckoutDropdowns();
-  renderCategoryChart();
-  applyPermissions();
+  safeComponentRender('Dashboard Statistics', () => updateStats());
+  safeComponentRender('Rentals Timeline', () => renderDashboardRentals(query), 'timeline-list');
+  safeComponentRender('Gear Inventory', () => renderInventory(window.activeInventoryFilter || 'all', query), 'inventory-list');
+  safeComponentRender('Rentals List', () => renderRentalsList(query), 'rentals-table-body');
+  safeComponentRender('Clients Directory', () => renderClients(query), 'clients-list');
+  safeComponentRender('Staff & Users', () => renderUsers(query), 'users-list');
+  safeComponentRender('Audit Trail', () => renderAuditTrail(activeAuditCategory, query), 'audit-trail-body');
+  safeComponentRender('Checkout Dropdowns', () => populateCheckoutDropdowns());
+  safeComponentRender('Category Distribution', () => renderCategoryChart());
+  safeComponentRender('User Permissions', () => applyPermissions());
 }
 window.refreshData = refreshData;
 
@@ -1058,12 +1058,12 @@ function setupSearch() {
   
   searchInput.addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase().trim();
-    renderDashboardRentals(query);
-    renderInventory(window.activeInventoryFilter || 'all', query);
-    renderRentalsList(query);
-    renderClients(query);
-    renderUsers(query);
-    renderAuditTrail(activeAuditCategory, query);
+    safeComponentRender('Rentals Timeline', () => renderDashboardRentals(query), 'timeline-list');
+    safeComponentRender('Gear Inventory', () => renderInventory(window.activeInventoryFilter || 'all', query), 'inventory-list');
+    safeComponentRender('Rentals List', () => renderRentalsList(query), 'rentals-table-body');
+    safeComponentRender('Clients Directory', () => renderClients(query), 'clients-list');
+    safeComponentRender('Staff & Users', () => renderUsers(query), 'users-list');
+    safeComponentRender('Audit Trail', () => renderAuditTrail(activeAuditCategory, query), 'audit-trail-body');
   });
 }
 
