@@ -135,6 +135,7 @@ async function loginUser({ email, password, accountType }) {
     role: role,
     accountType: normalizedAccountType,
     permissions: user.permissions || [
+      'manage_gear',
       'manage_clients',
       'create_rentals',
       'return_rentals',
@@ -162,8 +163,8 @@ async function addUser(userData) {
   const role = (userData.role || userData.accountType || 'Staff').toLowerCase();
   const normalizedAccountType = role === 'admin' ? 'Admin' : 'Staff';
   let assignedPermissions = userData.permissions || (role === 'admin'
-    ? ['manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals', 'manage_gear', 'manage_users']
-    : ['manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals']);
+    ? ['manage_gear', 'manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals', 'manage_users']
+    : ['manage_gear', 'manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals']);
   if (role !== 'admin') {
     assignedPermissions = assignedPermissions.filter(p => p !== 'manage_users');
   }

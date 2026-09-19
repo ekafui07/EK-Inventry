@@ -13,7 +13,7 @@
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css?v=22">
+  <link rel="stylesheet" href="style.css?v=23">
   <script>
     (function() {
       var saved = localStorage.getItem('EK_THEME') || 'dark';
@@ -193,12 +193,22 @@
       <!-- Inventory View -->
       <div class="view-panel" id="view-inventory">
         <div class="panel-header-row">
-          <h2>Master Gear Inventory</h2>
-          <div class="filter-bar">
-            <button class="filter-tab active" data-filter="all">All</button>
-            <button class="filter-tab" data-filter="Available">Available</button>
-            <button class="filter-tab" data-filter="Rented">Rented</button>
-            <button class="filter-tab" data-filter="Maintenance">In Service</button>
+          <div>
+            <h2>Master Gear Inventory</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">
+              Full equipment registry, availability status, and maintenance controls
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+            <div class="filter-bar">
+              <button class="filter-tab active" data-filter="all">All</button>
+              <button class="filter-tab" data-filter="Available">Available</button>
+              <button class="filter-tab" data-filter="Rented">Rented</button>
+              <button class="filter-tab" data-filter="Maintenance">In Service</button>
+            </div>
+            <button type="button" class="btn btn-primary" id="btn-add-gear-inventory" style="padding: 0.5rem 0.9rem; font-size: 0.82rem;">
+              <i data-lucide="plus-circle" style="width: 14px; height: 14px;"></i> Add Gear
+            </button>
           </div>
         </div>
         <div class="table-wrapper">
@@ -392,7 +402,7 @@
         <div class="form-row">
           <div class="form-group">
             <label for="gear-asset-tag">Asset Tag</label>
-            <input type="text" id="gear-asset-tag" placeholder="e.g. EQ-101" autocomplete="off">
+            <input type="text" id="gear-asset-tag" required placeholder="e.g. EQ-101" autocomplete="off">
           </div>
           <div class="form-group">
             <label for="gear-category">Category</label>
@@ -615,8 +625,8 @@
         <div class="form-group" id="add-user-permissions-group">
           <label>Assigned Task Permissions</label>
           <div class="permissions-checkbox-group" style="display:flex; flex-direction:column; gap:0.5rem; background:rgba(255,255,255,0.03); padding:0.85rem; border-radius:8px; border:1px solid var(--border-color);">
-            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="manage_gear"> <span>Manage Gear Inventory (Add/Edit/Delete/Maintenance)</span></label>
-            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="manage_clients"> <span>Manage Clients (Add/Edit/Delete)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="manage_gear" checked> <span>Manage Gear Inventory (Add/Edit/Delete/Maintenance)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="manage_clients" checked> <span>Manage Clients (Add/Edit/Delete)</span></label>
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="create_rentals" checked> <span>Process Checkouts &amp; Reservations</span></label>
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="return_rentals" checked> <span>Process Check-Ins &amp; Cancellations</span></label>
           </div>
@@ -804,14 +814,14 @@
   </div>
 
   <!-- Modular Frontend Architecture -->
-  <script src="js/utils.js?v=22"></script>
-  <script src="js/api.js?v=22"></script>
-  <script src="js/inventory.js?v=22"></script>
-  <script src="js/clients.js?v=22"></script>
-  <script src="js/rentals.js?v=22"></script>
-  <script src="js/staff.js?v=22"></script>
-  <script src="js/audit.js?v=22"></script>
-  <script src="app.js?v=22"></script>
+  <script src="js/utils.js?v=23"></script>
+  <script src="js/api.js?v=23"></script>
+  <script src="js/inventory.js?v=23"></script>
+  <script src="js/clients.js?v=23"></script>
+  <script src="js/rentals.js?v=23"></script>
+  <script src="js/staff.js?v=23"></script>
+  <script src="js/audit.js?v=23"></script>
+  <script src="app.js?v=23"></script>
 
 </body>
 

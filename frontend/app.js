@@ -239,6 +239,11 @@ function applyPermissions() {
     btnAddGear.style.display = hasPermission('manage_gear') ? 'inline-flex' : 'none';
   }
 
+  const btnAddGearInv = document.getElementById('btn-add-gear-inventory');
+  if (btnAddGearInv) {
+    btnAddGearInv.style.display = hasPermission('manage_gear') ? 'inline-flex' : 'none';
+  }
+
   const btnAddClient = document.getElementById('btn-add-client');
   if (btnAddClient) {
     btnAddClient.style.display = hasPermission('manage_clients') ? 'inline-flex' : 'none';
@@ -459,6 +464,7 @@ function setupNavigation() {
 function setupModals() {
   const modalTriggers = [
     { trigger: 'btn-add-gear', modal: 'modal-add-gear' },
+    { trigger: 'btn-add-gear-inventory', modal: 'modal-add-gear' },
     { trigger: 'btn-add-client', modal: 'modal-add-client' },
     { trigger: 'btn-add-user', modal: 'modal-add-user' },
     { trigger: 'btn-quick-rent', modal: 'modal-checkout' }

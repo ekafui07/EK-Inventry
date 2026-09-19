@@ -1,5 +1,7 @@
 const http = require('http');
+const jwt = require('jsonwebtoken');
 const { app, seedInitialUsers } = require('./index.js');
+const { JWT_SECRET } = require('./middleware/auth');
 
 let serverInstance = null;
 let testPort = 0;
@@ -111,18 +113,35 @@ async function runAuthTests() {
     const staffToken = staffLoginRes.body.token;
     console.log('✅ Success: Staff logged in successfully!\n');
 
-    // 4. Staff Trying to Add Gear (Blocked for Staff)
-    console.log('Test 4: Staff attempting to add gear (POST /api/gear)...');
-    const staffAddGearRes = await request('POST', '/api/gear', {
+    // 4. Staff Permission Enforcement on POST /api/gear
+    console.log('Test 4.1: Staff WITHOUT manage_gear blocked from adding gear (403 Forbidden)...');
+    const noGearToken = jwt.sign({ id: 'u_no_gear', email: 'nogear@gearflow.com', role: 'staff', permissions: ['create_rentals'] }, JWT_SECRET);
+    const unauthAddGearRes = await request('POST', '/api/gear', {
       name: 'Rogue Gear',
+      assetTag: 'TAG-ROGUE',
       category: 'Cameras',
       serialNumber: 'SN-ILLEGAL',
       dailyRate: 150
-    }, staffToken);
-    if (staffAddGearRes.statusCode === 403) {
-      console.log('✅ Success: Staff blocked from adding gear (403 Forbidden).\n');
+    }, noGearToken);
+    if (unauthAddGearRes.statusCode === 403) {
+      console.log('✅ Success: Staff without manage_gear blocked (403 Forbidden).\n');
     } else {
-      throw new Error(`Expected 403 for Staff adding gear, got ${staffAddGearRes.statusCode}`);
+      throw new Error(`Expected 403 for Staff without manage_gear, got ${unauthAddGearRes.statusCode}`);
+    }
+
+    console.log('Test 4.2: Staff WITH manage_gear successfully adding gear (201 Created)...');
+    const staffAddGearRes = await request('POST', '/api/gear', {
+      name: 'Authorized Staff Gear',
+      assetTag: 'TAG-STAFF-01',
+      category: 'Cameras',
+      serialNumber: 'SN-STAFF-001',
+      dailyRate: 150
+    }, staffToken);
+    if (staffAddGearRes.statusCode === 201) {
+      console.log('✅ Success: Staff with manage_gear created gear (201 Created).\n');
+      await request('DELETE', `/api/gear/${staffAddGearRes.body.id}`, null, adminToken);
+    } else {
+      throw new Error(`Expected 201 for Staff with manage_gear, got ${staffAddGearRes.statusCode}: ${JSON.stringify(staffAddGearRes.body)}`);
     }
 
     // 5. Staff CAN Cancel Bookings (Requirement #2: Staff granted permission to cancel bookings)

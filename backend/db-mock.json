@@ -3672,6 +3672,190 @@
       "startDate": "2031-01-01",
       "endDate": "2031-01-05",
       "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811763725_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2047-11-01",
+      "endDate": "2047-11-03",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811770370_0",
+      "gearId": "g_1789811770333",
+      "clientId": "c_1789811770349",
+      "startDate": "2035-09-01",
+      "endDate": "2035-09-07",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811770444_0",
+      "gearId": "g_1789811770430",
+      "clientId": "c_1789811770349",
+      "startDate": "2035-10-01",
+      "endDate": "2035-10-05",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811770457_0",
+      "gearId": "g_1789811770430",
+      "clientId": "c_1789811770349",
+      "startDate": "2035-10-10",
+      "endDate": "2035-10-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811772255_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811772295_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-20",
+      "endDate": "2029-06-25",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811772310_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811772337_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811773445_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2052-11-01",
+      "endDate": "2052-11-03",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811774758_0",
+      "gearId": "g_1789811774707",
+      "clientId": "c_1789811774737",
+      "startDate": "2030-05-01",
+      "endDate": "2030-05-10",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811774783_0",
+      "gearId": "g_1789811774707",
+      "clientId": "c_1789811774737",
+      "startDate": "2030-05-01",
+      "endDate": "2030-05-10",
+      "status": "Returned"
+    },
+    {
+      "id": "b_1789811774839_0",
+      "gearId": "g_1789811774707",
+      "clientId": "c_1789811774737",
+      "startDate": "2031-01-01",
+      "endDate": "2031-01-05",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811813259_0",
+      "gearId": "g_1789811813220",
+      "clientId": "c_1789811813237",
+      "startDate": "2035-09-01",
+      "endDate": "2035-09-07",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811813339_0",
+      "gearId": "g_1789811813324",
+      "clientId": "c_1789811813237",
+      "startDate": "2035-10-01",
+      "endDate": "2035-10-05",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811813355_0",
+      "gearId": "g_1789811813324",
+      "clientId": "c_1789811813237",
+      "startDate": "2035-10-10",
+      "endDate": "2035-10-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811815381_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811815423_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-20",
+      "endDate": "2029-06-25",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811815435_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811815466_0",
+      "gearId": "g1",
+      "clientId": "c1",
+      "startDate": "2029-06-10",
+      "endDate": "2029-06-15",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811816722_0",
+      "gearId": "g2",
+      "clientId": "c1",
+      "startDate": "2103-11-01",
+      "endDate": "2103-11-03",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811818249_0",
+      "gearId": "g_1789811818167",
+      "clientId": "c_1789811818215",
+      "startDate": "2030-05-01",
+      "endDate": "2030-05-10",
+      "status": "Cancelled"
+    },
+    {
+      "id": "b_1789811818283_0",
+      "gearId": "g_1789811818167",
+      "clientId": "c_1789811818215",
+      "startDate": "2030-05-01",
+      "endDate": "2030-05-10",
+      "status": "Returned"
+    },
+    {
+      "id": "b_1789811818379_0",
+      "gearId": "g_1789811818167",
+      "clientId": "c_1789811818215",
+      "startDate": "2031-01-01",
+      "endDate": "2031-01-05",
+      "status": "Cancelled"
     }
   ],
   "users": [
@@ -3740,6 +3924,7 @@
       "accountType": "Staff",
       "role": "staff",
       "permissions": [
+        "manage_gear",
         "manage_clients",
         "create_rentals",
         "return_rentals",
@@ -4227,9 +4412,3001 @@
       "status": "Active",
       "mustChangePassword": false,
       "createdAt": "2026-09-19T09:23:49.697Z"
+    },
+    {
+      "id": "u_1789811763811_nzxs",
+      "name": "Second Admin",
+      "email": "admin2_1789811763754@gearflow.com",
+      "password": "$2b$10$9ONyiWpaOGq4ZKpHu7Y3S.XkIh7ntUCLxwMw7nKLiKUQ6KnL/sAC6",
+      "title": "Administrator",
+      "accountType": "Admin",
+      "role": "admin",
+      "permissions": [
+        "manage_gear",
+        "manage_clients",
+        "create_rentals",
+        "return_rentals",
+        "cancel_rentals",
+        "manage_users"
+      ],
+      "status": "Active",
+      "mustChangePassword": false,
+      "createdAt": "2026-09-19T09:56:03.811Z"
+    },
+    {
+      "id": "u_1789811773519_dtq0",
+      "name": "Second Admin",
+      "email": "admin2_1789811773465@gearflow.com",
+      "password": "$2b$10$g4ilUbAgJc4x4vytIYr/sOOFno3/db5qAugJ2sSIWjaJsaTEnROBW",
+      "title": "Administrator",
+      "accountType": "Admin",
+      "role": "admin",
+      "permissions": [
+        "manage_gear",
+        "manage_clients",
+        "create_rentals",
+        "return_rentals",
+        "cancel_rentals",
+        "manage_users"
+      ],
+      "status": "Active",
+      "mustChangePassword": false,
+      "createdAt": "2026-09-19T09:56:13.519Z"
+    },
+    {
+      "id": "u_1789811816811_1i6z",
+      "name": "Second Admin",
+      "email": "admin2_1789811816750@gearflow.com",
+      "password": "$2b$10$qg3yompXboJuxICLRwd3jeQWXS9tcZ4TBh6fcBYeoGGd5RazYooKG",
+      "title": "Administrator",
+      "accountType": "Admin",
+      "role": "admin",
+      "permissions": [
+        "manage_gear",
+        "manage_clients",
+        "create_rentals",
+        "return_rentals",
+        "cancel_rentals",
+        "manage_users"
+      ],
+      "status": "Active",
+      "mustChangePassword": false,
+      "createdAt": "2026-09-19T09:56:56.811Z"
     }
   ],
   "auditLogs": [
+    {
+      "id": "audit_1789811818448_afjf",
+      "timestamp": "2026-09-19T09:56:58.448Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_USER",
+      "category": "Staff",
+      "summary": "Deleted user account #u_1789811817957_rqg8",
+      "details": {
+        "userId": "u_1789811817957_rqg8"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818430_abzn",
+      "timestamp": "2026-09-19T09:56:58.430Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_CLIENT",
+      "category": "Clients",
+      "summary": "Deleted client #c_1789811818215",
+      "details": {
+        "clientId": "c_1789811818215"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818412_wtj3",
+      "timestamp": "2026-09-19T09:56:58.412Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_GEAR",
+      "category": "Inventory",
+      "summary": "Deleted gear item #g_1789811818167",
+      "details": {
+        "gearId": "g_1789811818167"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818393_wrf3",
+      "timestamp": "2026-09-19T09:56:58.393Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811818379_0",
+      "details": {
+        "bookingId": "b_1789811818379_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818381_2xxy",
+      "timestamp": "2026-09-19T09:56:58.381Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c_1789811818215 (2031-01-01 to 2031-01-05)",
+      "details": {
+        "booking": {
+          "id": "b_1789811818379_0",
+          "gearId": "g_1789811818167",
+          "clientId": "c_1789811818215",
+          "startDate": "2031-01-01",
+          "endDate": "2031-01-05",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818347_yy7w",
+      "timestamp": "2026-09-19T09:56:58.347Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_CLIENT",
+      "category": "Clients",
+      "summary": "Deleted client #c_1789811818320",
+      "details": {
+        "clientId": "c_1789811818320"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818326_ae9c",
+      "timestamp": "2026-09-19T09:56:58.326Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_CLIENT",
+      "category": "Clients",
+      "summary": "Registered new client \"Client Two\" (client2_1789811817888@unique.com)",
+      "details": {
+        "clientId": "c_1789811818320",
+        "name": "Client Two",
+        "email": "client2_1789811817888@unique.com",
+        "phone": "+1 555-123-7888"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818300_idgj",
+      "timestamp": "2026-09-19T09:56:58.300Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "RETURN_RENTAL",
+      "category": "Rentals",
+      "summary": "Checked in / returned gear for rental #b_1789811818283_0",
+      "details": {
+        "bookingId": "b_1789811818283_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818284_9eyl",
+      "timestamp": "2026-09-19T09:56:58.284Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c_1789811818215 (2030-05-01 to 2030-05-10)",
+      "details": {
+        "booking": {
+          "id": "b_1789811818283_0",
+          "gearId": "g_1789811818167",
+          "clientId": "c_1789811818215",
+          "startDate": "2030-05-01",
+          "endDate": "2030-05-10",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818273_cogk",
+      "timestamp": "2026-09-19T09:56:58.273Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811818249_0",
+      "details": {
+        "bookingId": "b_1789811818249_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818250_u26h",
+      "timestamp": "2026-09-19T09:56:58.250Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c_1789811818215 (2030-05-01 to 2030-05-10)",
+      "details": {
+        "booking": {
+          "id": "b_1789811818249_0",
+          "gearId": "g_1789811818167",
+          "clientId": "c_1789811818215",
+          "startDate": "2030-05-01",
+          "endDate": "2030-05-10",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818232_qp82",
+      "timestamp": "2026-09-19T09:56:58.232Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "UPDATE_CLIENT",
+      "category": "Clients",
+      "summary": "Updated client \"Universal Visuals Studios\" (studio_1789811817888@universalvisuals.com)",
+      "details": {
+        "clientId": "c_1789811818215",
+        "changes": {
+          "name": "Universal Visuals Studios",
+          "email": "studio_1789811817888@universalvisuals.com",
+          "phone": "+1 555-999-7888"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818218_v3l3",
+      "timestamp": "2026-09-19T09:56:58.218Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_CLIENT",
+      "category": "Clients",
+      "summary": "Registered new client \"Universal Visuals Ltd\" (contact_1789811817888@universalvisuals.com)",
+      "details": {
+        "clientId": "c_1789811818215",
+        "name": "Universal Visuals Ltd",
+        "email": "contact_1789811817888@universalvisuals.com",
+        "phone": "+1 555-444-7888"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818204_twkh",
+      "timestamp": "2026-09-19T09:56:58.204Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "MAINTENANCE_TOGGLE",
+      "category": "Inventory",
+      "summary": "Toggled gear \"RED V-Raptor 8K Cinema Camera\" status to \"Available\"",
+      "details": {
+        "gearId": "g_1789811818167",
+        "changes": {
+          "status": "Available"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818190_qq1q",
+      "timestamp": "2026-09-19T09:56:58.191Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "MAINTENANCE_TOGGLE",
+      "category": "Inventory",
+      "summary": "Toggled gear \"RED V-Raptor 8K Cinema Camera\" status to \"Maintenance\"",
+      "details": {
+        "gearId": "g_1789811818167",
+        "changes": {
+          "status": "Maintenance"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818171_jdrf",
+      "timestamp": "2026-09-19T09:56:58.171Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_GEAR",
+      "category": "Inventory",
+      "summary": "Added gear item \"RED V-Raptor 8K Cinema Camera\" (TST-1789811817888)",
+      "details": {
+        "gearId": "g_1789811818167",
+        "name": "RED V-Raptor 8K Cinema Camera",
+        "category": "Cameras",
+        "dailyRate": 350
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818152_3x35",
+      "timestamp": "2026-09-19T09:56:58.152Z",
+      "userId": "u_1789811817957_rqg8",
+      "userName": "Audit Staff",
+      "userEmail": "audit_staff_1789811817888@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Audit Staff\" logged in as Staff",
+      "details": {
+        "userId": "u_1789811817957_rqg8",
+        "email": "audit_staff_1789811817888@gearflow.com",
+        "role": "staff"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818087_4yua",
+      "timestamp": "2026-09-19T09:56:58.087Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "RESET_PASSWORD",
+      "category": "Staff",
+      "summary": "Reset password for user #u_1789811817957_rqg8 to default 12345",
+      "details": {
+        "userId": "u_1789811817957_rqg8"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811818020_ybs8",
+      "timestamp": "2026-09-19T09:56:58.020Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "STATUS_CHANGE",
+      "category": "Staff",
+      "summary": "Changed account status for user #u_1789811817957_rqg8 to Active",
+      "details": {
+        "userId": "u_1789811817957_rqg8",
+        "status": "Active"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811817982_v3ka",
+      "timestamp": "2026-09-19T09:56:57.982Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "STATUS_CHANGE",
+      "category": "Staff",
+      "summary": "Changed account status for user #u_1789811817957_rqg8 to Banned",
+      "details": {
+        "userId": "u_1789811817957_rqg8",
+        "status": "Banned"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811817963_xh0w",
+      "timestamp": "2026-09-19T09:56:57.963Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Staff account for \"Audit Staff\" (audit_staff_1789811817888@gearflow.com)",
+      "details": {
+        "userId": "u_1789811817957_rqg8",
+        "name": "Audit Staff",
+        "email": "audit_staff_1789811817888@gearflow.com",
+        "accountType": "Staff"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811817763_yq8b",
+      "timestamp": "2026-09-19T09:56:57.764Z",
+      "userId": "u_staff_gearflow",
+      "userName": "GearFlow Staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"GearFlow Staff\" logged in as Staff",
+      "details": {
+        "userId": "u_staff_gearflow",
+        "email": "staff@gearflow.com",
+        "role": "staff"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811817693_i8gh",
+      "timestamp": "2026-09-19T09:56:57.693Z",
+      "userId": "u_admin_gearflow",
+      "userName": "GearFlow Admin 1",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
+      "details": {
+        "userId": "u_admin_gearflow",
+        "email": "admin@gearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811816902_y79a",
+      "timestamp": "2026-09-19T09:56:56.902Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_USER",
+      "category": "Staff",
+      "summary": "Deleted user account #u_1789811816876_sv3v",
+      "details": {
+        "userId": "u_1789811816876_sv3v"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811816879_up3h",
+      "timestamp": "2026-09-19T09:56:56.879Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Staff account for \"Dave Operations\" (dave_1789811816820@gearflow.com)",
+      "details": {
+        "userId": "u_1789811816876_sv3v",
+        "name": "Dave Operations",
+        "email": "dave_1789811816820@gearflow.com",
+        "accountType": "Staff"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811816814_2051",
+      "timestamp": "2026-09-19T09:56:56.814Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Admin account for \"Second Admin\" (admin2_1789811816750@gearflow.com)",
+      "details": {
+        "userId": "u_1789811816811_1i6z",
+        "name": "Second Admin",
+        "email": "admin2_1789811816750@gearflow.com",
+        "accountType": "Admin"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811816738_hr05",
+      "timestamp": "2026-09-19T09:56:56.738Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811816722_0",
+      "details": {
+        "bookingId": "b_1789811816722_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811816725_7dzt",
+      "timestamp": "2026-09-19T09:56:56.725Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c1 (2103-11-01 to 2103-11-03)",
+      "details": {
+        "booking": {
+          "id": "b_1789811816722_0",
+          "gearId": "g2",
+          "clientId": "c1",
+          "startDate": "2103-11-01",
+          "endDate": "2103-11-03",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811816710_pnop",
+      "timestamp": "2026-09-19T09:56:56.710Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_GEAR",
+      "category": "Inventory",
+      "summary": "Deleted gear item #g_1789811816692",
+      "details": {
+        "gearId": "g_1789811816692"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811816696_rz00",
+      "timestamp": "2026-09-19T09:56:56.696Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "ADD_GEAR",
+      "category": "Inventory",
+      "summary": "Added gear item \"Authorized Staff Gear\" (TAG-STAFF-01)",
+      "details": {
+        "gearId": "g_1789811816692",
+        "name": "Authorized Staff Gear",
+        "category": "Cameras",
+        "dailyRate": 150
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811816675_mgvx",
+      "timestamp": "2026-09-19T09:56:56.675Z",
+      "userId": "u_staff_gearflow",
+      "userName": "GearFlow Staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"GearFlow Staff\" logged in as Staff",
+      "details": {
+        "userId": "u_staff_gearflow",
+        "email": "staff@gearflow.com",
+        "role": "staff"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811816611_pgju",
+      "timestamp": "2026-09-19T09:56:56.611Z",
+      "userId": "u_admin_gearflow",
+      "userName": "GearFlow Admin 1",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
+      "details": {
+        "userId": "u_admin_gearflow",
+        "email": "admin@gearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811816001_spdr",
+      "timestamp": "2026-09-19T09:56:56.001Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_USER",
+      "category": "Staff",
+      "summary": "Deleted user account #u_1789811815823_ymmv",
+      "details": {
+        "userId": "u_1789811815823_ymmv"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811815958_gvs7",
+      "timestamp": "2026-09-19T09:56:55.958Z",
+      "userId": "u_1789811815823_ymmv",
+      "userName": "staff_flow_1789811815766",
+      "userEmail": "staff_flow_1789811815766@ekgearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CHANGE_PASSWORD",
+      "category": "Auth",
+      "summary": "Changed password for user #u_1789811815823_ymmv",
+      "details": {
+        "userId": "u_1789811815823_ymmv"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811815889_4rfl",
+      "timestamp": "2026-09-19T09:56:55.889Z",
+      "userId": "u_1789811815823_ymmv",
+      "userName": "Flow Test Staff",
+      "userEmail": "staff_flow_1789811815766@ekgearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Flow Test Staff\" logged in as Staff",
+      "details": {
+        "userId": "u_1789811815823_ymmv",
+        "email": "staff_flow_1789811815766@ekgearflow.com",
+        "role": "staff"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811815827_dnzg",
+      "timestamp": "2026-09-19T09:56:55.827Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Staff account for \"Flow Test Staff\" (staff_flow_1789811815766@ekgearflow.com)",
+      "details": {
+        "userId": "u_1789811815823_ymmv",
+        "name": "Flow Test Staff",
+        "email": "staff_flow_1789811815766@ekgearflow.com",
+        "accountType": "Staff"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811815757_2hfh",
+      "timestamp": "2026-09-19T09:56:55.757Z",
+      "userId": "u_admin_gearflow",
+      "userName": "GearFlow Admin 1",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
+      "details": {
+        "userId": "u_admin_gearflow",
+        "email": "admin@gearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811815513_fbh6",
+      "timestamp": "2026-09-19T09:56:55.513Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811815466_0",
+      "details": {
+        "bookingId": "b_1789811815466_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811815502_wkuq",
+      "timestamp": "2026-09-19T09:56:55.502Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811815435_0",
+      "details": {
+        "bookingId": "b_1789811815435_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811815488_cqw0",
+      "timestamp": "2026-09-19T09:56:55.488Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811815423_0",
+      "details": {
+        "bookingId": "b_1789811815423_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811815470_wsnt",
+      "timestamp": "2026-09-19T09:56:55.470Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c1 (2029-06-10 to 2029-06-15)",
+      "details": {
+        "booking": {
+          "id": "b_1789811815466_0",
+          "gearId": "g1",
+          "clientId": "c1",
+          "startDate": "2029-06-10",
+          "endDate": "2029-06-15",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811815453_lr4h",
+      "timestamp": "2026-09-19T09:56:55.453Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811815381_0",
+      "details": {
+        "bookingId": "b_1789811815381_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811815437_6xuc",
+      "timestamp": "2026-09-19T09:56:55.437Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c1 (2029-06-10 to 2029-06-15)",
+      "details": {
+        "booking": {
+          "id": "b_1789811815435_0",
+          "gearId": "g2",
+          "clientId": "c1",
+          "startDate": "2029-06-10",
+          "endDate": "2029-06-15",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811815424_uavt",
+      "timestamp": "2026-09-19T09:56:55.424Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c1 (2029-06-20 to 2029-06-25)",
+      "details": {
+        "booking": {
+          "id": "b_1789811815423_0",
+          "gearId": "g1",
+          "clientId": "c1",
+          "startDate": "2029-06-20",
+          "endDate": "2029-06-25",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811815383_wrsy",
+      "timestamp": "2026-09-19T09:56:55.383Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c1 (2029-06-10 to 2029-06-15)",
+      "details": {
+        "booking": {
+          "id": "b_1789811815381_0",
+          "gearId": "g1",
+          "clientId": "c1",
+          "startDate": "2029-06-10",
+          "endDate": "2029-06-15",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811815331_u9ci",
+      "timestamp": "2026-09-19T09:56:55.331Z",
+      "userId": "u_admin_gearflow",
+      "userName": "GearFlow Admin 1",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
+      "details": {
+        "userId": "u_admin_gearflow",
+        "email": "admin@gearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811814591_krpm",
+      "timestamp": "2026-09-19T09:56:54.591Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_USER",
+      "category": "Staff",
+      "summary": "Deleted user account #u_1789811814438_h7qv",
+      "details": {
+        "userId": "u_1789811814438_h7qv"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811814576_5zs5",
+      "timestamp": "2026-09-19T09:56:54.576Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_USER",
+      "category": "Staff",
+      "summary": "Deleted user account #u_1789811814295_5gd1",
+      "details": {
+        "userId": "u_1789811814295_5gd1"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811814563_di4y",
+      "timestamp": "2026-09-19T09:56:54.563Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_GEAR",
+      "category": "Inventory",
+      "summary": "Deleted gear item #g_1789811814522",
+      "details": {
+        "gearId": "g_1789811814522"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811814524_jep7",
+      "timestamp": "2026-09-19T09:56:54.524Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_GEAR",
+      "category": "Inventory",
+      "summary": "Added gear item \"Audit Lens 1789811814519\" (AT-AUD-4519)",
+      "details": {
+        "gearId": "g_1789811814522",
+        "name": "Audit Lens 1789811814519",
+        "category": "Lenses",
+        "dailyRate": 65
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811814506_5rzc",
+      "timestamp": "2026-09-19T09:56:54.506Z",
+      "userId": "u_1789811814438_h7qv",
+      "userName": "Secondary Admin",
+      "userEmail": "admin_secondary_1789811814376@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Secondary Admin\" logged in as Admin",
+      "details": {
+        "userId": "u_1789811814438_h7qv",
+        "email": "admin_secondary_1789811814376@ekgearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811814441_nxzy",
+      "timestamp": "2026-09-19T09:56:54.441Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Admin account for \"Secondary Admin\" (admin_secondary_1789811814376@ekgearflow.com)",
+      "details": {
+        "userId": "u_1789811814438_h7qv",
+        "name": "Secondary Admin",
+        "email": "admin_secondary_1789811814376@ekgearflow.com",
+        "accountType": "Admin"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811814367_sycf",
+      "timestamp": "2026-09-19T09:56:54.367Z",
+      "userId": "u_1789811814295_5gd1",
+      "userName": "Audit Test Staff",
+      "userEmail": "staff_audit_1789811814235@ekgearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Audit Test Staff\" logged in as Staff",
+      "details": {
+        "userId": "u_1789811814295_5gd1",
+        "email": "staff_audit_1789811814235@ekgearflow.com",
+        "role": "staff"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811814301_c6rm",
+      "timestamp": "2026-09-19T09:56:54.301Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Staff account for \"Audit Test Staff\" (staff_audit_1789811814235@ekgearflow.com)",
+      "details": {
+        "userId": "u_1789811814295_5gd1",
+        "name": "Audit Test Staff",
+        "email": "staff_audit_1789811814235@ekgearflow.com",
+        "accountType": "Staff"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811814215_mh2r",
+      "timestamp": "2026-09-19T09:56:54.215Z",
+      "userId": "u1",
+      "userName": "Admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Admin\" logged in as Admin",
+      "details": {
+        "userId": "u1",
+        "email": "admin@ekgearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813973_epb5",
+      "timestamp": "2026-09-19T09:56:53.973Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_USER",
+      "category": "Staff",
+      "summary": "Deleted user account #u_1789811813770_sbfs",
+      "details": {
+        "userId": "u_1789811813770_sbfs"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813957_3mzr",
+      "timestamp": "2026-09-19T09:56:53.957Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_CLIENT",
+      "category": "Clients",
+      "summary": "Deleted client #c_1789811813920",
+      "details": {
+        "clientId": "c_1789811813920"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813924_60l2",
+      "timestamp": "2026-09-19T09:56:53.924Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_CLIENT",
+      "category": "Clients",
+      "summary": "Registered new client \"Secure Client <script>alert(1)</script>\" (client_xss_1789811813915@example.com)",
+      "details": {
+        "clientId": "c_1789811813920",
+        "name": "Secure Client <script>alert(1)</script>",
+        "email": "client_xss_1789811813915@example.com",
+        "phone": "+233 24 7684533"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813897_as8l",
+      "timestamp": "2026-09-19T09:56:53.897Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "STATUS_CHANGE",
+      "category": "Staff",
+      "summary": "Changed account status for user #u_1789811813770_sbfs to Active",
+      "details": {
+        "userId": "u_1789811813770_sbfs",
+        "status": "Active"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813867_4kw9",
+      "timestamp": "2026-09-19T09:56:53.867Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "STATUS_CHANGE",
+      "category": "Staff",
+      "summary": "Changed account status for user #u_1789811813770_sbfs to Banned",
+      "details": {
+        "userId": "u_1789811813770_sbfs",
+        "status": "Banned"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813838_h8l0",
+      "timestamp": "2026-09-19T09:56:53.838Z",
+      "userId": "u_1789811813770_sbfs",
+      "userName": "Security Test Staff",
+      "userEmail": "sec_staff_1789811813707@ekgearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Security Test Staff\" logged in as Staff",
+      "details": {
+        "userId": "u_1789811813770_sbfs",
+        "email": "sec_staff_1789811813707@ekgearflow.com",
+        "role": "staff"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813773_asxd",
+      "timestamp": "2026-09-19T09:56:53.773Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Staff account for \"Security Test Staff\" (sec_staff_1789811813707@ekgearflow.com)",
+      "details": {
+        "userId": "u_1789811813770_sbfs",
+        "name": "Security Test Staff",
+        "email": "sec_staff_1789811813707@ekgearflow.com",
+        "accountType": "Staff"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813700_kq19",
+      "timestamp": "2026-09-19T09:56:53.700Z",
+      "userId": "u1",
+      "userName": "Admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Admin\" logged in as Admin",
+      "details": {
+        "userId": "u1",
+        "email": "admin@ekgearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813439_s9fk",
+      "timestamp": "2026-09-19T09:56:53.440Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_CLIENT",
+      "category": "Clients",
+      "summary": "Deleted client #c_1789811813237",
+      "details": {
+        "clientId": "c_1789811813237"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813426_whjk",
+      "timestamp": "2026-09-19T09:56:53.426Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_GEAR",
+      "category": "Inventory",
+      "summary": "Deleted gear item #g_1789811813324",
+      "details": {
+        "gearId": "g_1789811813324"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813414_dbve",
+      "timestamp": "2026-09-19T09:56:53.414Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_GEAR",
+      "category": "Inventory",
+      "summary": "Deleted gear item #g_1789811813220",
+      "details": {
+        "gearId": "g_1789811813220"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813401_mor9",
+      "timestamp": "2026-09-19T09:56:53.401Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811813355_0",
+      "details": {
+        "bookingId": "b_1789811813355_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813388_rs9d",
+      "timestamp": "2026-09-19T09:56:53.388Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811813339_0",
+      "details": {
+        "bookingId": "b_1789811813339_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813373_n9ai",
+      "timestamp": "2026-09-19T09:56:53.374Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811813259_0",
+      "details": {
+        "bookingId": "b_1789811813259_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813358_4s04",
+      "timestamp": "2026-09-19T09:56:53.358Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c_1789811813237 (2035-10-10 to 2035-10-15)",
+      "details": {
+        "booking": {
+          "id": "b_1789811813355_0",
+          "gearId": "g_1789811813324",
+          "clientId": "c_1789811813237",
+          "startDate": "2035-10-10",
+          "endDate": "2035-10-15",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813341_bz9b",
+      "timestamp": "2026-09-19T09:56:53.341Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c_1789811813237 (2035-10-01 to 2035-10-05)",
+      "details": {
+        "booking": {
+          "id": "b_1789811813339_0",
+          "gearId": "g_1789811813324",
+          "clientId": "c_1789811813237",
+          "startDate": "2035-10-01",
+          "endDate": "2035-10-05",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813329_681p",
+      "timestamp": "2026-09-19T09:56:53.329Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_GEAR",
+      "category": "Inventory",
+      "summary": "Added gear item \"Independent Mic 1789811813208\" (TAG-MIC-3208)",
+      "details": {
+        "gearId": "g_1789811813324",
+        "name": "Independent Mic 1789811813208",
+        "category": "Audio",
+        "dailyRate": 40
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813265_gm81",
+      "timestamp": "2026-09-19T09:56:53.265Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c_1789811813237 (2035-09-01 to 2035-09-07)",
+      "details": {
+        "booking": {
+          "id": "b_1789811813259_0",
+          "gearId": "g_1789811813220",
+          "clientId": "c_1789811813237",
+          "startDate": "2035-09-01",
+          "endDate": "2035-09-07",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813240_fsnc",
+      "timestamp": "2026-09-19T09:56:53.240Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_CLIENT",
+      "category": "Clients",
+      "summary": "Registered new client \"Concurrent Client 1789811813208\" (client_cc_1789811813208@example.com)",
+      "details": {
+        "clientId": "c_1789811813237",
+        "name": "Concurrent Client 1789811813208",
+        "email": "client_cc_1789811813208@example.com",
+        "phone": "+233 20 3774458"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813223_tv7u",
+      "timestamp": "2026-09-19T09:56:53.223Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_GEAR",
+      "category": "Inventory",
+      "summary": "Added gear item \"Concurrency Lens 1789811813208\" (TAG-CC-3208)",
+      "details": {
+        "gearId": "g_1789811813220",
+        "name": "Concurrency Lens 1789811813208",
+        "category": "Lenses",
+        "dailyRate": 150
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811813191_gw50",
+      "timestamp": "2026-09-19T09:56:53.191Z",
+      "userId": "u1",
+      "userName": "Admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Admin\" logged in as Admin",
+      "details": {
+        "userId": "u1",
+        "email": "admin@ekgearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774878_8y58",
+      "timestamp": "2026-09-19T09:56:14.878Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_USER",
+      "category": "Staff",
+      "summary": "Deleted user account #u_1789811774543_hmp7",
+      "details": {
+        "userId": "u_1789811774543_hmp7"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774869_2pa3",
+      "timestamp": "2026-09-19T09:56:14.869Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_CLIENT",
+      "category": "Clients",
+      "summary": "Deleted client #c_1789811774737",
+      "details": {
+        "clientId": "c_1789811774737"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774860_5gog",
+      "timestamp": "2026-09-19T09:56:14.860Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_GEAR",
+      "category": "Inventory",
+      "summary": "Deleted gear item #g_1789811774707",
+      "details": {
+        "gearId": "g_1789811774707"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774848_e6fh",
+      "timestamp": "2026-09-19T09:56:14.848Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811774839_0",
+      "details": {
+        "bookingId": "b_1789811774839_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774841_j9pm",
+      "timestamp": "2026-09-19T09:56:14.841Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c_1789811774737 (2031-01-01 to 2031-01-05)",
+      "details": {
+        "booking": {
+          "id": "b_1789811774839_0",
+          "gearId": "g_1789811774707",
+          "clientId": "c_1789811774737",
+          "startDate": "2031-01-01",
+          "endDate": "2031-01-05",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774820_yggu",
+      "timestamp": "2026-09-19T09:56:14.820Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_CLIENT",
+      "category": "Clients",
+      "summary": "Deleted client #c_1789811774806",
+      "details": {
+        "clientId": "c_1789811774806"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774809_alm4",
+      "timestamp": "2026-09-19T09:56:14.809Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_CLIENT",
+      "category": "Clients",
+      "summary": "Registered new client \"Client Two\" (client2_1789811774486@unique.com)",
+      "details": {
+        "clientId": "c_1789811774806",
+        "name": "Client Two",
+        "email": "client2_1789811774486@unique.com",
+        "phone": "+1 555-123-4486"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774792_t7vz",
+      "timestamp": "2026-09-19T09:56:14.792Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "RETURN_RENTAL",
+      "category": "Rentals",
+      "summary": "Checked in / returned gear for rental #b_1789811774783_0",
+      "details": {
+        "bookingId": "b_1789811774783_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774785_7t3o",
+      "timestamp": "2026-09-19T09:56:14.785Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c_1789811774737 (2030-05-01 to 2030-05-10)",
+      "details": {
+        "booking": {
+          "id": "b_1789811774783_0",
+          "gearId": "g_1789811774707",
+          "clientId": "c_1789811774737",
+          "startDate": "2030-05-01",
+          "endDate": "2030-05-10",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774777_dgav",
+      "timestamp": "2026-09-19T09:56:14.777Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811774758_0",
+      "details": {
+        "bookingId": "b_1789811774758_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774759_x372",
+      "timestamp": "2026-09-19T09:56:14.759Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c_1789811774737 (2030-05-01 to 2030-05-10)",
+      "details": {
+        "booking": {
+          "id": "b_1789811774758_0",
+          "gearId": "g_1789811774707",
+          "clientId": "c_1789811774737",
+          "startDate": "2030-05-01",
+          "endDate": "2030-05-10",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774746_gpit",
+      "timestamp": "2026-09-19T09:56:14.746Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "UPDATE_CLIENT",
+      "category": "Clients",
+      "summary": "Updated client \"Universal Visuals Studios\" (studio_1789811774486@universalvisuals.com)",
+      "details": {
+        "clientId": "c_1789811774737",
+        "changes": {
+          "name": "Universal Visuals Studios",
+          "email": "studio_1789811774486@universalvisuals.com",
+          "phone": "+1 555-999-4486"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774739_n4nq",
+      "timestamp": "2026-09-19T09:56:14.739Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_CLIENT",
+      "category": "Clients",
+      "summary": "Registered new client \"Universal Visuals Ltd\" (contact_1789811774486@universalvisuals.com)",
+      "details": {
+        "clientId": "c_1789811774737",
+        "name": "Universal Visuals Ltd",
+        "email": "contact_1789811774486@universalvisuals.com",
+        "phone": "+1 555-444-4486"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774730_weef",
+      "timestamp": "2026-09-19T09:56:14.730Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "MAINTENANCE_TOGGLE",
+      "category": "Inventory",
+      "summary": "Toggled gear \"RED V-Raptor 8K Cinema Camera\" status to \"Available\"",
+      "details": {
+        "gearId": "g_1789811774707",
+        "changes": {
+          "status": "Available"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774722_5gx8",
+      "timestamp": "2026-09-19T09:56:14.722Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "MAINTENANCE_TOGGLE",
+      "category": "Inventory",
+      "summary": "Toggled gear \"RED V-Raptor 8K Cinema Camera\" status to \"Maintenance\"",
+      "details": {
+        "gearId": "g_1789811774707",
+        "changes": {
+          "status": "Maintenance"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774710_guyv",
+      "timestamp": "2026-09-19T09:56:14.710Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_GEAR",
+      "category": "Inventory",
+      "summary": "Added gear item \"RED V-Raptor 8K Cinema Camera\" (TST-1789811774486)",
+      "details": {
+        "gearId": "g_1789811774707",
+        "name": "RED V-Raptor 8K Cinema Camera",
+        "category": "Cameras",
+        "dailyRate": 350
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774696_zaj1",
+      "timestamp": "2026-09-19T09:56:14.696Z",
+      "userId": "u_1789811774543_hmp7",
+      "userName": "Audit Staff",
+      "userEmail": "audit_staff_1789811774486@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Audit Staff\" logged in as Staff",
+      "details": {
+        "userId": "u_1789811774543_hmp7",
+        "email": "audit_staff_1789811774486@gearflow.com",
+        "role": "staff"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774640_ye6r",
+      "timestamp": "2026-09-19T09:56:14.640Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "RESET_PASSWORD",
+      "category": "Staff",
+      "summary": "Reset password for user #u_1789811774543_hmp7 to default 12345",
+      "details": {
+        "userId": "u_1789811774543_hmp7"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774579_1ugq",
+      "timestamp": "2026-09-19T09:56:14.579Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "STATUS_CHANGE",
+      "category": "Staff",
+      "summary": "Changed account status for user #u_1789811774543_hmp7 to Active",
+      "details": {
+        "userId": "u_1789811774543_hmp7",
+        "status": "Active"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774558_onvj",
+      "timestamp": "2026-09-19T09:56:14.558Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "STATUS_CHANGE",
+      "category": "Staff",
+      "summary": "Changed account status for user #u_1789811774543_hmp7 to Banned",
+      "details": {
+        "userId": "u_1789811774543_hmp7",
+        "status": "Banned"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774547_qgk2",
+      "timestamp": "2026-09-19T09:56:14.547Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Staff account for \"Audit Staff\" (audit_staff_1789811774486@gearflow.com)",
+      "details": {
+        "userId": "u_1789811774543_hmp7",
+        "name": "Audit Staff",
+        "email": "audit_staff_1789811774486@gearflow.com",
+        "accountType": "Staff"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774375_0uff",
+      "timestamp": "2026-09-19T09:56:14.375Z",
+      "userId": "u_staff_gearflow",
+      "userName": "GearFlow Staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"GearFlow Staff\" logged in as Staff",
+      "details": {
+        "userId": "u_staff_gearflow",
+        "email": "staff@gearflow.com",
+        "role": "staff"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811774314_4etr",
+      "timestamp": "2026-09-19T09:56:14.314Z",
+      "userId": "u_admin_gearflow",
+      "userName": "GearFlow Admin 1",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
+      "details": {
+        "userId": "u_admin_gearflow",
+        "email": "admin@gearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811773598_wtwh",
+      "timestamp": "2026-09-19T09:56:13.598Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_USER",
+      "category": "Staff",
+      "summary": "Deleted user account #u_1789811773578_v9mi",
+      "details": {
+        "userId": "u_1789811773578_v9mi"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811773581_psm6",
+      "timestamp": "2026-09-19T09:56:13.581Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Staff account for \"Dave Operations\" (dave_1789811773525@gearflow.com)",
+      "details": {
+        "userId": "u_1789811773578_v9mi",
+        "name": "Dave Operations",
+        "email": "dave_1789811773525@gearflow.com",
+        "accountType": "Staff"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811773522_41uj",
+      "timestamp": "2026-09-19T09:56:13.522Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Admin account for \"Second Admin\" (admin2_1789811773465@gearflow.com)",
+      "details": {
+        "userId": "u_1789811773519_dtq0",
+        "name": "Second Admin",
+        "email": "admin2_1789811773465@gearflow.com",
+        "accountType": "Admin"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811773457_7eti",
+      "timestamp": "2026-09-19T09:56:13.457Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811773445_0",
+      "details": {
+        "bookingId": "b_1789811773445_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811773446_al8h",
+      "timestamp": "2026-09-19T09:56:13.446Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c1 (2052-11-01 to 2052-11-03)",
+      "details": {
+        "booking": {
+          "id": "b_1789811773445_0",
+          "gearId": "g2",
+          "clientId": "c1",
+          "startDate": "2052-11-01",
+          "endDate": "2052-11-03",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811773437_1swl",
+      "timestamp": "2026-09-19T09:56:13.437Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_GEAR",
+      "category": "Inventory",
+      "summary": "Deleted gear item #g_1789811773425",
+      "details": {
+        "gearId": "g_1789811773425"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811773427_1w22",
+      "timestamp": "2026-09-19T09:56:13.427Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "ADD_GEAR",
+      "category": "Inventory",
+      "summary": "Added gear item \"Authorized Staff Gear\" (TAG-STAFF-01)",
+      "details": {
+        "gearId": "g_1789811773425",
+        "name": "Authorized Staff Gear",
+        "category": "Cameras",
+        "dailyRate": 150
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811773414_bj48",
+      "timestamp": "2026-09-19T09:56:13.414Z",
+      "userId": "u_staff_gearflow",
+      "userName": "GearFlow Staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"GearFlow Staff\" logged in as Staff",
+      "details": {
+        "userId": "u_staff_gearflow",
+        "email": "staff@gearflow.com",
+        "role": "staff"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811773360_rp9b",
+      "timestamp": "2026-09-19T09:56:13.360Z",
+      "userId": "u_admin_gearflow",
+      "userName": "GearFlow Admin 1",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
+      "details": {
+        "userId": "u_admin_gearflow",
+        "email": "admin@gearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811772819_ecf7",
+      "timestamp": "2026-09-19T09:56:12.819Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_USER",
+      "category": "Staff",
+      "summary": "Deleted user account #u_1789811772658_sdz1",
+      "details": {
+        "userId": "u_1789811772658_sdz1"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811772785_evcw",
+      "timestamp": "2026-09-19T09:56:12.785Z",
+      "userId": "u_1789811772658_sdz1",
+      "userName": "staff_flow_1789811772602",
+      "userEmail": "staff_flow_1789811772602@ekgearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CHANGE_PASSWORD",
+      "category": "Auth",
+      "summary": "Changed password for user #u_1789811772658_sdz1",
+      "details": {
+        "userId": "u_1789811772658_sdz1"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811772721_phxt",
+      "timestamp": "2026-09-19T09:56:12.721Z",
+      "userId": "u_1789811772658_sdz1",
+      "userName": "Flow Test Staff",
+      "userEmail": "staff_flow_1789811772602@ekgearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Flow Test Staff\" logged in as Staff",
+      "details": {
+        "userId": "u_1789811772658_sdz1",
+        "email": "staff_flow_1789811772602@ekgearflow.com",
+        "role": "staff"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811772661_zo82",
+      "timestamp": "2026-09-19T09:56:12.661Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Staff account for \"Flow Test Staff\" (staff_flow_1789811772602@ekgearflow.com)",
+      "details": {
+        "userId": "u_1789811772658_sdz1",
+        "name": "Flow Test Staff",
+        "email": "staff_flow_1789811772602@ekgearflow.com",
+        "accountType": "Staff"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811772594_etwc",
+      "timestamp": "2026-09-19T09:56:12.594Z",
+      "userId": "u_admin_gearflow",
+      "userName": "GearFlow Admin 1",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
+      "details": {
+        "userId": "u_admin_gearflow",
+        "email": "admin@gearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811772382_xt23",
+      "timestamp": "2026-09-19T09:56:12.382Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811772337_0",
+      "details": {
+        "bookingId": "b_1789811772337_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811772371_2jzq",
+      "timestamp": "2026-09-19T09:56:12.371Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811772310_0",
+      "details": {
+        "bookingId": "b_1789811772310_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811772360_5xby",
+      "timestamp": "2026-09-19T09:56:12.360Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811772295_0",
+      "details": {
+        "bookingId": "b_1789811772295_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811772342_iw39",
+      "timestamp": "2026-09-19T09:56:12.342Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c1 (2029-06-10 to 2029-06-15)",
+      "details": {
+        "booking": {
+          "id": "b_1789811772337_0",
+          "gearId": "g1",
+          "clientId": "c1",
+          "startDate": "2029-06-10",
+          "endDate": "2029-06-15",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811772326_0i5t",
+      "timestamp": "2026-09-19T09:56:12.326Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811772255_0",
+      "details": {
+        "bookingId": "b_1789811772255_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811772312_ur8w",
+      "timestamp": "2026-09-19T09:56:12.312Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c1 (2029-06-10 to 2029-06-15)",
+      "details": {
+        "booking": {
+          "id": "b_1789811772310_0",
+          "gearId": "g2",
+          "clientId": "c1",
+          "startDate": "2029-06-10",
+          "endDate": "2029-06-15",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811772297_foz8",
+      "timestamp": "2026-09-19T09:56:12.297Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c1 (2029-06-20 to 2029-06-25)",
+      "details": {
+        "booking": {
+          "id": "b_1789811772295_0",
+          "gearId": "g1",
+          "clientId": "c1",
+          "startDate": "2029-06-20",
+          "endDate": "2029-06-25",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811772257_6ryv",
+      "timestamp": "2026-09-19T09:56:12.257Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c1 (2029-06-10 to 2029-06-15)",
+      "details": {
+        "booking": {
+          "id": "b_1789811772255_0",
+          "gearId": "g1",
+          "clientId": "c1",
+          "startDate": "2029-06-10",
+          "endDate": "2029-06-15",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811772220_cnps",
+      "timestamp": "2026-09-19T09:56:12.220Z",
+      "userId": "u_admin_gearflow",
+      "userName": "GearFlow Admin 1",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
+      "details": {
+        "userId": "u_admin_gearflow",
+        "email": "admin@gearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811771615_jn77",
+      "timestamp": "2026-09-19T09:56:11.615Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_USER",
+      "category": "Staff",
+      "summary": "Deleted user account #u_1789811771473_duue",
+      "details": {
+        "userId": "u_1789811771473_duue"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811771604_lnrd",
+      "timestamp": "2026-09-19T09:56:11.604Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_USER",
+      "category": "Staff",
+      "summary": "Deleted user account #u_1789811771343_83xn",
+      "details": {
+        "userId": "u_1789811771343_83xn"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811771592_fprw",
+      "timestamp": "2026-09-19T09:56:11.592Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_GEAR",
+      "category": "Inventory",
+      "summary": "Deleted gear item #g_1789811771554",
+      "details": {
+        "gearId": "g_1789811771554"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811771557_ja7c",
+      "timestamp": "2026-09-19T09:56:11.557Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_GEAR",
+      "category": "Inventory",
+      "summary": "Added gear item \"Audit Lens 1789811771548\" (AT-AUD-1548)",
+      "details": {
+        "gearId": "g_1789811771554",
+        "name": "Audit Lens 1789811771548",
+        "category": "Lenses",
+        "dailyRate": 65
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811771539_rnud",
+      "timestamp": "2026-09-19T09:56:11.539Z",
+      "userId": "u_1789811771473_duue",
+      "userName": "Secondary Admin",
+      "userEmail": "admin_secondary_1789811771412@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Secondary Admin\" logged in as Admin",
+      "details": {
+        "userId": "u_1789811771473_duue",
+        "email": "admin_secondary_1789811771412@ekgearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811771476_mlib",
+      "timestamp": "2026-09-19T09:56:11.476Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Admin account for \"Secondary Admin\" (admin_secondary_1789811771412@ekgearflow.com)",
+      "details": {
+        "userId": "u_1789811771473_duue",
+        "name": "Secondary Admin",
+        "email": "admin_secondary_1789811771412@ekgearflow.com",
+        "accountType": "Admin"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811771404_xe8z",
+      "timestamp": "2026-09-19T09:56:11.404Z",
+      "userId": "u_1789811771343_83xn",
+      "userName": "Audit Test Staff",
+      "userEmail": "staff_audit_1789811771290@ekgearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Audit Test Staff\" logged in as Staff",
+      "details": {
+        "userId": "u_1789811771343_83xn",
+        "email": "staff_audit_1789811771290@ekgearflow.com",
+        "role": "staff"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811771346_zimn",
+      "timestamp": "2026-09-19T09:56:11.346Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Staff account for \"Audit Test Staff\" (staff_audit_1789811771290@ekgearflow.com)",
+      "details": {
+        "userId": "u_1789811771343_83xn",
+        "name": "Audit Test Staff",
+        "email": "staff_audit_1789811771290@ekgearflow.com",
+        "accountType": "Staff"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811771276_3zly",
+      "timestamp": "2026-09-19T09:56:11.276Z",
+      "userId": "u1",
+      "userName": "Admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Admin\" logged in as Admin",
+      "details": {
+        "userId": "u1",
+        "email": "admin@ekgearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811771078_81tq",
+      "timestamp": "2026-09-19T09:56:11.078Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_USER",
+      "category": "Staff",
+      "summary": "Deleted user account #u_1789811770900_i8y1",
+      "details": {
+        "userId": "u_1789811770900_i8y1"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811771064_k12b",
+      "timestamp": "2026-09-19T09:56:11.064Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_CLIENT",
+      "category": "Clients",
+      "summary": "Deleted client #c_1789811771033",
+      "details": {
+        "clientId": "c_1789811771033"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811771040_bc3m",
+      "timestamp": "2026-09-19T09:56:11.040Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_CLIENT",
+      "category": "Clients",
+      "summary": "Registered new client \"Secure Client <script>alert(1)</script>\" (client_xss_1789811771031@example.com)",
+      "details": {
+        "clientId": "c_1789811771033",
+        "name": "Secure Client <script>alert(1)</script>",
+        "email": "client_xss_1789811771031@example.com",
+        "phone": "+233 24 1297364"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811771017_a6qp",
+      "timestamp": "2026-09-19T09:56:11.017Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "STATUS_CHANGE",
+      "category": "Staff",
+      "summary": "Changed account status for user #u_1789811770900_i8y1 to Active",
+      "details": {
+        "userId": "u_1789811770900_i8y1",
+        "status": "Active"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770995_zu94",
+      "timestamp": "2026-09-19T09:56:10.995Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "STATUS_CHANGE",
+      "category": "Staff",
+      "summary": "Changed account status for user #u_1789811770900_i8y1 to Banned",
+      "details": {
+        "userId": "u_1789811770900_i8y1",
+        "status": "Banned"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770966_bnif",
+      "timestamp": "2026-09-19T09:56:10.966Z",
+      "userId": "u_1789811770900_i8y1",
+      "userName": "Security Test Staff",
+      "userEmail": "sec_staff_1789811770838@ekgearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Security Test Staff\" logged in as Staff",
+      "details": {
+        "userId": "u_1789811770900_i8y1",
+        "email": "sec_staff_1789811770838@ekgearflow.com",
+        "role": "staff"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770905_df01",
+      "timestamp": "2026-09-19T09:56:10.905Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Staff account for \"Security Test Staff\" (sec_staff_1789811770838@ekgearflow.com)",
+      "details": {
+        "userId": "u_1789811770900_i8y1",
+        "name": "Security Test Staff",
+        "email": "sec_staff_1789811770838@ekgearflow.com",
+        "accountType": "Staff"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770830_awc0",
+      "timestamp": "2026-09-19T09:56:10.830Z",
+      "userId": "u1",
+      "userName": "Admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Admin\" logged in as Admin",
+      "details": {
+        "userId": "u1",
+        "email": "admin@ekgearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770526_zgkm",
+      "timestamp": "2026-09-19T09:56:10.526Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_CLIENT",
+      "category": "Clients",
+      "summary": "Deleted client #c_1789811770349",
+      "details": {
+        "clientId": "c_1789811770349"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770516_qv7c",
+      "timestamp": "2026-09-19T09:56:10.516Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_GEAR",
+      "category": "Inventory",
+      "summary": "Deleted gear item #g_1789811770430",
+      "details": {
+        "gearId": "g_1789811770430"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770506_0bcz",
+      "timestamp": "2026-09-19T09:56:10.506Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_GEAR",
+      "category": "Inventory",
+      "summary": "Deleted gear item #g_1789811770333",
+      "details": {
+        "gearId": "g_1789811770333"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770495_3q5o",
+      "timestamp": "2026-09-19T09:56:10.495Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811770457_0",
+      "details": {
+        "bookingId": "b_1789811770457_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770485_jap9",
+      "timestamp": "2026-09-19T09:56:10.485Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811770444_0",
+      "details": {
+        "bookingId": "b_1789811770444_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770473_3d8u",
+      "timestamp": "2026-09-19T09:56:10.473Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811770370_0",
+      "details": {
+        "bookingId": "b_1789811770370_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770460_xa1b",
+      "timestamp": "2026-09-19T09:56:10.460Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c_1789811770349 (2035-10-10 to 2035-10-15)",
+      "details": {
+        "booking": {
+          "id": "b_1789811770457_0",
+          "gearId": "g_1789811770430",
+          "clientId": "c_1789811770349",
+          "startDate": "2035-10-10",
+          "endDate": "2035-10-15",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770446_4l33",
+      "timestamp": "2026-09-19T09:56:10.446Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c_1789811770349 (2035-10-01 to 2035-10-05)",
+      "details": {
+        "booking": {
+          "id": "b_1789811770444_0",
+          "gearId": "g_1789811770430",
+          "clientId": "c_1789811770349",
+          "startDate": "2035-10-01",
+          "endDate": "2035-10-05",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770433_elvd",
+      "timestamp": "2026-09-19T09:56:10.433Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_GEAR",
+      "category": "Inventory",
+      "summary": "Added gear item \"Independent Mic 1789811770326\" (TAG-MIC-0326)",
+      "details": {
+        "gearId": "g_1789811770430",
+        "name": "Independent Mic 1789811770326",
+        "category": "Audio",
+        "dailyRate": 40
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770372_d9t9",
+      "timestamp": "2026-09-19T09:56:10.372Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c_1789811770349 (2035-09-01 to 2035-09-07)",
+      "details": {
+        "booking": {
+          "id": "b_1789811770370_0",
+          "gearId": "g_1789811770333",
+          "clientId": "c_1789811770349",
+          "startDate": "2035-09-01",
+          "endDate": "2035-09-07",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770356_1757",
+      "timestamp": "2026-09-19T09:56:10.356Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_CLIENT",
+      "category": "Clients",
+      "summary": "Registered new client \"Concurrent Client 1789811770326\" (client_cc_1789811770326@example.com)",
+      "details": {
+        "clientId": "c_1789811770349",
+        "name": "Concurrent Client 1789811770326",
+        "email": "client_cc_1789811770326@example.com",
+        "phone": "+233 20 6588317"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770339_penp",
+      "timestamp": "2026-09-19T09:56:10.339Z",
+      "userId": "u1",
+      "userName": "admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "ADD_GEAR",
+      "category": "Inventory",
+      "summary": "Added gear item \"Concurrency Lens 1789811770326\" (TAG-CC-0326)",
+      "details": {
+        "gearId": "g_1789811770333",
+        "name": "Concurrency Lens 1789811770326",
+        "category": "Lenses",
+        "dailyRate": 150
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811770313_rdbk",
+      "timestamp": "2026-09-19T09:56:10.313Z",
+      "userId": "u1",
+      "userName": "Admin",
+      "userEmail": "admin@ekgearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"Admin\" logged in as Admin",
+      "details": {
+        "userId": "u1",
+        "email": "admin@ekgearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811763901_cwp8",
+      "timestamp": "2026-09-19T09:56:03.901Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_USER",
+      "category": "Staff",
+      "summary": "Deleted user account #u_1789811763875_dojn",
+      "details": {
+        "userId": "u_1789811763875_dojn"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811763879_jz1x",
+      "timestamp": "2026-09-19T09:56:03.879Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Staff account for \"Dave Operations\" (dave_1789811763819@gearflow.com)",
+      "details": {
+        "userId": "u_1789811763875_dojn",
+        "name": "Dave Operations",
+        "email": "dave_1789811763819@gearflow.com",
+        "accountType": "Staff"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811763814_d11w",
+      "timestamp": "2026-09-19T09:56:03.814Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "CREATE_USER",
+      "category": "Staff",
+      "summary": "Created Admin account for \"Second Admin\" (admin2_1789811763754@gearflow.com)",
+      "details": {
+        "userId": "u_1789811763811_nzxs",
+        "name": "Second Admin",
+        "email": "admin2_1789811763754@gearflow.com",
+        "accountType": "Admin"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811763741_iffe",
+      "timestamp": "2026-09-19T09:56:03.741Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CANCEL_RENTAL",
+      "category": "Rentals",
+      "summary": "Voided / cancelled rental reservation #b_1789811763725_0",
+      "details": {
+        "bookingId": "b_1789811763725_0"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811763727_duox",
+      "timestamp": "2026-09-19T09:56:03.727Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "CREATE_RENTAL",
+      "category": "Rentals",
+      "summary": "Created rental checkout for client #c1 (2047-11-01 to 2047-11-03)",
+      "details": {
+        "booking": {
+          "id": "b_1789811763725_0",
+          "gearId": "g2",
+          "clientId": "c1",
+          "startDate": "2047-11-01",
+          "endDate": "2047-11-03",
+          "status": "Active"
+        }
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811763714_ekf6",
+      "timestamp": "2026-09-19T09:56:03.714Z",
+      "userId": "u_admin_gearflow",
+      "userName": "admin",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "DELETE_GEAR",
+      "category": "Inventory",
+      "summary": "Deleted gear item #g_1789811763694",
+      "details": {
+        "gearId": "g_1789811763694"
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811763697_v7ok",
+      "timestamp": "2026-09-19T09:56:03.697Z",
+      "userId": "u_staff_gearflow",
+      "userName": "staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "ADD_GEAR",
+      "category": "Inventory",
+      "summary": "Added gear item \"Authorized Staff Gear\" (TAG-STAFF-01)",
+      "details": {
+        "gearId": "g_1789811763694",
+        "name": "Authorized Staff Gear",
+        "category": "Cameras",
+        "dailyRate": 150
+      },
+      "ip": "::ffff:127.0.0.1"
+    },
+    {
+      "id": "audit_1789811763676_ehux",
+      "timestamp": "2026-09-19T09:56:03.676Z",
+      "userId": "u_staff_gearflow",
+      "userName": "GearFlow Staff",
+      "userEmail": "staff@gearflow.com",
+      "userRole": "staff",
+      "accountType": "Staff",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"GearFlow Staff\" logged in as Staff",
+      "details": {
+        "userId": "u_staff_gearflow",
+        "email": "staff@gearflow.com",
+        "role": "staff"
+      },
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "audit_1789811763616_zn4d",
+      "timestamp": "2026-09-19T09:56:03.616Z",
+      "userId": "u_admin_gearflow",
+      "userName": "GearFlow Admin 1",
+      "userEmail": "admin@gearflow.com",
+      "userRole": "admin",
+      "accountType": "Admin",
+      "action": "USER_LOGIN",
+      "category": "Auth",
+      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
+      "details": {
+        "userId": "u_admin_gearflow",
+        "email": "admin@gearflow.com",
+        "role": "admin"
+      },
+      "ip": "127.0.0.1"
+    },
     {
       "id": "audit_1789809831214_pgr5",
       "timestamp": "2026-09-19T09:23:51.214Z",
@@ -10415,2932 +13592,6 @@
           "endDate": "2029-06-15",
           "status": "Active"
         }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806942191_atyu",
-      "timestamp": "2026-09-19T08:35:42.191Z",
-      "userId": "u_admin_gearflow",
-      "userName": "GearFlow Admin 1",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
-      "details": {
-        "userId": "u_admin_gearflow",
-        "email": "admin@gearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806941387_9448",
-      "timestamp": "2026-09-19T08:35:41.387Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806941226_ado4",
-      "details": {
-        "userId": "u_1789806941226_ado4"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806941375_b5p4",
-      "timestamp": "2026-09-19T08:35:41.375Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806941035_tvx1",
-      "details": {
-        "userId": "u_1789806941035_tvx1"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806941366_3ygt",
-      "timestamp": "2026-09-19T08:35:41.366Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_GEAR",
-      "category": "Inventory",
-      "summary": "Deleted gear item #g_1789806941335",
-      "details": {
-        "gearId": "g_1789806941335"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806941338_y1q0",
-      "timestamp": "2026-09-19T08:35:41.338Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_GEAR",
-      "category": "Inventory",
-      "summary": "Added gear item \"Audit Lens 1789806941332\" (AT-AUD-1332)",
-      "details": {
-        "gearId": "g_1789806941335",
-        "name": "Audit Lens 1789806941332",
-        "category": "Lenses",
-        "dailyRate": 65
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806941325_1zqt",
-      "timestamp": "2026-09-19T08:35:41.325Z",
-      "userId": "u_1789806941226_ado4",
-      "userName": "Secondary Admin",
-      "userEmail": "admin_secondary_1789806941119@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Secondary Admin\" logged in as Admin",
-      "details": {
-        "userId": "u_1789806941226_ado4",
-        "email": "admin_secondary_1789806941119@ekgearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806941230_3eas",
-      "timestamp": "2026-09-19T08:35:41.230Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Admin account for \"Secondary Admin\" (admin_secondary_1789806941119@ekgearflow.com)",
-      "details": {
-        "userId": "u_1789806941226_ado4",
-        "name": "Secondary Admin",
-        "email": "admin_secondary_1789806941119@ekgearflow.com",
-        "accountType": "Admin"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806941100_giog",
-      "timestamp": "2026-09-19T08:35:41.100Z",
-      "userId": "u_1789806941035_tvx1",
-      "userName": "Audit Test Staff",
-      "userEmail": "staff_audit_1789806940979@ekgearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Audit Test Staff\" logged in as Staff",
-      "details": {
-        "userId": "u_1789806941035_tvx1",
-        "email": "staff_audit_1789806940979@ekgearflow.com",
-        "role": "staff"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806941038_s542",
-      "timestamp": "2026-09-19T08:35:41.038Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Staff account for \"Audit Test Staff\" (staff_audit_1789806940979@ekgearflow.com)",
-      "details": {
-        "userId": "u_1789806941035_tvx1",
-        "name": "Audit Test Staff",
-        "email": "staff_audit_1789806940979@ekgearflow.com",
-        "accountType": "Staff"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940965_eooc",
-      "timestamp": "2026-09-19T08:35:40.965Z",
-      "userId": "u1",
-      "userName": "Admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Admin\" logged in as Admin",
-      "details": {
-        "userId": "u1",
-        "email": "admin@ekgearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940760_4910",
-      "timestamp": "2026-09-19T08:35:40.760Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806940571_jacg",
-      "details": {
-        "userId": "u_1789806940571_jacg"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940750_ss2i",
-      "timestamp": "2026-09-19T08:35:40.750Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_CLIENT",
-      "category": "Clients",
-      "summary": "Deleted client #c_1789806940728",
-      "details": {
-        "clientId": "c_1789806940728"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940730_7xla",
-      "timestamp": "2026-09-19T08:35:40.730Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_CLIENT",
-      "category": "Clients",
-      "summary": "Registered new client \"Secure Client <script>alert(1)</script>\" (client_xss_1789806940723@example.com)",
-      "details": {
-        "clientId": "c_1789806940728",
-        "name": "Secure Client <script>alert(1)</script>",
-        "email": "client_xss_1789806940723@example.com",
-        "phone": "+233 24 5189036"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940705_7c4m",
-      "timestamp": "2026-09-19T08:35:40.705Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "STATUS_CHANGE",
-      "category": "Staff",
-      "summary": "Changed account status for user #u_1789806940571_jacg to Active",
-      "details": {
-        "userId": "u_1789806940571_jacg",
-        "status": "Active"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940661_92m5",
-      "timestamp": "2026-09-19T08:35:40.661Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "STATUS_CHANGE",
-      "category": "Staff",
-      "summary": "Changed account status for user #u_1789806940571_jacg to Banned",
-      "details": {
-        "userId": "u_1789806940571_jacg",
-        "status": "Banned"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940636_0ekn",
-      "timestamp": "2026-09-19T08:35:40.636Z",
-      "userId": "u_1789806940571_jacg",
-      "userName": "Security Test Staff",
-      "userEmail": "sec_staff_1789806940515@ekgearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Security Test Staff\" logged in as Staff",
-      "details": {
-        "userId": "u_1789806940571_jacg",
-        "email": "sec_staff_1789806940515@ekgearflow.com",
-        "role": "staff"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940574_9f9o",
-      "timestamp": "2026-09-19T08:35:40.574Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Staff account for \"Security Test Staff\" (sec_staff_1789806940515@ekgearflow.com)",
-      "details": {
-        "userId": "u_1789806940571_jacg",
-        "name": "Security Test Staff",
-        "email": "sec_staff_1789806940515@ekgearflow.com",
-        "accountType": "Staff"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940509_12op",
-      "timestamp": "2026-09-19T08:35:40.509Z",
-      "userId": "u1",
-      "userName": "Admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Admin\" logged in as Admin",
-      "details": {
-        "userId": "u1",
-        "email": "admin@ekgearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940321_8lmq",
-      "timestamp": "2026-09-19T08:35:40.321Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_CLIENT",
-      "category": "Clients",
-      "summary": "Deleted client #c_1789806940156",
-      "details": {
-        "clientId": "c_1789806940156"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940310_xhpm",
-      "timestamp": "2026-09-19T08:35:40.310Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_GEAR",
-      "category": "Inventory",
-      "summary": "Deleted gear item #g_1789806940227",
-      "details": {
-        "gearId": "g_1789806940227"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940301_jyi3",
-      "timestamp": "2026-09-19T08:35:40.301Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_GEAR",
-      "category": "Inventory",
-      "summary": "Deleted gear item #g_1789806940144",
-      "details": {
-        "gearId": "g_1789806940144"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940292_wxko",
-      "timestamp": "2026-09-19T08:35:40.292Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806940249_0",
-      "details": {
-        "bookingId": "b_1789806940249_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940281_0p6s",
-      "timestamp": "2026-09-19T08:35:40.281Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806940239_0",
-      "details": {
-        "bookingId": "b_1789806940239_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940269_k0ze",
-      "timestamp": "2026-09-19T08:35:40.269Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806940173_0",
-      "details": {
-        "bookingId": "b_1789806940173_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940250_g7lh",
-      "timestamp": "2026-09-19T08:35:40.250Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c_1789806940156 (2035-10-10 to 2035-10-15)",
-      "details": {
-        "booking": {
-          "id": "b_1789806940249_0",
-          "gearId": "g_1789806940227",
-          "clientId": "c_1789806940156",
-          "startDate": "2035-10-10",
-          "endDate": "2035-10-15",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940241_612o",
-      "timestamp": "2026-09-19T08:35:40.241Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c_1789806940156 (2035-10-01 to 2035-10-05)",
-      "details": {
-        "booking": {
-          "id": "b_1789806940239_0",
-          "gearId": "g_1789806940227",
-          "clientId": "c_1789806940156",
-          "startDate": "2035-10-01",
-          "endDate": "2035-10-05",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940230_b10k",
-      "timestamp": "2026-09-19T08:35:40.230Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_GEAR",
-      "category": "Inventory",
-      "summary": "Added gear item \"Independent Mic 1789806940135\" (TAG-MIC-0135)",
-      "details": {
-        "gearId": "g_1789806940227",
-        "name": "Independent Mic 1789806940135",
-        "category": "Audio",
-        "dailyRate": 40
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940175_9afc",
-      "timestamp": "2026-09-19T08:35:40.175Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c_1789806940156 (2035-09-01 to 2035-09-07)",
-      "details": {
-        "booking": {
-          "id": "b_1789806940173_0",
-          "gearId": "g_1789806940144",
-          "clientId": "c_1789806940156",
-          "startDate": "2035-09-01",
-          "endDate": "2035-09-07",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940159_o31q",
-      "timestamp": "2026-09-19T08:35:40.159Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_CLIENT",
-      "category": "Clients",
-      "summary": "Registered new client \"Concurrent Client 1789806940135\" (client_cc_1789806940135@example.com)",
-      "details": {
-        "clientId": "c_1789806940156",
-        "name": "Concurrent Client 1789806940135",
-        "email": "client_cc_1789806940135@example.com",
-        "phone": "+233 20 2478541"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940146_lv6t",
-      "timestamp": "2026-09-19T08:35:40.146Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_GEAR",
-      "category": "Inventory",
-      "summary": "Added gear item \"Concurrency Lens 1789806940135\" (TAG-CC-0135)",
-      "details": {
-        "gearId": "g_1789806940144",
-        "name": "Concurrency Lens 1789806940135",
-        "category": "Lenses",
-        "dailyRate": 150
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806940123_zv4o",
-      "timestamp": "2026-09-19T08:35:40.123Z",
-      "userId": "u1",
-      "userName": "Admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Admin\" logged in as Admin",
-      "details": {
-        "userId": "u1",
-        "email": "admin@ekgearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252387_rtwu",
-      "timestamp": "2026-09-19T08:24:12.387Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806251964_i5xw",
-      "details": {
-        "userId": "u_1789806251964_i5xw"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252371_qsl3",
-      "timestamp": "2026-09-19T08:24:12.371Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_CLIENT",
-      "category": "Clients",
-      "summary": "Deleted client #c_1789806252184",
-      "details": {
-        "clientId": "c_1789806252184"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252359_chu3",
-      "timestamp": "2026-09-19T08:24:12.359Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_GEAR",
-      "category": "Inventory",
-      "summary": "Deleted gear item #g_1789806252138",
-      "details": {
-        "gearId": "g_1789806252138"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252344_8w01",
-      "timestamp": "2026-09-19T08:24:12.344Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806252329_0",
-      "details": {
-        "bookingId": "b_1789806252329_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252331_wicc",
-      "timestamp": "2026-09-19T08:24:12.331Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c_1789806252184 (2031-01-01 to 2031-01-05)",
-      "details": {
-        "booking": {
-          "id": "b_1789806252329_0",
-          "gearId": "g_1789806252138",
-          "clientId": "c_1789806252184",
-          "startDate": "2031-01-01",
-          "endDate": "2031-01-05",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252303_6imp",
-      "timestamp": "2026-09-19T08:24:12.303Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_CLIENT",
-      "category": "Clients",
-      "summary": "Deleted client #c_1789806252284",
-      "details": {
-        "clientId": "c_1789806252284"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252286_lvxb",
-      "timestamp": "2026-09-19T08:24:12.286Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_CLIENT",
-      "category": "Clients",
-      "summary": "Registered new client \"Client Two\" (client2_1789806251905@unique.com)",
-      "details": {
-        "clientId": "c_1789806252284",
-        "name": "Client Two",
-        "email": "client2_1789806251905@unique.com",
-        "phone": "+1 555-123-1905"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252260_bbeq",
-      "timestamp": "2026-09-19T08:24:12.260Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "RETURN_RENTAL",
-      "category": "Rentals",
-      "summary": "Checked in / returned gear for rental #b_1789806252248_0",
-      "details": {
-        "bookingId": "b_1789806252248_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252250_rwk3",
-      "timestamp": "2026-09-19T08:24:12.250Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c_1789806252184 (2030-05-01 to 2030-05-10)",
-      "details": {
-        "booking": {
-          "id": "b_1789806252248_0",
-          "gearId": "g_1789806252138",
-          "clientId": "c_1789806252184",
-          "startDate": "2030-05-01",
-          "endDate": "2030-05-10",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252237_jjm5",
-      "timestamp": "2026-09-19T08:24:12.237Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806252213_0",
-      "details": {
-        "bookingId": "b_1789806252213_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252215_pg1j",
-      "timestamp": "2026-09-19T08:24:12.215Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c_1789806252184 (2030-05-01 to 2030-05-10)",
-      "details": {
-        "booking": {
-          "id": "b_1789806252213_0",
-          "gearId": "g_1789806252138",
-          "clientId": "c_1789806252184",
-          "startDate": "2030-05-01",
-          "endDate": "2030-05-10",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252200_qnbe",
-      "timestamp": "2026-09-19T08:24:12.200Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "UPDATE_CLIENT",
-      "category": "Clients",
-      "summary": "Updated client \"Universal Visuals Studios\" (studio_1789806251905@universalvisuals.com)",
-      "details": {
-        "clientId": "c_1789806252184",
-        "changes": {
-          "name": "Universal Visuals Studios",
-          "email": "studio_1789806251905@universalvisuals.com",
-          "phone": "+1 555-999-1905"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252187_91go",
-      "timestamp": "2026-09-19T08:24:12.187Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_CLIENT",
-      "category": "Clients",
-      "summary": "Registered new client \"Universal Visuals Ltd\" (contact_1789806251905@universalvisuals.com)",
-      "details": {
-        "clientId": "c_1789806252184",
-        "name": "Universal Visuals Ltd",
-        "email": "contact_1789806251905@universalvisuals.com",
-        "phone": "+1 555-444-1905"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252172_b9lo",
-      "timestamp": "2026-09-19T08:24:12.172Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "MAINTENANCE_TOGGLE",
-      "category": "Inventory",
-      "summary": "Toggled gear \"RED V-Raptor 8K Cinema Camera\" status to \"Available\"",
-      "details": {
-        "gearId": "g_1789806252138",
-        "changes": {
-          "status": "Available"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252164_lbjf",
-      "timestamp": "2026-09-19T08:24:12.164Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "MAINTENANCE_TOGGLE",
-      "category": "Inventory",
-      "summary": "Toggled gear \"RED V-Raptor 8K Cinema Camera\" status to \"Maintenance\"",
-      "details": {
-        "gearId": "g_1789806252138",
-        "changes": {
-          "status": "Maintenance"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252143_dsnf",
-      "timestamp": "2026-09-19T08:24:12.143Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_GEAR",
-      "category": "Inventory",
-      "summary": "Added gear item \"RED V-Raptor 8K Cinema Camera\" (TST-1789806251905)",
-      "details": {
-        "gearId": "g_1789806252138",
-        "name": "RED V-Raptor 8K Cinema Camera",
-        "category": "Cameras",
-        "dailyRate": 350
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252128_97uv",
-      "timestamp": "2026-09-19T08:24:12.128Z",
-      "userId": "u_1789806251964_i5xw",
-      "userName": "Audit Staff",
-      "userEmail": "audit_staff_1789806251905@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Audit Staff\" logged in as Staff",
-      "details": {
-        "userId": "u_1789806251964_i5xw",
-        "email": "audit_staff_1789806251905@gearflow.com",
-        "role": "staff"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252067_oy7p",
-      "timestamp": "2026-09-19T08:24:12.067Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "RESET_PASSWORD",
-      "category": "Staff",
-      "summary": "Reset password for user #u_1789806251964_i5xw to default 12345",
-      "details": {
-        "userId": "u_1789806251964_i5xw"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806252007_269o",
-      "timestamp": "2026-09-19T08:24:12.007Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "STATUS_CHANGE",
-      "category": "Staff",
-      "summary": "Changed account status for user #u_1789806251964_i5xw to Active",
-      "details": {
-        "userId": "u_1789806251964_i5xw",
-        "status": "Active"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806251981_pmt7",
-      "timestamp": "2026-09-19T08:24:11.981Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "STATUS_CHANGE",
-      "category": "Staff",
-      "summary": "Changed account status for user #u_1789806251964_i5xw to Banned",
-      "details": {
-        "userId": "u_1789806251964_i5xw",
-        "status": "Banned"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806251967_4e8u",
-      "timestamp": "2026-09-19T08:24:11.967Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Staff account for \"Audit Staff\" (audit_staff_1789806251905@gearflow.com)",
-      "details": {
-        "userId": "u_1789806251964_i5xw",
-        "name": "Audit Staff",
-        "email": "audit_staff_1789806251905@gearflow.com",
-        "accountType": "Staff"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806251791_3xi2",
-      "timestamp": "2026-09-19T08:24:11.791Z",
-      "userId": "u_staff_gearflow",
-      "userName": "GearFlow Staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"GearFlow Staff\" logged in as Staff",
-      "details": {
-        "userId": "u_staff_gearflow",
-        "email": "staff@gearflow.com",
-        "role": "staff"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806251706_6tp2",
-      "timestamp": "2026-09-19T08:24:11.706Z",
-      "userId": "u_admin_gearflow",
-      "userName": "GearFlow Admin 1",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
-      "details": {
-        "userId": "u_admin_gearflow",
-        "email": "admin@gearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806250893_y5cj",
-      "timestamp": "2026-09-19T08:24:10.893Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806250875_mcqa",
-      "details": {
-        "userId": "u_1789806250875_mcqa"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806250878_0uvn",
-      "timestamp": "2026-09-19T08:24:10.878Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Staff account for \"Dave Operations\" (dave_1789806250816@gearflow.com)",
-      "details": {
-        "userId": "u_1789806250875_mcqa",
-        "name": "Dave Operations",
-        "email": "dave_1789806250816@gearflow.com",
-        "accountType": "Staff"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806250807_3t01",
-      "timestamp": "2026-09-19T08:24:10.807Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Admin account for \"Second Admin\" (admin2_1789806250734@gearflow.com)",
-      "details": {
-        "userId": "u_1789806250802_6w6i",
-        "name": "Second Admin",
-        "email": "admin2_1789806250734@gearflow.com",
-        "accountType": "Admin"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806250719_3gpy",
-      "timestamp": "2026-09-19T08:24:10.719Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806250681_0",
-      "details": {
-        "bookingId": "b_1789806250681_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806250683_stnx",
-      "timestamp": "2026-09-19T08:24:10.683Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c1 (2084-11-01 to 2084-11-03)",
-      "details": {
-        "booking": {
-          "id": "b_1789806250681_0",
-          "gearId": "g2",
-          "clientId": "c1",
-          "startDate": "2084-11-01",
-          "endDate": "2084-11-03",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806250656_ggto",
-      "timestamp": "2026-09-19T08:24:10.656Z",
-      "userId": "u_staff_gearflow",
-      "userName": "GearFlow Staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"GearFlow Staff\" logged in as Staff",
-      "details": {
-        "userId": "u_staff_gearflow",
-        "email": "staff@gearflow.com",
-        "role": "staff"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806250580_slo3",
-      "timestamp": "2026-09-19T08:24:10.580Z",
-      "userId": "u_admin_gearflow",
-      "userName": "GearFlow Admin 1",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
-      "details": {
-        "userId": "u_admin_gearflow",
-        "email": "admin@gearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806249940_km8i",
-      "timestamp": "2026-09-19T08:24:09.940Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806249772_kscu",
-      "details": {
-        "userId": "u_1789806249772_kscu"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806249903_2h4i",
-      "timestamp": "2026-09-19T08:24:09.903Z",
-      "userId": "u_1789806249772_kscu",
-      "userName": "staff_flow_1789806249715",
-      "userEmail": "staff_flow_1789806249715@ekgearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CHANGE_PASSWORD",
-      "category": "Auth",
-      "summary": "Changed password for user #u_1789806249772_kscu",
-      "details": {
-        "userId": "u_1789806249772_kscu"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806249837_l31n",
-      "timestamp": "2026-09-19T08:24:09.837Z",
-      "userId": "u_1789806249772_kscu",
-      "userName": "Flow Test Staff",
-      "userEmail": "staff_flow_1789806249715@ekgearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Flow Test Staff\" logged in as Staff",
-      "details": {
-        "userId": "u_1789806249772_kscu",
-        "email": "staff_flow_1789806249715@ekgearflow.com",
-        "role": "staff"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806249775_bk28",
-      "timestamp": "2026-09-19T08:24:09.775Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Staff account for \"Flow Test Staff\" (staff_flow_1789806249715@ekgearflow.com)",
-      "details": {
-        "userId": "u_1789806249772_kscu",
-        "name": "Flow Test Staff",
-        "email": "staff_flow_1789806249715@ekgearflow.com",
-        "accountType": "Staff"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806249707_ocga",
-      "timestamp": "2026-09-19T08:24:09.707Z",
-      "userId": "u_admin_gearflow",
-      "userName": "GearFlow Admin 1",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
-      "details": {
-        "userId": "u_admin_gearflow",
-        "email": "admin@gearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806249527_ibex",
-      "timestamp": "2026-09-19T08:24:09.527Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806249496_0",
-      "details": {
-        "bookingId": "b_1789806249496_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806249520_uy5x",
-      "timestamp": "2026-09-19T08:24:09.520Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806249473_0",
-      "details": {
-        "bookingId": "b_1789806249473_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806249511_ugmy",
-      "timestamp": "2026-09-19T08:24:09.511Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806249465_0",
-      "details": {
-        "bookingId": "b_1789806249465_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806249497_view",
-      "timestamp": "2026-09-19T08:24:09.497Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c1 (2029-06-10 to 2029-06-15)",
-      "details": {
-        "booking": {
-          "id": "b_1789806249496_0",
-          "gearId": "g1",
-          "clientId": "c1",
-          "startDate": "2029-06-10",
-          "endDate": "2029-06-15",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806249484_tiii",
-      "timestamp": "2026-09-19T08:24:09.484Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806249428_0",
-      "details": {
-        "bookingId": "b_1789806249428_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806249474_ypsh",
-      "timestamp": "2026-09-19T08:24:09.474Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c1 (2029-06-10 to 2029-06-15)",
-      "details": {
-        "booking": {
-          "id": "b_1789806249473_0",
-          "gearId": "g2",
-          "clientId": "c1",
-          "startDate": "2029-06-10",
-          "endDate": "2029-06-15",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806249466_ffln",
-      "timestamp": "2026-09-19T08:24:09.466Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c1 (2029-06-20 to 2029-06-25)",
-      "details": {
-        "booking": {
-          "id": "b_1789806249465_0",
-          "gearId": "g1",
-          "clientId": "c1",
-          "startDate": "2029-06-20",
-          "endDate": "2029-06-25",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806249430_3e7y",
-      "timestamp": "2026-09-19T08:24:09.430Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c1 (2029-06-10 to 2029-06-15)",
-      "details": {
-        "booking": {
-          "id": "b_1789806249428_0",
-          "gearId": "g1",
-          "clientId": "c1",
-          "startDate": "2029-06-10",
-          "endDate": "2029-06-15",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806249369_je96",
-      "timestamp": "2026-09-19T08:24:09.369Z",
-      "userId": "u_admin_gearflow",
-      "userName": "GearFlow Admin 1",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
-      "details": {
-        "userId": "u_admin_gearflow",
-        "email": "admin@gearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248745_ooeg",
-      "timestamp": "2026-09-19T08:24:08.745Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806248619_jrkh",
-      "details": {
-        "userId": "u_1789806248619_jrkh"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248735_kj6l",
-      "timestamp": "2026-09-19T08:24:08.735Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806248486_tzss",
-      "details": {
-        "userId": "u_1789806248486_tzss"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248724_pe42",
-      "timestamp": "2026-09-19T08:24:08.724Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_GEAR",
-      "category": "Inventory",
-      "summary": "Deleted gear item #g_1789806248693",
-      "details": {
-        "gearId": "g_1789806248693"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248696_fg0y",
-      "timestamp": "2026-09-19T08:24:08.696Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_GEAR",
-      "category": "Inventory",
-      "summary": "Added gear item \"Audit Lens 1789806248690\" (AT-AUD-8690)",
-      "details": {
-        "gearId": "g_1789806248693",
-        "name": "Audit Lens 1789806248690",
-        "category": "Lenses",
-        "dailyRate": 65
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248682_rmk7",
-      "timestamp": "2026-09-19T08:24:08.682Z",
-      "userId": "u_1789806248619_jrkh",
-      "userName": "Secondary Admin",
-      "userEmail": "admin_secondary_1789806248560@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Secondary Admin\" logged in as Admin",
-      "details": {
-        "userId": "u_1789806248619_jrkh",
-        "email": "admin_secondary_1789806248560@ekgearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248621_1zpt",
-      "timestamp": "2026-09-19T08:24:08.621Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Admin account for \"Secondary Admin\" (admin_secondary_1789806248560@ekgearflow.com)",
-      "details": {
-        "userId": "u_1789806248619_jrkh",
-        "name": "Secondary Admin",
-        "email": "admin_secondary_1789806248560@ekgearflow.com",
-        "accountType": "Admin"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248551_ti2n",
-      "timestamp": "2026-09-19T08:24:08.551Z",
-      "userId": "u_1789806248486_tzss",
-      "userName": "Audit Test Staff",
-      "userEmail": "staff_audit_1789806248427@ekgearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Audit Test Staff\" logged in as Staff",
-      "details": {
-        "userId": "u_1789806248486_tzss",
-        "email": "staff_audit_1789806248427@ekgearflow.com",
-        "role": "staff"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248488_te8j",
-      "timestamp": "2026-09-19T08:24:08.488Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Staff account for \"Audit Test Staff\" (staff_audit_1789806248427@ekgearflow.com)",
-      "details": {
-        "userId": "u_1789806248486_tzss",
-        "name": "Audit Test Staff",
-        "email": "staff_audit_1789806248427@ekgearflow.com",
-        "accountType": "Staff"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248414_lpbm",
-      "timestamp": "2026-09-19T08:24:08.414Z",
-      "userId": "u1",
-      "userName": "Admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Admin\" logged in as Admin",
-      "details": {
-        "userId": "u1",
-        "email": "admin@ekgearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248208_aij9",
-      "timestamp": "2026-09-19T08:24:08.208Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806248038_t000",
-      "details": {
-        "userId": "u_1789806248038_t000"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248192_fa8i",
-      "timestamp": "2026-09-19T08:24:08.192Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_CLIENT",
-      "category": "Clients",
-      "summary": "Deleted client #c_1789806248164",
-      "details": {
-        "clientId": "c_1789806248164"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248168_die6",
-      "timestamp": "2026-09-19T08:24:08.168Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_CLIENT",
-      "category": "Clients",
-      "summary": "Registered new client \"Secure Client <script>alert(1)</script>\" (client_xss_1789806248160@example.com)",
-      "details": {
-        "clientId": "c_1789806248164",
-        "name": "Secure Client <script>alert(1)</script>",
-        "email": "client_xss_1789806248160@example.com",
-        "phone": "+233 24 1267755"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248146_17ul",
-      "timestamp": "2026-09-19T08:24:08.146Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "STATUS_CHANGE",
-      "category": "Staff",
-      "summary": "Changed account status for user #u_1789806248038_t000 to Active",
-      "details": {
-        "userId": "u_1789806248038_t000",
-        "status": "Active"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248120_lmkm",
-      "timestamp": "2026-09-19T08:24:08.120Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "STATUS_CHANGE",
-      "category": "Staff",
-      "summary": "Changed account status for user #u_1789806248038_t000 to Banned",
-      "details": {
-        "userId": "u_1789806248038_t000",
-        "status": "Banned"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248102_mnl4",
-      "timestamp": "2026-09-19T08:24:08.102Z",
-      "userId": "u_1789806248038_t000",
-      "userName": "Security Test Staff",
-      "userEmail": "sec_staff_1789806247979@ekgearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Security Test Staff\" logged in as Staff",
-      "details": {
-        "userId": "u_1789806248038_t000",
-        "email": "sec_staff_1789806247979@ekgearflow.com",
-        "role": "staff"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806248041_29mp",
-      "timestamp": "2026-09-19T08:24:08.041Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Staff account for \"Security Test Staff\" (sec_staff_1789806247979@ekgearflow.com)",
-      "details": {
-        "userId": "u_1789806248038_t000",
-        "name": "Security Test Staff",
-        "email": "sec_staff_1789806247979@ekgearflow.com",
-        "accountType": "Staff"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806247972_42da",
-      "timestamp": "2026-09-19T08:24:07.972Z",
-      "userId": "u1",
-      "userName": "Admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Admin\" logged in as Admin",
-      "details": {
-        "userId": "u1",
-        "email": "admin@ekgearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806247795_l6qx",
-      "timestamp": "2026-09-19T08:24:07.795Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_CLIENT",
-      "category": "Clients",
-      "summary": "Deleted client #c_1789806247662",
-      "details": {
-        "clientId": "c_1789806247662"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806247787_cujb",
-      "timestamp": "2026-09-19T08:24:07.787Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_GEAR",
-      "category": "Inventory",
-      "summary": "Deleted gear item #g_1789806247715",
-      "details": {
-        "gearId": "g_1789806247715"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806247778_4j1k",
-      "timestamp": "2026-09-19T08:24:07.778Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_GEAR",
-      "category": "Inventory",
-      "summary": "Deleted gear item #g_1789806247647",
-      "details": {
-        "gearId": "g_1789806247647"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806247769_nmk6",
-      "timestamp": "2026-09-19T08:24:07.769Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806247736_0",
-      "details": {
-        "bookingId": "b_1789806247736_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806247759_p3su",
-      "timestamp": "2026-09-19T08:24:07.759Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806247725_0",
-      "details": {
-        "bookingId": "b_1789806247725_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806247747_l01o",
-      "timestamp": "2026-09-19T08:24:07.747Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806247678_0",
-      "details": {
-        "bookingId": "b_1789806247678_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806247737_g14y",
-      "timestamp": "2026-09-19T08:24:07.737Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c_1789806247662 (2035-10-10 to 2035-10-15)",
-      "details": {
-        "booking": {
-          "id": "b_1789806247736_0",
-          "gearId": "g_1789806247715",
-          "clientId": "c_1789806247662",
-          "startDate": "2035-10-10",
-          "endDate": "2035-10-15",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806247728_icya",
-      "timestamp": "2026-09-19T08:24:07.728Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c_1789806247662 (2035-10-01 to 2035-10-05)",
-      "details": {
-        "booking": {
-          "id": "b_1789806247725_0",
-          "gearId": "g_1789806247715",
-          "clientId": "c_1789806247662",
-          "startDate": "2035-10-01",
-          "endDate": "2035-10-05",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806247718_cqn0",
-      "timestamp": "2026-09-19T08:24:07.718Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_GEAR",
-      "category": "Inventory",
-      "summary": "Added gear item \"Independent Mic 1789806247641\" (TAG-MIC-7641)",
-      "details": {
-        "gearId": "g_1789806247715",
-        "name": "Independent Mic 1789806247641",
-        "category": "Audio",
-        "dailyRate": 40
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806247681_fi1p",
-      "timestamp": "2026-09-19T08:24:07.681Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c_1789806247662 (2035-09-01 to 2035-09-07)",
-      "details": {
-        "booking": {
-          "id": "b_1789806247678_0",
-          "gearId": "g_1789806247647",
-          "clientId": "c_1789806247662",
-          "startDate": "2035-09-01",
-          "endDate": "2035-09-07",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806247666_oy62",
-      "timestamp": "2026-09-19T08:24:07.666Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_CLIENT",
-      "category": "Clients",
-      "summary": "Registered new client \"Concurrent Client 1789806247641\" (client_cc_1789806247641@example.com)",
-      "details": {
-        "clientId": "c_1789806247662",
-        "name": "Concurrent Client 1789806247641",
-        "email": "client_cc_1789806247641@example.com",
-        "phone": "+233 20 3406606"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806247653_evtb",
-      "timestamp": "2026-09-19T08:24:07.653Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_GEAR",
-      "category": "Inventory",
-      "summary": "Added gear item \"Concurrency Lens 1789806247641\" (TAG-CC-7641)",
-      "details": {
-        "gearId": "g_1789806247647",
-        "name": "Concurrency Lens 1789806247641",
-        "category": "Lenses",
-        "dailyRate": 150
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806247634_tvlz",
-      "timestamp": "2026-09-19T08:24:07.634Z",
-      "userId": "u1",
-      "userName": "Admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Admin\" logged in as Admin",
-      "details": {
-        "userId": "u1",
-        "email": "admin@ekgearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196592_tk2x",
-      "timestamp": "2026-09-19T08:23:16.592Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806196266_c7sr",
-      "details": {
-        "userId": "u_1789806196266_c7sr"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196582_wsys",
-      "timestamp": "2026-09-19T08:23:16.582Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_CLIENT",
-      "category": "Clients",
-      "summary": "Deleted client #c_1789806196457",
-      "details": {
-        "clientId": "c_1789806196457"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196574_rsv4",
-      "timestamp": "2026-09-19T08:23:16.574Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_GEAR",
-      "category": "Inventory",
-      "summary": "Deleted gear item #g_1789806196428",
-      "details": {
-        "gearId": "g_1789806196428"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196564_tn08",
-      "timestamp": "2026-09-19T08:23:16.564Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806196555_0",
-      "details": {
-        "bookingId": "b_1789806196555_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196557_m1cy",
-      "timestamp": "2026-09-19T08:23:16.557Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c_1789806196457 (2031-01-01 to 2031-01-05)",
-      "details": {
-        "booking": {
-          "id": "b_1789806196555_0",
-          "gearId": "g_1789806196428",
-          "clientId": "c_1789806196457",
-          "startDate": "2031-01-01",
-          "endDate": "2031-01-05",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196537_hluv",
-      "timestamp": "2026-09-19T08:23:16.537Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_CLIENT",
-      "category": "Clients",
-      "summary": "Deleted client #c_1789806196524",
-      "details": {
-        "clientId": "c_1789806196524"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196526_l2fs",
-      "timestamp": "2026-09-19T08:23:16.526Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_CLIENT",
-      "category": "Clients",
-      "summary": "Registered new client \"Client Two\" (client2_1789806196210@unique.com)",
-      "details": {
-        "clientId": "c_1789806196524",
-        "name": "Client Two",
-        "email": "client2_1789806196210@unique.com",
-        "phone": "+1 555-123-6210"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196510_glfm",
-      "timestamp": "2026-09-19T08:23:16.510Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "RETURN_RENTAL",
-      "category": "Rentals",
-      "summary": "Checked in / returned gear for rental #b_1789806196501_0",
-      "details": {
-        "bookingId": "b_1789806196501_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196502_0l8p",
-      "timestamp": "2026-09-19T08:23:16.502Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c_1789806196457 (2030-05-01 to 2030-05-10)",
-      "details": {
-        "booking": {
-          "id": "b_1789806196501_0",
-          "gearId": "g_1789806196428",
-          "clientId": "c_1789806196457",
-          "startDate": "2030-05-01",
-          "endDate": "2030-05-10",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196495_lfmd",
-      "timestamp": "2026-09-19T08:23:16.495Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806196477_0",
-      "details": {
-        "bookingId": "b_1789806196477_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196479_ehbd",
-      "timestamp": "2026-09-19T08:23:16.479Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c_1789806196457 (2030-05-01 to 2030-05-10)",
-      "details": {
-        "booking": {
-          "id": "b_1789806196477_0",
-          "gearId": "g_1789806196428",
-          "clientId": "c_1789806196457",
-          "startDate": "2030-05-01",
-          "endDate": "2030-05-10",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196468_5ei6",
-      "timestamp": "2026-09-19T08:23:16.468Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "UPDATE_CLIENT",
-      "category": "Clients",
-      "summary": "Updated client \"Universal Visuals Studios\" (studio_1789806196210@universalvisuals.com)",
-      "details": {
-        "clientId": "c_1789806196457",
-        "changes": {
-          "name": "Universal Visuals Studios",
-          "email": "studio_1789806196210@universalvisuals.com",
-          "phone": "+1 555-999-6210"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196459_0fol",
-      "timestamp": "2026-09-19T08:23:16.459Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_CLIENT",
-      "category": "Clients",
-      "summary": "Registered new client \"Universal Visuals Ltd\" (contact_1789806196210@universalvisuals.com)",
-      "details": {
-        "clientId": "c_1789806196457",
-        "name": "Universal Visuals Ltd",
-        "email": "contact_1789806196210@universalvisuals.com",
-        "phone": "+1 555-444-6210"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196451_0lwv",
-      "timestamp": "2026-09-19T08:23:16.451Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "MAINTENANCE_TOGGLE",
-      "category": "Inventory",
-      "summary": "Toggled gear \"RED V-Raptor 8K Cinema Camera\" status to \"Available\"",
-      "details": {
-        "gearId": "g_1789806196428",
-        "changes": {
-          "status": "Available"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196443_2sr1",
-      "timestamp": "2026-09-19T08:23:16.443Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "MAINTENANCE_TOGGLE",
-      "category": "Inventory",
-      "summary": "Toggled gear \"RED V-Raptor 8K Cinema Camera\" status to \"Maintenance\"",
-      "details": {
-        "gearId": "g_1789806196428",
-        "changes": {
-          "status": "Maintenance"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196432_m5ef",
-      "timestamp": "2026-09-19T08:23:16.432Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_GEAR",
-      "category": "Inventory",
-      "summary": "Added gear item \"RED V-Raptor 8K Cinema Camera\" (TST-1789806196210)",
-      "details": {
-        "gearId": "g_1789806196428",
-        "name": "RED V-Raptor 8K Cinema Camera",
-        "category": "Cameras",
-        "dailyRate": 350
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196420_i2uo",
-      "timestamp": "2026-09-19T08:23:16.420Z",
-      "userId": "u_1789806196266_c7sr",
-      "userName": "Audit Staff",
-      "userEmail": "audit_staff_1789806196210@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Audit Staff\" logged in as Staff",
-      "details": {
-        "userId": "u_1789806196266_c7sr",
-        "email": "audit_staff_1789806196210@gearflow.com",
-        "role": "staff"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196359_mhgw",
-      "timestamp": "2026-09-19T08:23:16.359Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "RESET_PASSWORD",
-      "category": "Staff",
-      "summary": "Reset password for user #u_1789806196266_c7sr to default 12345",
-      "details": {
-        "userId": "u_1789806196266_c7sr"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196302_x163",
-      "timestamp": "2026-09-19T08:23:16.302Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "STATUS_CHANGE",
-      "category": "Staff",
-      "summary": "Changed account status for user #u_1789806196266_c7sr to Active",
-      "details": {
-        "userId": "u_1789806196266_c7sr",
-        "status": "Active"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196280_imtu",
-      "timestamp": "2026-09-19T08:23:16.280Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "STATUS_CHANGE",
-      "category": "Staff",
-      "summary": "Changed account status for user #u_1789806196266_c7sr to Banned",
-      "details": {
-        "userId": "u_1789806196266_c7sr",
-        "status": "Banned"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196269_gcwl",
-      "timestamp": "2026-09-19T08:23:16.269Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Staff account for \"Audit Staff\" (audit_staff_1789806196210@gearflow.com)",
-      "details": {
-        "userId": "u_1789806196266_c7sr",
-        "name": "Audit Staff",
-        "email": "audit_staff_1789806196210@gearflow.com",
-        "accountType": "Staff"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196105_qzuf",
-      "timestamp": "2026-09-19T08:23:16.105Z",
-      "userId": "u_staff_gearflow",
-      "userName": "GearFlow Staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"GearFlow Staff\" logged in as Staff",
-      "details": {
-        "userId": "u_staff_gearflow",
-        "email": "staff@gearflow.com",
-        "role": "staff"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806196047_bbua",
-      "timestamp": "2026-09-19T08:23:16.047Z",
-      "userId": "u_admin_gearflow",
-      "userName": "GearFlow Admin 1",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
-      "details": {
-        "userId": "u_admin_gearflow",
-        "email": "admin@gearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806195337_0ss5",
-      "timestamp": "2026-09-19T08:23:15.337Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806195320_svkf",
-      "details": {
-        "userId": "u_1789806195320_svkf"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806195322_v2ez",
-      "timestamp": "2026-09-19T08:23:15.322Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Staff account for \"Dave Operations\" (dave_1789806195270@gearflow.com)",
-      "details": {
-        "userId": "u_1789806195320_svkf",
-        "name": "Dave Operations",
-        "email": "dave_1789806195270@gearflow.com",
-        "accountType": "Staff"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806195264_5au4",
-      "timestamp": "2026-09-19T08:23:15.264Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Admin account for \"Second Admin\" (admin2_1789806195206@gearflow.com)",
-      "details": {
-        "userId": "u_1789806195260_c9fq",
-        "name": "Second Admin",
-        "email": "admin2_1789806195206@gearflow.com",
-        "accountType": "Admin"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806195195_mot3",
-      "timestamp": "2026-09-19T08:23:15.195Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806195185_0",
-      "details": {
-        "bookingId": "b_1789806195185_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806195186_6h4o",
-      "timestamp": "2026-09-19T08:23:15.186Z",
-      "userId": "u_staff_gearflow",
-      "userName": "staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c1 (2082-11-01 to 2082-11-03)",
-      "details": {
-        "booking": {
-          "id": "b_1789806195185_0",
-          "gearId": "g2",
-          "clientId": "c1",
-          "startDate": "2082-11-01",
-          "endDate": "2082-11-03",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806195172_dqy5",
-      "timestamp": "2026-09-19T08:23:15.172Z",
-      "userId": "u_staff_gearflow",
-      "userName": "GearFlow Staff",
-      "userEmail": "staff@gearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"GearFlow Staff\" logged in as Staff",
-      "details": {
-        "userId": "u_staff_gearflow",
-        "email": "staff@gearflow.com",
-        "role": "staff"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806195118_k6ah",
-      "timestamp": "2026-09-19T08:23:15.118Z",
-      "userId": "u_admin_gearflow",
-      "userName": "GearFlow Admin 1",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
-      "details": {
-        "userId": "u_admin_gearflow",
-        "email": "admin@gearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806194523_v2js",
-      "timestamp": "2026-09-19T08:23:14.523Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806194367_7fww",
-      "details": {
-        "userId": "u_1789806194367_7fww"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806194485_jwoz",
-      "timestamp": "2026-09-19T08:23:14.485Z",
-      "userId": "u_1789806194367_7fww",
-      "userName": "staff_flow_1789806194312",
-      "userEmail": "staff_flow_1789806194312@ekgearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "CHANGE_PASSWORD",
-      "category": "Auth",
-      "summary": "Changed password for user #u_1789806194367_7fww",
-      "details": {
-        "userId": "u_1789806194367_7fww"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806194423_jrnn",
-      "timestamp": "2026-09-19T08:23:14.423Z",
-      "userId": "u_1789806194367_7fww",
-      "userName": "Flow Test Staff",
-      "userEmail": "staff_flow_1789806194312@ekgearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Flow Test Staff\" logged in as Staff",
-      "details": {
-        "userId": "u_1789806194367_7fww",
-        "email": "staff_flow_1789806194312@ekgearflow.com",
-        "role": "staff"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806194370_83yy",
-      "timestamp": "2026-09-19T08:23:14.370Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Staff account for \"Flow Test Staff\" (staff_flow_1789806194312@ekgearflow.com)",
-      "details": {
-        "userId": "u_1789806194367_7fww",
-        "name": "Flow Test Staff",
-        "email": "staff_flow_1789806194312@ekgearflow.com",
-        "accountType": "Staff"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806194305_5c7p",
-      "timestamp": "2026-09-19T08:23:14.305Z",
-      "userId": "u_admin_gearflow",
-      "userName": "GearFlow Admin 1",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
-      "details": {
-        "userId": "u_admin_gearflow",
-        "email": "admin@gearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806194149_vhsv",
-      "timestamp": "2026-09-19T08:23:14.149Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806194114_0",
-      "details": {
-        "bookingId": "b_1789806194114_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806194140_mkmi",
-      "timestamp": "2026-09-19T08:23:14.140Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806194096_0",
-      "details": {
-        "bookingId": "b_1789806194096_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806194131_0adp",
-      "timestamp": "2026-09-19T08:23:14.131Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806194087_0",
-      "details": {
-        "bookingId": "b_1789806194087_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806194116_u3k0",
-      "timestamp": "2026-09-19T08:23:14.116Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c1 (2029-06-10 to 2029-06-15)",
-      "details": {
-        "booking": {
-          "id": "b_1789806194114_0",
-          "gearId": "g1",
-          "clientId": "c1",
-          "startDate": "2029-06-10",
-          "endDate": "2029-06-15",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806194106_pdp5",
-      "timestamp": "2026-09-19T08:23:14.106Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CANCEL_RENTAL",
-      "category": "Rentals",
-      "summary": "Voided / cancelled rental reservation #b_1789806194031_0",
-      "details": {
-        "bookingId": "b_1789806194031_0"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806194097_vd8s",
-      "timestamp": "2026-09-19T08:23:14.097Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c1 (2029-06-10 to 2029-06-15)",
-      "details": {
-        "booking": {
-          "id": "b_1789806194096_0",
-          "gearId": "g2",
-          "clientId": "c1",
-          "startDate": "2029-06-10",
-          "endDate": "2029-06-15",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806194088_yjtb",
-      "timestamp": "2026-09-19T08:23:14.088Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c1 (2029-06-20 to 2029-06-25)",
-      "details": {
-        "booking": {
-          "id": "b_1789806194087_0",
-          "gearId": "g1",
-          "clientId": "c1",
-          "startDate": "2029-06-20",
-          "endDate": "2029-06-25",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806194034_aax0",
-      "timestamp": "2026-09-19T08:23:14.034Z",
-      "userId": "u_admin_gearflow",
-      "userName": "admin",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_RENTAL",
-      "category": "Rentals",
-      "summary": "Created rental checkout for client #c1 (2029-06-10 to 2029-06-15)",
-      "details": {
-        "booking": {
-          "id": "b_1789806194031_0",
-          "gearId": "g1",
-          "clientId": "c1",
-          "startDate": "2029-06-10",
-          "endDate": "2029-06-15",
-          "status": "Active"
-        }
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806193997_zqi3",
-      "timestamp": "2026-09-19T08:23:13.997Z",
-      "userId": "u_admin_gearflow",
-      "userName": "GearFlow Admin 1",
-      "userEmail": "admin@gearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"GearFlow Admin 1\" logged in as Admin",
-      "details": {
-        "userId": "u_admin_gearflow",
-        "email": "admin@gearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806193176_bz3r",
-      "timestamp": "2026-09-19T08:23:13.176Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806193041_qrso",
-      "details": {
-        "userId": "u_1789806193041_qrso"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806193161_663r",
-      "timestamp": "2026-09-19T08:23:13.161Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806192914_m3i9",
-      "details": {
-        "userId": "u_1789806192914_m3i9"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806193149_xjrs",
-      "timestamp": "2026-09-19T08:23:13.150Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_GEAR",
-      "category": "Inventory",
-      "summary": "Deleted gear item #g_1789806193117",
-      "details": {
-        "gearId": "g_1789806193117"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806193119_p0pa",
-      "timestamp": "2026-09-19T08:23:13.119Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_GEAR",
-      "category": "Inventory",
-      "summary": "Added gear item \"Audit Lens 1789806193114\" (AT-AUD-3114)",
-      "details": {
-        "gearId": "g_1789806193117",
-        "name": "Audit Lens 1789806193114",
-        "category": "Lenses",
-        "dailyRate": 65
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806193104_z5r3",
-      "timestamp": "2026-09-19T08:23:13.104Z",
-      "userId": "u_1789806193041_qrso",
-      "userName": "Secondary Admin",
-      "userEmail": "admin_secondary_1789806192989@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Secondary Admin\" logged in as Admin",
-      "details": {
-        "userId": "u_1789806193041_qrso",
-        "email": "admin_secondary_1789806192989@ekgearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806193043_3w4x",
-      "timestamp": "2026-09-19T08:23:13.043Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Admin account for \"Secondary Admin\" (admin_secondary_1789806192989@ekgearflow.com)",
-      "details": {
-        "userId": "u_1789806193041_qrso",
-        "name": "Secondary Admin",
-        "email": "admin_secondary_1789806192989@ekgearflow.com",
-        "accountType": "Admin"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806192979_lk8l",
-      "timestamp": "2026-09-19T08:23:12.979Z",
-      "userId": "u_1789806192914_m3i9",
-      "userName": "Audit Test Staff",
-      "userEmail": "staff_audit_1789806192832@ekgearflow.com",
-      "userRole": "staff",
-      "accountType": "Staff",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Audit Test Staff\" logged in as Staff",
-      "details": {
-        "userId": "u_1789806192914_m3i9",
-        "email": "staff_audit_1789806192832@ekgearflow.com",
-        "role": "staff"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806192918_hqkw",
-      "timestamp": "2026-09-19T08:23:12.918Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "CREATE_USER",
-      "category": "Staff",
-      "summary": "Created Staff account for \"Audit Test Staff\" (staff_audit_1789806192832@ekgearflow.com)",
-      "details": {
-        "userId": "u_1789806192914_m3i9",
-        "name": "Audit Test Staff",
-        "email": "staff_audit_1789806192832@ekgearflow.com",
-        "accountType": "Staff"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806192804_5uml",
-      "timestamp": "2026-09-19T08:23:12.804Z",
-      "userId": "u1",
-      "userName": "Admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "USER_LOGIN",
-      "category": "Auth",
-      "summary": "User \"Admin\" logged in as Admin",
-      "details": {
-        "userId": "u1",
-        "email": "admin@ekgearflow.com",
-        "role": "admin"
-      },
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "audit_1789806192604_queb",
-      "timestamp": "2026-09-19T08:23:12.604Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_USER",
-      "category": "Staff",
-      "summary": "Deleted user account #u_1789806192456_7kd5",
-      "details": {
-        "userId": "u_1789806192456_7kd5"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806192594_zyvp",
-      "timestamp": "2026-09-19T08:23:12.594Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "DELETE_CLIENT",
-      "category": "Clients",
-      "summary": "Deleted client #c_1789806192571",
-      "details": {
-        "clientId": "c_1789806192571"
-      },
-      "ip": "::ffff:127.0.0.1"
-    },
-    {
-      "id": "audit_1789806192573_6qkm",
-      "timestamp": "2026-09-19T08:23:12.573Z",
-      "userId": "u1",
-      "userName": "admin",
-      "userEmail": "admin@ekgearflow.com",
-      "userRole": "admin",
-      "accountType": "Admin",
-      "action": "ADD_CLIENT",
-      "category": "Clients",
-      "summary": "Registered new client \"Secure Client <script>alert(1)</script>\" (client_xss_1789806192566@example.com)",
-      "details": {
-        "clientId": "c_1789806192571",
-        "name": "Secure Client <script>alert(1)</script>",
-        "email": "client_xss_1789806192566@example.com",
-        "phone": "+233 24 6918275"
       },
       "ip": "::ffff:127.0.0.1"
     }
