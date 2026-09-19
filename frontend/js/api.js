@@ -1,10 +1,17 @@
 /**
  * API Client Configuration and Fetch Interceptor
  */
-const API_BASE_URL = 
-  window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:3000/api'
-    : '/api';
+const API_BASE_URL = (() => {
+  if (typeof window !== 'undefined' && window.location) {
+    if (window.location.protocol === 'file:') {
+      return 'https://dbjo34z68f2kg.cloudfront.net/api';
+    }
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return 'http://localhost:3000/api';
+    }
+  }
+  return '/api';
+})();
 
 window.API_URL = API_BASE_URL;
 

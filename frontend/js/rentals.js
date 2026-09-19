@@ -91,7 +91,7 @@ function renderRentalsList(query = '') {
 window.renderRentalsList = renderRentalsList;
 
 function renderDashboardRentals(query = '') {
-  const tbody = document.getElementById('dashboard-rentals-table');
+  const tbody = document.getElementById('dashboard-rentals-table') || document.getElementById('dashboard-rentals-list');
   if (!tbody) return;
   tbody.innerHTML = '';
   
@@ -131,19 +131,11 @@ function renderDashboardRentals(query = '') {
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><strong>${escapeHtmlText(client.name)}</strong></td>
-      <td>${escapeHtmlText(item.name)}</td>
+      <td><strong>${escapeHtmlText(item.name)}</strong></td>
+      <td>${escapeHtmlText(client.name)}</td>
       <td>${escapeHtmlText(booking.startDate)}</td>
       <td>${escapeHtmlText(booking.endDate)}</td>
       <td><span class="status-pill ${statusClass}">${statusText}</span></td>
-      <td>${invoiceButton}</td>
-      <td>
-        ${canReturn ? `
-        <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-success); border-color: rgba(16, 185, 129, 0.3);" onclick="returnGear('${booking.id}')">
-          <i data-lucide="check-square" style="width:12px; height:12px"></i> Return
-        </button>
-        ` : '—'}
-      </td>
     `;
     tbody.appendChild(tr);
   });

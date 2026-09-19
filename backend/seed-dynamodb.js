@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
-const { DynamoDBDocumentClient, ScanCommand, PutCommand } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDBDocumentClient, ScanCommand, PutCommand, GetCommand } = require('@aws-sdk/lib-dynamodb');
 
 const stageArg = process.argv.find((arg, i) => process.argv[i - 1] === '--stage') || 'prod';
 const region = process.env.AWS_REGION || 'us-east-1';
@@ -12,46 +12,63 @@ const docClient = DynamoDBDocumentClient.from(client);
 
 const mockDbPath = path.resolve(__dirname, 'db-mock.json');
 
-async function seedTable(tableName, items, itemNameKey = 'name') {
+async function syncTable(tableName, items) {
   if (!items || items.length === 0) return;
-  console.log(`Checking table '${tableName}'...`);
+  console.log(`Synchronizing table '${tableName}'...`);
   
-  const existing = await docClient.send(new ScanCommand({ TableName: tableName, Limit: 5 }));
-  if (existing.Items && existing.Items.length > 0) {
-    console.log(`  Table '${tableName}' already contains ${existing.Count} item(s). Skipping seed.`);
-    return;
-  }
-  
-  console.log(`  Seeding ${items.length} records into '${tableName}'...`);
+  // Fetch existing IDs to avoid overwriting or duplicates
+  const existingRes = await docClient.send(new ScanCommand({ 
+    TableName: tableName,
+    ProjectionExpression: 'id, email'
+  }));
+  const existingIds = new Set((existingRes.Items || []).map(i => i.id));
+  const existingEmails = new Set((existingRes.Items || []).filter(i => i.email).map(i => i.email.toLowerCase()));
+
+  let insertedCount = 0;
   for (const item of items) {
+    if (!item.id) continue;
+    if (existingIds.has(item.id)) continue;
+    if (item.email && existingEmails.has(item.email.toLowerCase())) continue;
+
     await docClient.send(new PutCommand({
       TableName: tableName,
       Item: item
     }));
+    existingIds.add(item.id);
+    if (item.email) existingEmails.add(item.email.toLowerCase());
+    insertedCount++;
   }
-  console.log(`  ✓ Successfully seeded '${tableName}'`);
+
+  console.log(`  ✓ Synced '${tableName}': Added ${insertedCount} missing item(s). Total now: ${existingIds.size}`);
 }
 
 async function main() {
   if (!fs.existsSync(mockDbPath)) {
-    console.log('No db-mock.json found. Skipping seed.');
+    console.log('No db-mock.json found. Skipping sync.');
     return;
   }
 
   const db = JSON.parse(fs.readFileSync(mockDbPath, 'utf8'));
-  console.log(`Seeding DynamoDB tables for stage: ${stageArg}...`);
+  console.log(`Syncing data to DynamoDB for stage: ${stageArg}...`);
 
-  await seedTable(`EK_Gear_${stageArg}`, db.gear);
-  await seedTable(`EK_Clients_${stageArg}`, db.clients);
-  await seedTable(`EK_Bookings_${stageArg}`, db.bookings);
-  await seedTable(`EK_Users_${stageArg}`, db.users);
+  // Filter out any temporary test users from local db-mock if present
+  const baseUsers = (db.users || []).filter(u => 
+    !u.email.includes('admin2_') && 
+    !u.email.includes('test_staff') && 
+    !u.email.includes('client_xss')
+  );
 
-  console.log('Seed completed successfully.');
+  await syncTable(`EK_Gear_${stageArg}`, db.gear);
+  await syncTable(`EK_Clients_${stageArg}`, db.clients);
+  await syncTable(`EK_Bookings_${stageArg}`, db.bookings);
+  await syncTable(`EK_Users_${stageArg}`, baseUsers);
+
+  console.log('\nDatabase synchronization complete!');
 }
 
 if (require.main === module) {
   main().catch(err => {
-    console.error('Seed Error:', err);
+    console.error('Sync Error:', err);
     process.exit(1);
   });
 }

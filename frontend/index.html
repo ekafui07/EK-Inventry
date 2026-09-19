@@ -13,7 +13,13 @@
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=22">
+  <script>
+    (function() {
+      var saved = localStorage.getItem('EK_THEME') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+    })();
+  </script>
 </head>
 
 <body>
@@ -58,6 +64,15 @@
       </nav>
 
       <div class="sidebar-footer">
+        <div class="theme-toggle-row">
+          <button id="btn-theme-toggle" class="btn-theme-toggle" type="button" aria-label="Toggle light and dark mode" title="Toggle Light / Dark Mode">
+            <span class="theme-toggle-icon">
+              <i data-lucide="moon" id="icon-theme-dark"></i>
+              <i data-lucide="sun" id="icon-theme-light" style="display: none;"></i>
+            </span>
+            <span class="theme-toggle-label" id="theme-toggle-text">Dark Mode</span>
+          </button>
+        </div>
         <div class="user-profile">
           <div class="avatar" id="user-avatar-text">EK</div>
           <div class="user-info">
@@ -254,14 +269,9 @@
       <div class="view-panel" id="view-users">
         <div class="panel-header-row">
           <h2>Staff &amp; Permission Management</h2>
-          <div style="display: flex; gap: 0.75rem;">
-            <button class="btn btn-secondary" id="btn-open-audit-trail" style="display: none;">
-              <i data-lucide="clipboard-list"></i> System Audit Trail
-            </button>
-            <button class="btn btn-primary" id="btn-add-user">
-              <i data-lucide="user-plus"></i> Add Staff Member
-            </button>
-          </div>
+          <button class="btn btn-primary" id="btn-add-user">
+            <i data-lucide="user-plus"></i> Add Staff Member
+          </button>
         </div>
         <div class="client-grid" id="users-list">
           <!-- Dynamic grid of staff members -->
@@ -280,6 +290,9 @@
           <div style="display: flex; gap: 0.6rem; align-items: center;">
             <button type="button" class="btn btn-secondary" id="btn-refresh-audit" style="padding: 0.5rem 0.9rem; font-size: 0.82rem;">
               <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i> Refresh Logs
+            </button>
+            <button type="button" class="btn btn-primary" id="btn-export-audit" style="padding: 0.5rem 0.9rem; font-size: 0.82rem;">
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i> Export to CSV
             </button>
           </div>
         </div>
@@ -305,7 +318,7 @@
             </div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon" style="background: rgba(139, 92, 246, 0.15); color: #a78bfa;">
+            <div class="stat-icon icon-rentals-ops">
               <i data-lucide="calendar-range"></i>
             </div>
             <div class="stat-info">
@@ -314,7 +327,7 @@
             </div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
+            <div class="stat-icon icon-security-ops">
               <i data-lucide="shield-check"></i>
             </div>
             <div class="stat-info">
@@ -326,7 +339,7 @@
 
         <!-- Search & Category Filters -->
         <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
-          <div class="filter-tabs" id="audit-category-filters">
+          <div class="filter-bar filter-tabs" id="audit-category-filters">
             <button type="button" class="filter-tab active" data-audit-filter="All">All Events</button>
             <button type="button" class="filter-tab" data-audit-filter="Inventory">Inventory</button>
             <button type="button" class="filter-tab" data-audit-filter="Rentals">Rentals</button>
@@ -341,7 +354,7 @@
         </div>
 
         <!-- Audit Timeline Table -->
-        <div class="table-container">
+        <div class="table-wrapper table-container">
           <table class="data-table">
             <thead>
               <tr>
@@ -791,14 +804,14 @@
   </div>
 
   <!-- Modular Frontend Architecture -->
-  <script src="js/utils.js?v=13"></script>
-  <script src="js/api.js?v=13"></script>
-  <script src="js/inventory.js?v=13"></script>
-  <script src="js/clients.js?v=13"></script>
-  <script src="js/rentals.js?v=13"></script>
-  <script src="js/staff.js?v=13"></script>
-  <script src="js/audit.js?v=13"></script>
-  <script src="app.js?v=13"></script>
+  <script src="js/utils.js?v=22"></script>
+  <script src="js/api.js?v=22"></script>
+  <script src="js/inventory.js?v=22"></script>
+  <script src="js/clients.js?v=22"></script>
+  <script src="js/rentals.js?v=22"></script>
+  <script src="js/staff.js?v=22"></script>
+  <script src="js/audit.js?v=22"></script>
+  <script src="app.js?v=22"></script>
 
 </body>
 

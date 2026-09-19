@@ -213,10 +213,6 @@ function applyPermissions() {
   if (navAudit) {
     navAudit.style.display = isAuditAdmin ? 'flex' : 'none';
   }
-  const btnOpenAudit = document.getElementById('btn-open-audit-trail');
-  if (btnOpenAudit) {
-    btnOpenAudit.style.display = isAuditAdmin ? 'inline-flex' : 'none';
-  }
 
   if (!isAdmin && activeTab === 'users') {
     activeTab = 'dashboard';
@@ -395,7 +391,8 @@ async function refreshData(query = '') {
       state.auditLogs = [];
     }
   } catch (err) {
-    showToast('Cannot connect to backend API (http://localhost:3000)', 'danger');
+    console.error('Data synchronization error:', err);
+    showToast('Unable to synchronize data with backend server. Please check your connection.', 'danger');
     return;
   }
 
@@ -414,7 +411,7 @@ async function refreshData(query = '') {
   
   updateStats();
   renderDashboardRentals(query);
-  renderInventory('all', query);
+  renderInventory(window.activeInventoryFilter || 'all', query);
   renderRentalsList(query);
   renderClients(query);
   renderUsers(query);
@@ -1019,7 +1016,7 @@ function setupSearch() {
   searchInput.addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase().trim();
     renderDashboardRentals(query);
-    renderInventory('all', query);
+    renderInventory(window.activeInventoryFilter || 'all', query);
     renderRentalsList(query);
     renderClients(query);
     renderUsers(query);
@@ -1027,14 +1024,59 @@ function setupSearch() {
   });
 }
 
+// Theme Controller (Light / Dark Mode Layer)
+function setupTheme() {
+  const currentTheme = localStorage.getItem('EK_THEME') || 'dark';
+  applyTheme(currentTheme);
+
+  const themeBtn = document.getElementById('btn-theme-toggle');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      const newTheme = activeTheme === 'light' ? 'dark' : 'light';
+      applyTheme(newTheme);
+      try {
+        localStorage.setItem('EK_THEME', newTheme);
+      } catch (e) {}
+    });
+  }
+}
+window.setupTheme = setupTheme;
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  const themeText = document.getElementById('theme-toggle-text');
+  const iconDark = document.getElementById('icon-theme-dark');
+  const iconLight = document.getElementById('icon-theme-light');
+  
+  if (themeText) {
+    themeText.innerText = theme === 'light' ? 'Light Mode' : 'Dark Mode';
+  }
+  if (iconDark && iconLight) {
+    if (theme === 'light') {
+      iconDark.style.display = 'none';
+      iconLight.style.display = 'inline-block';
+    } else {
+      iconDark.style.display = 'inline-block';
+      iconLight.style.display = 'none';
+    }
+  }
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+}
+window.applyTheme = applyTheme;
+
 // App Bootstrap
 async function initApp() {
+  setupTheme();
   setupAuth();
   setupNavigation();
   setupModals();
   setupForms();
   setupSearch();
   setupCheckoutFormDynamicRows();
+  if (window.setupInventoryFilter) setupInventoryFilter();
   setupRentalsFilter();
   setupAuditTrail();
 

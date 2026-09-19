@@ -245,20 +245,26 @@ async function updateUser(id, fields) {
   const exprValues = {};
 
   if (fields.name !== undefined) { updateParts.push('#n = :name'); exprNames['#n'] = 'name'; exprValues[':name'] = fields.name.trim(); }
-  if (cleanEmail !== undefined) { updateParts.push('email = :em'); exprValues[':em'] = cleanEmail; }
-  if (fields.title !== undefined) { updateParts.push('title = :ti'); exprValues[':ti'] = fields.title.trim(); }
-  if (fields.accountType !== undefined) {
-    updateParts.push('accountType = :at'); exprValues[':at'] = fields.accountType;
-    updateParts.push('role = :ro'); exprValues[':ro'] = fields.accountType.toLowerCase();
+  if (cleanEmail !== undefined) { updateParts.push('#em = :em'); exprNames['#em'] = 'email'; exprValues[':em'] = cleanEmail; }
+  if (fields.title !== undefined) { updateParts.push('#ti = :ti'); exprNames['#ti'] = 'title'; exprValues[':ti'] = fields.title.trim(); }
+
+  let accountTypeVal = fields.accountType;
+  let roleVal = fields.role;
+  if (accountTypeVal !== undefined && roleVal === undefined) {
+    roleVal = accountTypeVal.toLowerCase();
+  } else if (roleVal !== undefined && accountTypeVal === undefined) {
+    accountTypeVal = roleVal.toLowerCase() === 'admin' ? 'Admin' : 'Staff';
   }
-  if (fields.role !== undefined) {
-    updateParts.push('role = :ro'); exprValues[':ro'] = fields.role.toLowerCase();
-    updateParts.push('accountType = :at'); exprValues[':at'] = fields.role.toLowerCase() === 'admin' ? 'Admin' : 'Staff';
+
+  if (accountTypeVal !== undefined) {
+    updateParts.push('#at = :at'); exprNames['#at'] = 'accountType'; exprValues[':at'] = accountTypeVal;
+    updateParts.push('#ro = :ro'); exprNames['#ro'] = 'role'; exprValues[':ro'] = (roleVal || accountTypeVal.toLowerCase());
   }
+
   if (fields.permissions !== undefined) {
-    const isTargetAdmin = (fields.role && fields.role.toLowerCase() === 'admin') || (fields.accountType && fields.accountType.toLowerCase() === 'admin');
+    const isTargetAdmin = (roleVal && roleVal.toLowerCase() === 'admin') || (accountTypeVal && accountTypeVal.toLowerCase() === 'admin');
     const safePerms = isTargetAdmin ? fields.permissions : fields.permissions.filter(p => p !== 'manage_users');
-    updateParts.push('permissions = :pe'); exprValues[':pe'] = safePerms;
+    updateParts.push('#pe = :pe'); exprNames['#pe'] = 'permissions'; exprValues[':pe'] = safePerms;
   }
   if (fields.status !== undefined) { updateParts.push('#s = :status'); exprNames['#s'] = 'status'; exprValues[':status'] = fields.status; }
 

@@ -45,6 +45,13 @@ function setupAuditTrail() {
     });
   }
 
+  const btnExport = document.getElementById('btn-export-audit');
+  if (btnExport) {
+    btnExport.addEventListener('click', () => {
+      exportAuditTrailToCSV();
+    });
+  }
+
   const filterContainer = document.getElementById('audit-category-filters');
   if (filterContainer) {
     filterContainer.addEventListener('click', (e) => {
@@ -139,23 +146,23 @@ function renderAuditTrail(category = activeAuditCategory, query = '') {
     const initial = (log.userName || log.userEmail || 'U').charAt(0).toUpperCase();
     const isAdminActor = log.accountType === 'Admin' || (log.userRole && log.userRole.toLowerCase() === 'admin');
     const roleBadge = isAdminActor
-      ? `<span style="font-size:0.65rem; font-weight:700; background:rgba(2,132,199,0.15); color:#38bdf8; border:1px solid rgba(2,132,199,0.3); padding:1px 6px; border-radius:10px;">Admin</span>`
-      : `<span style="font-size:0.65rem; font-weight:600; background:rgba(59,130,246,0.12); color:#60a5fa; border:1px solid rgba(59,130,246,0.25); padding:1px 6px; border-radius:10px;">Staff</span>`;
+      ? `<span class="audit-role-badge admin">Admin</span>`
+      : `<span class="audit-role-badge staff">Staff</span>`;
 
     const cat = log.category || 'System';
     let catBadge = '';
     if (cat === 'Inventory') {
-      catBadge = `<span class="badge" style="background:rgba(16,185,129,0.12); color:#34d399; border-color:rgba(16,185,129,0.25);"><i data-lucide="package" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>Inventory</span>`;
+      catBadge = `<span class="badge badge-cat badge-cat-inventory"><i data-lucide="package" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>Inventory</span>`;
     } else if (cat === 'Rentals') {
-      catBadge = `<span class="badge" style="background:rgba(139,92,246,0.12); color:#a78bfa; border-color:rgba(139,92,246,0.25);"><i data-lucide="repeat" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>Rentals</span>`;
+      catBadge = `<span class="badge badge-cat badge-cat-rentals"><i data-lucide="repeat" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>Rentals</span>`;
     } else if (cat === 'Clients') {
-      catBadge = `<span class="badge" style="background:rgba(245,158,11,0.12); color:#fbbf24; border-color:rgba(245,158,11,0.25);"><i data-lucide="users" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>Clients</span>`;
+      catBadge = `<span class="badge badge-cat badge-cat-clients"><i data-lucide="users" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>Clients</span>`;
     } else if (cat === 'Staff') {
-      catBadge = `<span class="badge" style="background:rgba(2,132,199,0.12); color:#38bdf8; border-color:rgba(2,132,199,0.25);"><i data-lucide="shield-check" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>Staff</span>`;
+      catBadge = `<span class="badge badge-cat badge-cat-staff"><i data-lucide="shield-check" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>Staff</span>`;
     } else if (cat === 'Auth') {
-      catBadge = `<span class="badge" style="background:rgba(236,72,153,0.12); color:#f472b6; border-color:rgba(236,72,153,0.25);"><i data-lucide="lock" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>Auth</span>`;
+      catBadge = `<span class="badge badge-cat badge-cat-auth"><i data-lucide="lock" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>Auth</span>`;
     } else {
-      catBadge = `<span class="badge">${escapeHtmlText(cat)}</span>`;
+      catBadge = `<span class="badge badge-cat">${escapeHtmlText(cat)}</span>`;
     }
 
     const detailsStr = log.details ? (typeof log.details === 'string' ? log.details : JSON.stringify(log.details)) : '';
@@ -167,7 +174,7 @@ function renderAuditTrail(category = activeAuditCategory, query = '') {
         </td>
         <td style="vertical-align: middle;">
           <div style="display: flex; align-items: center; gap: 0.65rem;">
-            <div style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #0284c7, #0369a1); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem; color: #fff; flex-shrink: 0;">
+            <div class="audit-actor-avatar">
               ${initial}
             </div>
             <div style="min-width: 0;">
@@ -197,7 +204,7 @@ function renderAuditTrail(category = activeAuditCategory, query = '') {
           </div>
         </td>
         <td style="text-align: right; vertical-align: middle;">
-          <span style="font-family: monospace; font-size: 0.74rem; color: var(--text-muted); background: rgba(255,255,255,0.04); padding: 2px 7px; border-radius: 4px; border: 1px solid var(--border-color);">
+          <span class="audit-ip-pill">
             ${escapeHtmlText(log.ip || '127.0.0.1')}
           </span>
         </td>
@@ -210,3 +217,152 @@ function renderAuditTrail(category = activeAuditCategory, query = '') {
   }
 }
 window.renderAuditTrail = renderAuditTrail;
+
+function formatLogDetailsObject(obj) {
+  if (!obj || typeof obj !== 'object') return '';
+  const parts = [];
+
+  if (obj.gearName) parts.push(`Gear: ${obj.gearName}`);
+  if (obj.name && !obj.gearName) parts.push(`Item: ${obj.name}`);
+  if (obj.clientName) parts.push(`Client: ${obj.clientName}`);
+  if (obj.category) parts.push(`Category: ${obj.category}`);
+  if (obj.assetTag) parts.push(`Asset Tag: ${obj.assetTag}`);
+  if (obj.serialNumber) parts.push(`SN: ${obj.serialNumber}`);
+  if (obj.dailyRate !== undefined) parts.push(`Daily Rate: GH₵${Number(obj.dailyRate).toFixed(2)}`);
+  if (obj.startDate && obj.endDate) parts.push(`Rental Period: ${obj.startDate} to ${obj.endDate}`);
+  if (obj.status) parts.push(`Status: ${obj.status}`);
+  if (obj.title) parts.push(`Job Title: ${obj.title}`);
+  if (obj.accountType) parts.push(`Role: ${obj.accountType}`);
+  if (obj.email) parts.push(`Email: ${obj.email}`);
+  if (obj.phone) parts.push(`Phone: ${obj.phone}`);
+  if (obj.reason) parts.push(`Reason: ${obj.reason}`);
+
+  if (parts.length === 0) {
+    for (const [k, v] of Object.entries(obj)) {
+      if (/id$/i.test(k) || k === 'id' || k === 'password' || k === 'token') continue;
+      if (typeof v === 'object' && v !== null) continue;
+      parts.push(`${k}: ${v}`);
+    }
+  }
+
+  return parts.length > 0 ? parts.join(' | ') : 'Completed successfully';
+}
+
+function formatLogDetailsForExport(log) {
+  if (!log.details) {
+    return log.summary || log.action || 'No additional details';
+  }
+
+  if (typeof log.details === 'string') {
+    try {
+      const parsed = JSON.parse(log.details);
+      return formatLogDetailsObject(parsed);
+    } catch (e) {
+      return log.details.replace(/id:[a-z0-9_-]+/gi, '').replace(/\s+/g, ' ').trim();
+    }
+  }
+
+  if (typeof log.details === 'object') {
+    return formatLogDetailsObject(log.details);
+  }
+
+  return String(log.details);
+}
+
+function exportAuditTrailToCSV() {
+  const allLogs = state.auditLogs || [];
+  if (allLogs.length === 0) {
+    showToast('No audit records available to export', 'warning');
+    return;
+  }
+
+  const category = (window.activeAuditCategory && window.activeAuditCategory !== 'All') ? window.activeAuditCategory : null;
+  const searchInput = document.getElementById('audit-search-input');
+  const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
+  let logs = allLogs;
+  if (category) {
+    logs = logs.filter(l => l.category && l.category.toLowerCase() === category.toLowerCase());
+  }
+  if (query) {
+    logs = logs.filter(l =>
+      (l.userName && l.userName.toLowerCase().includes(query)) ||
+      (l.userEmail && l.userEmail.toLowerCase().includes(query)) ||
+      (l.action && l.action.toLowerCase().includes(query)) ||
+      (l.summary && l.summary.toLowerCase().includes(query)) ||
+      (l.details && typeof l.details === 'string' && l.details.toLowerCase().includes(query)) ||
+      (l.category && l.category.toLowerCase().includes(query)) ||
+      (l.ip && l.ip.toLowerCase().includes(query))
+    );
+  }
+
+  if (logs.length === 0) {
+    showToast('No records match the current filter to export', 'warning');
+    return;
+  }
+
+  const headers = [
+    'Date & Time',
+    'Staff / User',
+    'Email Address',
+    'Account Role',
+    'Category',
+    'Action Description',
+    'Plain-English Details',
+    'IP Address',
+    'Outcome'
+  ];
+
+  const escapeCSV = (val) => {
+    if (val === null || val === undefined) return '""';
+    const str = String(val).replace(/"/g, '""');
+    return `"${str}"`;
+  };
+
+  const rows = logs.map(log => {
+    const dateObj = new Date(log.timestamp);
+    const dateStr = !isNaN(dateObj)
+      ? `${dateObj.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: '2-digit' })} ${dateObj.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}`
+      : String(log.timestamp || '');
+
+    const actorName = log.userName || 'System User';
+    const actorEmail = log.userEmail || '—';
+    const actorRole = (log.accountType === 'Admin' || (log.userRole && log.userRole.toLowerCase() === 'admin')) ? 'Administrator' : 'Staff Member';
+    const cat = log.category || 'System';
+    const action = log.summary || log.action || 'System Event';
+    const details = formatLogDetailsForExport(log);
+    const ip = log.ip || '127.0.0.1';
+    const outcome = log.outcome || (log.status === 'Failed' ? 'Failed' : 'Success');
+
+    return [
+      escapeCSV(dateStr),
+      escapeCSV(actorName),
+      escapeCSV(actorEmail),
+      escapeCSV(actorRole),
+      escapeCSV(cat),
+      escapeCSV(action),
+      escapeCSV(details),
+      escapeCSV(ip),
+      escapeCSV(outcome)
+    ].join(',');
+  });
+
+  const csvContent = '\uFEFF' + [headers.map(escapeCSV).join(','), ...rows].join('\r\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+
+  const nowStr = new Date().toISOString().split('T')[0];
+  const catLabel = category ? `_${category}` : '';
+  const filename = `EK_GearFlow_Audit_Report${catLabel}_${nowStr}.csv`;
+
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+
+  showToast(`Successfully exported ${logs.length} audit record(s) to CSV!`);
+}
+window.exportAuditTrailToCSV = exportAuditTrailToCSV;

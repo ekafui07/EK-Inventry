@@ -64,49 +64,57 @@ function renderUsers(query = '') {
     const statusText = isBanned ? 'Banned' : 'Active';
     const isUserAdmin = user.accountType === 'Admin' || (user.role && user.role.toLowerCase() === 'admin');
     const typeBadge = isUserAdmin 
-      ? `<span style="font-size:0.7rem; font-weight:700; background:rgba(2,132,199,0.15); color:#38bdf8; border:1px solid rgba(2,132,199,0.3); padding:2px 8px; border-radius:12px;">Admin</span>`
-      : `<span style="font-size:0.7rem; font-weight:600; background:rgba(59,130,246,0.15); color:#60a5fa; border:1px solid rgba(59,130,246,0.3); padding:2px 8px; border-radius:12px;">Staff</span>`;
+      ? `<span class="staff-role-badge admin">Admin</span>`
+      : `<span class="staff-role-badge staff">Staff</span>`;
 
     const userPerms = isUserAdmin
-      ? `<span style="font-size:0.75rem; font-weight:600; color:#38bdf8; background:rgba(2,132,199,0.12); border:1px solid rgba(2,132,199,0.25); padding:3px 10px; border-radius:8px; display:inline-flex; align-items:center; gap:0.35rem;"><i data-lucide="shield-check" style="width:13px; height:13px"></i> Full Administrative Access</span>`
-      : ((user.permissions || []).map(p => 
-          `<span style="font-size:0.68rem; background:rgba(255,255,255,0.06); color:var(--text-muted); padding:2px 6px; border-radius:4px; border:1px solid var(--border-color);">${permLabels[p] || p}</span>`
-        ).join(' ') || '<span style="font-size:0.7rem; color:var(--text-muted)">None</span>');
+      ? `<span class="staff-perm-chip admin"><i data-lucide="shield-check" style="width:13px; height:13px"></i> Full Administrative Access</span>`
+      : ((user.permissions || []).length > 0
+          ? (user.permissions || []).map(p => 
+              `<span class="staff-perm-chip">${permLabels[p] || p}</span>`
+            ).join('')
+          : '<span class="staff-perm-none">No active permissions</span>');
 
     const card = document.createElement('div');
-    card.className = 'client-card';
-    if (isBanned) card.style.borderColor = 'rgba(239,68,68,0.4)';
+    card.className = 'client-card staff-card' + (isBanned ? ' staff-card-banned' : '');
 
     card.innerHTML = `
-      <div class="client-header" style="align-items: flex-start;">
-        <div>
-          <h3>${escapeHtmlText(user.name)} ${typeBadge}</h3>
-          <p class="company">${escapeHtmlText(user.title)}</p>
+      <div class="staff-header">
+        <div class="staff-title-group">
+          <div class="staff-name-line">
+            <h3 class="staff-name">${escapeHtmlText(user.name)}</h3>
+            ${typeBadge}
+          </div>
+          <p class="staff-title">${escapeHtmlText(user.title || 'Staff Member')}</p>
         </div>
         <span class="status-pill ${statusClass}">${statusText}</span>
       </div>
-      <div class="client-details">
-        <div class="detail-item"><i data-lucide="mail"></i> <span>${escapeHtmlText(user.email)}</span></div>
+      
+      <div class="staff-email-row">
+        <i data-lucide="mail"></i>
+        <span>${escapeHtmlText(user.email)}</span>
       </div>
-      <div style="margin-top:0.75rem;">
-        <span style="font-size:0.72rem; color:var(--text-muted); display:block; margin-bottom:0.35rem; font-weight:600;">Assigned Permissions:</span>
-        <div style="display:flex; flex-wrap:wrap; gap:0.25rem;">
+      
+      <div class="staff-permissions-wrap">
+        <span class="staff-permissions-label">Assigned Permissions:</span>
+        <div class="staff-permissions-chips">
           ${userPerms}
         </div>
       </div>
-      <div class="client-actions" style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem; display: flex; gap: 0.4rem; flex-wrap: wrap;">
-        <button class="btn btn-secondary" style="padding: 0.4rem 0.6rem; font-size: 0.72rem;" onclick="editUser('${user.id}')" title="Edit Profile & Permissions">
-          <i data-lucide="pencil" style="width:12px; height:12px"></i> Edit
+      
+      <div class="staff-actions-row">
+        <button class="btn btn-secondary staff-btn" onclick="editUser('${user.id}')" title="Edit Profile & Permissions">
+          <i data-lucide="pencil"></i> Edit
         </button>
         ${currentUser && currentUser.id !== user.id ? `
-        <button class="btn btn-secondary" style="padding: 0.4rem 0.6rem; font-size: 0.72rem; color:var(--color-primary);" onclick="resetUserPasswordAction('${user.id}')" title="Reset password to default 12345">
-          <i data-lucide="key" style="width:12px; height:12px"></i> Reset Pass (12345)
+        <button class="btn btn-secondary staff-btn staff-btn-reset" onclick="resetUserPasswordAction('${user.id}')" title="Reset password to default 12345">
+          <i data-lucide="key"></i> Reset Pass
         </button>
-        <button class="btn btn-secondary" style="padding: 0.4rem 0.6rem; font-size: 0.72rem; ${isBanned ? 'color:#4ade80;' : 'color:var(--color-danger);'}" onclick="toggleUserStatusAction('${user.id}', '${isBanned ? 'Active' : 'Banned'}')" title="${isBanned ? 'Unban Account' : 'Ban Account'}">
-          <i data-lucide="${isBanned ? 'user-check' : 'user-x'}" style="width:12px; height:12px"></i> ${isBanned ? 'Unban' : 'Ban'}
+        <button class="btn btn-secondary staff-btn ${isBanned ? 'staff-btn-unban' : 'staff-btn-ban'}" onclick="toggleUserStatusAction('${user.id}', '${isBanned ? 'Active' : 'Banned'}')" title="${isBanned ? 'Unban Account' : 'Ban Account'}">
+          <i data-lucide="${isBanned ? 'user-check' : 'user-x'}"></i> ${isBanned ? 'Unban' : 'Ban'}
         </button>
-        <button class="btn btn-secondary" style="padding: 0.4rem 0.6rem; font-size: 0.72rem; color: var(--color-danger); border-color: rgba(239,68,68,0.3);" onclick="deleteUserAction('${user.id}')" title="Delete Account">
-          <i data-lucide="trash-2" style="width:12px; height:12px"></i>
+        <button class="btn btn-secondary staff-btn staff-btn-delete" onclick="deleteUserAction('${user.id}')" title="Delete Account">
+          <i data-lucide="trash-2"></i>
         </button>
         ` : ''}
       </div>

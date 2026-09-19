@@ -24,7 +24,9 @@ function validateGearPayload(data, currentId = null) {
 }
 window.validateGearPayload = validateGearPayload;
 
-function renderInventory(filterOrCategory = 'all', query = '') {
+let activeInventoryFilter = 'all';
+
+function renderInventory(filterOrCategory = (window.activeInventoryFilter || 'all'), query = '') {
   const tbody = document.getElementById('inventory-list');
   const grid = document.getElementById('inventory-grid');
   if (!tbody && !grid) return;
@@ -184,12 +186,19 @@ function editGear(id) {
   const item = state.gear.find(g => g.id === id);
   if (!item) return;
   
-  document.getElementById('edit-gear-id').value = item.id;
-  document.getElementById('edit-gear-name').value = item.name;
-  document.getElementById('edit-gear-category').value = item.category;
-  document.getElementById('edit-gear-rate').value = item.dailyRate;
-  document.getElementById('edit-gear-tag').value = item.assetTag || '';
-  document.getElementById('edit-gear-serial').value = item.serialNumber || '';
+  const idEl = document.getElementById('edit-gear-id');
+  const nameEl = document.getElementById('edit-gear-name');
+  const catEl = document.getElementById('edit-gear-category');
+  const rateEl = document.getElementById('edit-gear-rate');
+  const tagEl = document.getElementById('edit-gear-asset-tag') || document.getElementById('edit-gear-tag');
+  const serialEl = document.getElementById('edit-gear-serial');
+  
+  if (idEl) idEl.value = item.id;
+  if (nameEl) nameEl.value = item.name || '';
+  if (catEl) catEl.value = item.category || '';
+  if (rateEl) rateEl.value = item.dailyRate || '';
+  if (tagEl) tagEl.value = item.assetTag || '';
+  if (serialEl) serialEl.value = item.serialNumber || '';
   
   openModal('modal-edit-gear');
 }
@@ -217,3 +226,20 @@ async function deleteGear(id) {
   }
 }
 window.deleteGear = deleteGear;
+
+function setupInventoryFilter() {
+  const filterTabs = document.querySelectorAll('#view-inventory .filter-tab');
+  filterTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      filterTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      activeInventoryFilter = tab.getAttribute('data-filter') || 'all';
+      window.activeInventoryFilter = activeInventoryFilter;
+      const searchEl = document.getElementById('global-search');
+      const query = searchEl ? searchEl.value.toLowerCase().trim() : '';
+      renderInventory(activeInventoryFilter, query);
+    });
+  });
+}
+window.activeInventoryFilter = activeInventoryFilter;
+window.setupInventoryFilter = setupInventoryFilter;

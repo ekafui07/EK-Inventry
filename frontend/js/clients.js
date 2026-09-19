@@ -34,12 +34,12 @@ function renderClients(query = '') {
   if (!grid) return;
   grid.innerHTML = '';
   
-  let list = state.clients;
+  let list = state.clients || [];
   if (query) {
     const q = query.toLowerCase();
     list = list.filter(c => 
-      c.name.toLowerCase().includes(q) || 
-      c.email.toLowerCase().includes(q) ||
+      (c.name && c.name.toLowerCase().includes(q)) || 
+      (c.email && c.email.toLowerCase().includes(q)) || 
       (c.phone && c.phone.toLowerCase().includes(q))
     );
   }
@@ -50,55 +50,65 @@ function renderClients(query = '') {
   }
 
   const canManageClients = currentUser && (
+    currentUser.accountType === 'Admin' ||
     currentUser.role === 'admin' ||
     (currentUser.permissions && currentUser.permissions.includes('manage_clients'))
   );
-  const canDelete = currentUser && currentUser.role === 'admin';
+  const canDelete = currentUser && (currentUser.accountType === 'Admin' || currentUser.role === 'admin');
   
   list.forEach(client => {
     const card = document.createElement('div');
-    card.className = 'client-card';
+    card.className = 'client-card client-directory-card';
     
-    const activeRentals = state.bookings.filter(b => b.clientId === client.id && b.status === 'Active').length;
+    const activeRentals = (state.bookings || []).filter(b => b.clientId === client.id && b.status === 'Active').length;
     const safeName = escapeHtmlText(client.name);
-    const safeId = escapeHtmlText(client.id);
-    const safeEmail = escapeHtmlText(client.email);
-    const safePhone = escapeHtmlText(client.phone);
-    
+    const safeEmail = escapeHtmlText(client.email || '—');
+    const safePhone = escapeHtmlText(client.phone || '—');
+
+    // 2-letter uppercase initials
+    const nameWords = safeName.trim().split(/\s+/).filter(Boolean);
+    let initials = 'CL';
+    if (nameWords.length === 1) {
+      initials = nameWords[0].slice(0, 2).toUpperCase();
+    } else if (nameWords.length >= 2) {
+      initials = (nameWords[0][0] + nameWords[nameWords.length - 1][0]).toUpperCase();
+    }
+
     card.innerHTML = `
-      <div class="client-header">
-        <div class="client-avatar">${safeName.charAt(0).toUpperCase()}</div>
-        <div class="client-title">
-          <div class="client-name">${safeName}</div>
-          <div class="client-id">ID: ${safeId}</div>
+      <div class="client-card-header">
+        <div class="client-avatar">
+          <span>${initials}</span>
+        </div>
+        <div class="client-title-block">
+          <h3 class="client-name-heading">${safeName}</h3>
+          <span class="client-rentals-tag ${activeRentals > 0 ? 'active' : 'idle'}">
+            ${activeRentals} Active ${activeRentals === 1 ? 'Rental' : 'Rentals'}
+          </span>
         </div>
       </div>
       
-      <div class="client-contact">
-        <div class="contact-item">
+      <div class="client-contact-details">
+        <div class="contact-line">
           <i data-lucide="mail"></i>
-          <span>${safeEmail}</span>
+          <a href="${safeEmail !== '—' ? `mailto:${safeEmail}` : 'javascript:void(0)'}">${safeEmail}</a>
         </div>
-        <div class="contact-item">
+        <div class="contact-line">
           <i data-lucide="phone"></i>
-          <span>${safePhone}</span>
+          <a href="${safePhone !== '—' ? `tel:${safePhone.replace(/\s+/g, '')}` : 'javascript:void(0)'}">${safePhone}</a>
         </div>
       </div>
       
-      <div class="client-footer">
-        <span class="active-badge">${activeRentals} Active ${activeRentals === 1 ? 'Rental' : 'Rentals'}</span>
-        <div class="client-actions">
-          ${canManageClients ? `
-            <button class="btn btn-secondary btn-icon" onclick="editClient('${client.id}')" title="Edit Client">
-              <i data-lucide="edit"></i>
-            </button>
-          ` : ''}
-          ${canDelete ? `
-            <button class="btn btn-secondary btn-icon" onclick="deleteClient('${client.id}')" title="Delete Client">
-              <i data-lucide="trash-2"></i>
-            </button>
-          ` : ''}
-        </div>
+      <div class="client-card-footer">
+        ${canManageClients ? `
+          <button class="btn btn-secondary btn-sm" onclick="editClient('${client.id}')" title="Edit Client">
+            <i data-lucide="pencil" style="width:13px; height:13px;"></i> Edit
+          </button>
+        ` : ''}
+        ${canDelete ? `
+          <button class="btn btn-secondary btn-sm btn-delete-client" onclick="deleteClient('${client.id}')" title="Delete Client">
+            <i data-lucide="trash-2" style="width:13px; height:13px;"></i>
+          </button>
+        ` : ''}
       </div>
     `;
     grid.appendChild(card);
