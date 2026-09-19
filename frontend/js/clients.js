@@ -49,11 +49,13 @@ function renderClients(query = '') {
     return;
   }
 
-  const canManageClients = currentUser && (
-    currentUser.accountType === 'Admin' ||
-    currentUser.role === 'admin' ||
-    (currentUser.permissions && currentUser.permissions.includes('manage_clients'))
-  );
+  const canManageClients = typeof hasPermission === 'function'
+    ? hasPermission('manage_clients')
+    : (currentUser && (
+        currentUser.accountType === 'Admin' ||
+        currentUser.role === 'admin' ||
+        (currentUser.permissions && currentUser.permissions.includes('manage_clients'))
+      ));
   const canDelete = canManageClients;
   
   list.forEach(client => {
@@ -121,6 +123,10 @@ function renderClients(query = '') {
 window.renderClients = renderClients;
 
 function editClient(id) {
+  if (typeof hasPermission === 'function' && !hasPermission('manage_clients')) {
+    showToast('Permission Denied: You do not have permission to edit clients.', 'danger');
+    return;
+  }
   const client = state.clients.find(c => c.id === id);
   if (!client) return;
   
@@ -134,6 +140,10 @@ function editClient(id) {
 window.editClient = editClient;
 
 async function deleteClient(id) {
+  if (typeof hasPermission === 'function' && !hasPermission('manage_clients')) {
+    showToast('Permission Denied: You do not have permission to delete clients.', 'danger');
+    return;
+  }
   const client = state.clients.find(c => c.id === id);
   const confirmed = await showConfirmModal(
     'Delete Client',
@@ -148,7 +158,11 @@ async function deleteClient(id) {
       const data = await res.json().catch(() => ({}));
       throw new Error(data.error || 'Failed to delete client');
     }
-    await refreshData();
+    if (window.AppEvents) {
+      AppEvents.emit('clients:changed');
+    } else {
+      await refreshData();
+    }
     showToast('Client removed successfully');
   } catch (err) {
     showToast(err.message, 'danger');

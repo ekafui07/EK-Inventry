@@ -184,7 +184,11 @@ async function resetUserPasswordAction(id) {
     const res = await fetch(`${API_URL}/users/${id}/reset-password`, { method: 'POST' });
     if (!res.ok) throw new Error('API Error');
     showToast(`Password for ${user.name} reset to 12345`);
-    await refreshData();
+    if (window.AppEvents) {
+      AppEvents.emit('users:changed');
+    } else {
+      await refreshData();
+    }
   } catch (err) {
     showToast('Error resetting password', 'danger');
   }
@@ -207,7 +211,11 @@ async function toggleUserStatusAction(id, newStatus) {
     });
     if (!res.ok) throw new Error('API Error');
     showToast(`Account status updated to ${newStatus}`);
-    await refreshData();
+    if (window.AppEvents) {
+      AppEvents.emit('users:changed');
+    } else {
+      await refreshData();
+    }
   } catch (err) {
     showToast('Error updating account status', 'danger');
   }
@@ -230,7 +238,11 @@ async function deleteUserAction(id) {
     const res = await fetch(`${API_URL}/users/${id}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('API Error');
     showToast(`Account "${user.name}" deleted successfully.`);
-    await refreshData();
+    if (window.AppEvents) {
+      AppEvents.emit('users:changed');
+    } else {
+      await refreshData();
+    }
   } catch (err) {
     showToast('Error deleting account', 'danger');
   }

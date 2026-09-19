@@ -288,10 +288,14 @@ async function returnGear(bookingId) {
     });
     if (!res.ok) throw new Error('API Error');
     showToast('Gear checked back into inventory');
+    if (window.AppEvents) {
+      AppEvents.emit('rentals:changed');
+    } else {
+      await refreshData();
+    }
   } catch (err) {
     showToast('Error updating return', 'danger');
   }
-  await refreshData();
 }
 window.returnGear = returnGear;
 
@@ -306,10 +310,14 @@ async function cancelBookingAction(bookingId) {
     });
     if (!res.ok) throw new Error('API Error');
     showToast('Booking cancelled successfully');
+    if (window.AppEvents) {
+      AppEvents.emit('rentals:changed');
+    } else {
+      await refreshData();
+    }
   } catch (err) {
     showToast('Error cancelling booking', 'danger');
   }
-  await refreshData();
 }
 window.cancelBookingAction = cancelBookingAction;
 

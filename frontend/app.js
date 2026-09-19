@@ -351,58 +351,9 @@ function populateCheckoutDropdowns() {
 }
 window.populateCheckoutDropdowns = populateCheckoutDropdowns;
 
-// Data Fetch & Synchronization
-async function refreshData(query = '') {
-  try {
-    await syncLiveUserProfile();
-    const isAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
-    const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
-    const requests = [
-      fetch(`${API_URL}/gear`),
-      fetch(`${API_URL}/clients`),
-      fetch(`${API_URL}/bookings`)
-    ];
-    if (isAdmin) {
-      requests.push(fetch(`${API_URL}/users`));
-    }
-    if (isAuditAdmin) {
-      requests.push(fetch(`${API_URL}/audit-logs`));
-    }
-
-    const responses = await Promise.all(requests);
-    const gearRes = responses[0];
-    const clientsRes = responses[1];
-    const bookingsRes = responses[2];
-    let nextIdx = 3;
-    const usersRes = isAdmin ? responses[nextIdx++] : null;
-    const auditRes = isAuditAdmin ? responses[nextIdx++] : null;
-
-    if (!gearRes.ok || !clientsRes.ok || !bookingsRes.ok) {
-      throw new Error('Server returned an error');
-    }
-
-    state.gear = await gearRes.json();
-    state.clients = await clientsRes.json();
-    state.bookings = await bookingsRes.json();
-    if (usersRes && usersRes.ok) {
-      state.users = await usersRes.json();
-    } else if (!isAdmin) {
-      state.users = [];
-    }
-
-    if (auditRes && auditRes.ok) {
-      const auditData = await auditRes.json();
-      state.auditLogs = auditData.auditLogs || [];
-    } else if (!isAuditAdmin) {
-      state.auditLogs = [];
-    }
-  } catch (err) {
-    console.error('Data synchronization error:', err);
-    showToast('Unable to synchronize data with backend server. Please check your connection.', 'danger');
-    return;
-  }
-
-  // Recompute gear availability status based on current active bookings today
+// Local Gear Availability Calculation
+function recomputeGearStatusLocally() {
+  if (!Array.isArray(state.gear) || !Array.isArray(state.bookings)) return;
   const todayStr = new Date().toISOString().split('T')[0];
   state.gear.forEach(g => {
     if (g.status === 'Maintenance') return;
@@ -414,6 +365,210 @@ async function refreshData(query = '') {
     );
     g.status = isOutToday ? 'Rented' : 'Available';
   });
+}
+window.recomputeGearStatusLocally = recomputeGearStatusLocally;
+
+// Targeted Domain Refreshers
+async function refreshGearData() {
+  try {
+    const res = await fetch(`${API_URL}/gear`);
+    if (!res.ok) throw new Error(`Gear fetch failed with status ${res.status}`);
+    state.gear = await res.json();
+    recomputeGearStatusLocally();
+    const query = document.getElementById('global-search')?.value.toLowerCase().trim() || '';
+    safeComponentRender('Gear Inventory', () => renderInventory(window.activeInventoryFilter || 'all', query), 'inventory-list');
+    safeComponentRender('Category Distribution', () => renderCategoryChart());
+    safeComponentRender('Dashboard Statistics', () => updateStats());
+    safeComponentRender('Checkout Dropdowns', () => populateCheckoutDropdowns());
+  } catch (err) {
+    console.error('Error refreshing gear data:', err);
+    showToast('Failed to refresh gear inventory.', 'danger');
+  }
+}
+window.refreshGearData = refreshGearData;
+
+async function refreshClientsData() {
+  try {
+    const res = await fetch(`${API_URL}/clients`);
+    if (!res.ok) throw new Error(`Clients fetch failed with status ${res.status}`);
+    state.clients = await res.json();
+    const query = document.getElementById('global-search')?.value.toLowerCase().trim() || '';
+    safeComponentRender('Clients Directory', () => renderClients(query), 'clients-list');
+    safeComponentRender('Checkout Dropdowns', () => populateCheckoutDropdowns());
+  } catch (err) {
+    console.error('Error refreshing clients data:', err);
+    showToast('Failed to refresh clients directory.', 'danger');
+  }
+}
+window.refreshClientsData = refreshClientsData;
+
+async function refreshRentalsData() {
+  try {
+    const [bookingsRes, gearRes] = await Promise.all([
+      fetch(`${API_URL}/bookings`),
+      fetch(`${API_URL}/gear`)
+    ]);
+    if (!bookingsRes.ok) throw new Error(`Bookings fetch failed with status ${bookingsRes.status}`);
+    state.bookings = await bookingsRes.json();
+    if (gearRes.ok) {
+      state.gear = await gearRes.json();
+    }
+    recomputeGearStatusLocally();
+    const query = document.getElementById('global-search')?.value.toLowerCase().trim() || '';
+    safeComponentRender('Rentals Timeline', () => renderDashboardRentals(query), 'timeline-list');
+    safeComponentRender('Rentals List', () => renderRentalsList(query), 'rentals-table-body');
+    safeComponentRender('Dashboard Statistics', () => updateStats());
+    safeComponentRender('Gear Inventory', () => renderInventory(window.activeInventoryFilter || 'all', query), 'inventory-list');
+    safeComponentRender('Category Distribution', () => renderCategoryChart());
+    safeComponentRender('Checkout Dropdowns', () => populateCheckoutDropdowns());
+  } catch (err) {
+    console.error('Error refreshing rentals data:', err);
+    showToast('Failed to refresh rentals data.', 'danger');
+  }
+}
+window.refreshRentalsData = refreshRentalsData;
+
+async function refreshUsersData() {
+  const isAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
+  if (!isAdmin) {
+    state.users = [];
+    return;
+  }
+  try {
+    const res = await fetch(`${API_URL}/users`);
+    if (!res.ok) throw new Error(`Users fetch failed with status ${res.status}`);
+    state.users = await res.json();
+    const query = document.getElementById('global-search')?.value.toLowerCase().trim() || '';
+    safeComponentRender('Staff & Users', () => renderUsers(query), 'users-list');
+    safeComponentRender('User Permissions', () => applyPermissions());
+  } catch (err) {
+    console.error('Error refreshing users data:', err);
+    showToast('Failed to refresh staff users.', 'danger');
+  }
+}
+window.refreshUsersData = refreshUsersData;
+
+async function refreshAuditData() {
+  const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+  if (!isAuditAdmin) {
+    state.auditLogs = [];
+    return;
+  }
+  try {
+    const res = await fetch(`${API_URL}/audit-logs`);
+    if (!res.ok) throw new Error(`Audit fetch failed with status ${res.status}`);
+    const auditData = await res.json();
+    state.auditLogs = auditData.auditLogs || [];
+    const query = document.getElementById('global-search')?.value.toLowerCase().trim() || '';
+    safeComponentRender('Audit Trail', () => renderAuditTrail(activeAuditCategory, query), 'audit-trail-body');
+  } catch (err) {
+    console.error('Error refreshing audit data:', err);
+  }
+}
+window.refreshAuditData = refreshAuditData;
+
+// Pub/Sub Domain Event Subscriptions
+function setupDomainEvents() {
+  if (!window.AppEvents) return;
+
+  AppEvents.on('gear:changed', async () => {
+    await refreshGearData();
+    const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+    if (isAuditAdmin) refreshAuditData();
+  });
+
+  AppEvents.on('clients:changed', async () => {
+    await refreshClientsData();
+    const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+    if (isAuditAdmin) refreshAuditData();
+  });
+
+  AppEvents.on('rentals:changed', async () => {
+    await refreshRentalsData();
+    const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+    if (isAuditAdmin) refreshAuditData();
+  });
+
+  AppEvents.on('users:changed', async () => {
+    await refreshUsersData();
+    const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+    if (isAuditAdmin) refreshAuditData();
+  });
+
+  AppEvents.on('audit:changed', async () => {
+    await refreshAuditData();
+  });
+}
+window.setupDomainEvents = setupDomainEvents;
+
+// Resilient Global Synchronization (Using Promise.allSettled)
+async function refreshData(query = '') {
+  try {
+    await syncLiveUserProfile();
+    const isAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
+    const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+    const requests = [
+      fetch(`${API_URL}/gear`).then(r => r.ok ? r.json() : Promise.reject(new Error(`Gear HTTP ${r.status}`))),
+      fetch(`${API_URL}/clients`).then(r => r.ok ? r.json() : Promise.reject(new Error(`Clients HTTP ${r.status}`))),
+      fetch(`${API_URL}/bookings`).then(r => r.ok ? r.json() : Promise.reject(new Error(`Bookings HTTP ${r.status}`)))
+    ];
+    if (isAdmin) {
+      requests.push(fetch(`${API_URL}/users`).then(r => r.ok ? r.json() : Promise.reject(new Error(`Users HTTP ${r.status}`))));
+    }
+    if (isAuditAdmin) {
+      requests.push(fetch(`${API_URL}/audit-logs`).then(r => r.ok ? r.json() : Promise.reject(new Error(`Audit HTTP ${r.status}`))));
+    }
+
+    const results = await Promise.allSettled(requests);
+    
+    if (results[0].status === 'fulfilled') {
+      state.gear = results[0].value;
+    } else {
+      console.warn('Gear synchronization failed:', results[0].reason);
+    }
+
+    if (results[1].status === 'fulfilled') {
+      state.clients = results[1].value;
+    } else {
+      console.warn('Clients synchronization failed:', results[1].reason);
+    }
+
+    if (results[2].status === 'fulfilled') {
+      state.bookings = results[2].value;
+    } else {
+      console.warn('Bookings synchronization failed:', results[2].reason);
+    }
+
+    let nextIdx = 3;
+    if (isAdmin) {
+      const userRes = results[nextIdx++];
+      if (userRes && userRes.status === 'fulfilled') {
+        state.users = userRes.value;
+      } else {
+        console.warn('Users synchronization failed:', userRes ? userRes.reason : 'No response');
+      }
+    } else {
+      state.users = [];
+    }
+
+    if (isAuditAdmin) {
+      const auditRes = results[nextIdx++];
+      if (auditRes && auditRes.status === 'fulfilled') {
+        state.auditLogs = auditRes.value.auditLogs || [];
+      } else {
+        console.warn('Audit synchronization failed:', auditRes ? auditRes.reason : 'No response');
+      }
+    } else {
+      state.auditLogs = [];
+    }
+  } catch (err) {
+    console.error('Data synchronization error:', err);
+    showToast('Unable to synchronize data with backend server. Please check your connection.', 'danger');
+    return;
+  }
+
+  // Recompute gear availability status based on current active bookings today
+  recomputeGearStatusLocally();
   
   safeComponentRender('Dashboard Statistics', () => updateStats());
   safeComponentRender('Rentals Timeline', () => renderDashboardRentals(query), 'timeline-list');
@@ -543,7 +698,11 @@ function setupForms() {
       }
       clearModalForm('modal-add-gear');
       closeModal('modal-add-gear');
-      await refreshData();
+      if (window.AppEvents) {
+        AppEvents.emit('gear:changed');
+      } else {
+        await refreshData();
+      }
     });
   }
 
@@ -588,7 +747,11 @@ function setupForms() {
       }
       closeModal('modal-edit-gear');
       e.target.reset();
-      await refreshData();
+      if (window.AppEvents) {
+        AppEvents.emit('gear:changed');
+      } else {
+        await refreshData();
+      }
     });
   }
 
@@ -630,7 +793,11 @@ function setupForms() {
       }
       clearModalForm('modal-add-client');
       closeModal('modal-add-client');
-      await refreshData();
+      if (window.AppEvents) {
+        AppEvents.emit('clients:changed');
+      } else {
+        await refreshData();
+      }
     });
   }
 
@@ -673,7 +840,11 @@ function setupForms() {
       }
       closeModal('modal-edit-client');
       e.target.reset();
-      await refreshData();
+      if (window.AppEvents) {
+        AppEvents.emit('clients:changed');
+      } else {
+        await refreshData();
+      }
     });
   }
 
@@ -745,7 +916,11 @@ function setupForms() {
         if (singleRemove) singleRemove.style.display = 'none';
       }
       
-      await refreshData();
+      if (window.AppEvents) {
+        AppEvents.emit('rentals:changed');
+      } else {
+        await refreshData();
+      }
     });
   }
 
@@ -802,7 +977,11 @@ function setupForms() {
       }
       clearModalForm('modal-add-user');
       closeModal('modal-add-user');
-      await refreshData();
+      if (window.AppEvents) {
+        AppEvents.emit('users:changed');
+      } else {
+        await refreshData();
+      }
     });
   }
 
@@ -872,7 +1051,11 @@ function setupForms() {
       }
       closeModal('modal-edit-user');
       e.target.reset();
-      await refreshData();
+      if (window.AppEvents) {
+        AppEvents.emit('users:changed');
+      } else {
+        await refreshData();
+      }
     });
   }
 }
@@ -1122,6 +1305,7 @@ async function initApp() {
   if (window.setupInventoryFilter) setupInventoryFilter();
   setupRentalsFilter();
   setupAuditTrail();
+  setupDomainEvents();
 
   checkAuthSession();
 

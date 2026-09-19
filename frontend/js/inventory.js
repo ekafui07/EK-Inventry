@@ -49,11 +49,13 @@ function renderInventory(filterOrCategory = (window.activeInventoryFilter || 'al
     );
   }
   
-  const canEditGear = currentUser && (
-    currentUser.accountType === 'Admin' || 
-    (currentUser.role && currentUser.role.toLowerCase() === 'admin') ||
-    (currentUser.permissions && currentUser.permissions.includes('manage_gear'))
-  );
+  const canEditGear = typeof hasPermission === 'function' 
+    ? hasPermission('manage_gear')
+    : (currentUser && (
+        currentUser.accountType === 'Admin' || 
+        (currentUser.role && currentUser.role.toLowerCase() === 'admin') ||
+        (currentUser.permissions && currentUser.permissions.includes('manage_gear'))
+      ));
 
   if (tbody) {
     tbody.innerHTML = '';
@@ -149,6 +151,10 @@ function renderInventory(filterOrCategory = (window.activeInventoryFilter || 'al
 window.renderInventory = renderInventory;
 
 async function toggleMaintenance(id) {
+  if (typeof hasPermission === 'function' && !hasPermission('manage_gear')) {
+    showToast('Permission Denied: You do not have permission to manage gear.', 'danger');
+    return;
+  }
   const item = state.gear.find(g => g.id === id);
   if (!item) return;
 
@@ -174,7 +180,11 @@ async function toggleMaintenance(id) {
       const data = await res.json().catch(() => ({}));
       throw new Error(data.error || 'Failed to update equipment');
     }
-    await refreshData();
+    if (window.AppEvents) {
+      AppEvents.emit('gear:changed');
+    } else {
+      await refreshData();
+    }
     showToast(`Gear status updated to ${targetStatus}`);
   } catch (err) {
     showToast(err.message, 'danger');
@@ -183,6 +193,10 @@ async function toggleMaintenance(id) {
 window.toggleMaintenance = toggleMaintenance;
 
 function editGear(id) {
+  if (typeof hasPermission === 'function' && !hasPermission('manage_gear')) {
+    showToast('Permission Denied: You do not have permission to edit gear.', 'danger');
+    return;
+  }
   const item = state.gear.find(g => g.id === id);
   if (!item) return;
   
@@ -205,6 +219,10 @@ function editGear(id) {
 window.editGear = editGear;
 
 async function deleteGear(id) {
+  if (typeof hasPermission === 'function' && !hasPermission('manage_gear')) {
+    showToast('Permission Denied: You do not have permission to delete gear.', 'danger');
+    return;
+  }
   const item = state.gear.find(g => g.id === id);
   const confirmed = await showConfirmModal(
     'Delete Equipment',
@@ -219,7 +237,11 @@ async function deleteGear(id) {
       const data = await res.json().catch(() => ({}));
       throw new Error(data.error || 'Failed to delete gear');
     }
-    await refreshData();
+    if (window.AppEvents) {
+      AppEvents.emit('gear:changed');
+    } else {
+      await refreshData();
+    }
     showToast('Equipment removed successfully');
   } catch (err) {
     showToast(err.message, 'danger');

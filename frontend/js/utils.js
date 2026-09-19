@@ -225,3 +225,33 @@ function retryComponentRender(componentName, containerId) {
 }
 window.retryComponentRender = retryComponentRender;
 
+/**
+ * Decoupled Domain Event Bus (Pub/Sub)
+ * Allows isolated domain features to communicate asynchronously without hard coupling.
+ */
+const AppEvents = {
+  _listeners: {},
+  on(event, callback) {
+    if (!this._listeners[event]) this._listeners[event] = [];
+    this._listeners[event].push(callback);
+    return () => this.off(event, callback);
+  },
+  off(event, callback) {
+    if (!this._listeners[event]) return;
+    this._listeners[event] = this._listeners[event].filter(cb => cb !== callback);
+  },
+  emit(event, data = null) {
+    if (this._listeners[event]) {
+      this._listeners[event].forEach(cb => {
+        try {
+          cb(data);
+        } catch (err) {
+          console.error(`[AppEvents] Error in listener for event "${event}":`, err);
+        }
+      });
+    }
+  }
+};
+window.AppEvents = AppEvents;
+
+
