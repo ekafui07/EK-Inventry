@@ -1,4 +1,4 @@
-const { loginUser, forgotPasswordReset, changeUserPassword } = require('../services/users.service');
+const { loginUser, forgotPasswordReset, changeUserPassword, getUserById } = require('../services/users.service');
 const { recordAuditLog } = require('../services/audit.service');
 
 async function loginHandler(req, res) {
@@ -17,8 +17,28 @@ async function loginHandler(req, res) {
   }
 }
 
-function meHandler(req, res) {
-  res.json({ user: req.user });
+async function meHandler(req, res) {
+  try {
+    // Fetch the full live user record from DB so name and title are always current
+    const liveUser = await getUserById(req.user.id, req.user.email);
+    if (liveUser) {
+      res.json({
+        user: {
+          id: req.user.id,
+          email: liveUser.email || req.user.email,
+          role: req.user.role,
+          accountType: liveUser.accountType || req.user.accountType,
+          permissions: liveUser.permissions || req.user.permissions || [],
+          name: liveUser.name || req.user.name || '',
+          title: liveUser.title || req.user.title || ''
+        }
+      });
+    } else {
+      res.json({ user: req.user });
+    }
+  } catch (err) {
+    res.json({ user: req.user });
+  }
 }
 
 async function forgotPasswordHandler(req, res) {

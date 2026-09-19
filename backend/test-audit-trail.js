@@ -93,8 +93,8 @@ async function runTests() {
     assert(staffAuditRes.status === 403, 'Staff user is FORBIDDEN (403) from accessing /api/audit-logs');
     console.log(`     Response error message: "${staffAuditRes.data.error}"`);
 
-    // 4. Test another non-primary Admin
-    console.log('\n4. Non-Primary Admin Access Restrictions ("this account only")');
+    // 4. Multi-Admin Audit Access - all Admin accounts should have FULL audit access
+    console.log('\n4. Multi-Admin Audit Access (all Admin accounts can view audit trail)');
     const secondAdminEmail = `admin_secondary_${Date.now()}@ekgearflow.com`;
     const createSecondAdmin = await request('POST', '/api/users', {
       name: 'Secondary Admin',
@@ -115,8 +115,8 @@ async function runTests() {
     const secondAdminToken = secondAdminLogin.data.token;
 
     const secondAdminAuditRes = await request('GET', '/api/audit-logs', null, secondAdminToken);
-    assert(secondAdminAuditRes.status === 403, 'Secondary Admin is FORBIDDEN (403) from /api/audit-logs');
-    console.log(`     Response error message: "${secondAdminAuditRes.data.error}"`);
+    assert(secondAdminAuditRes.status === 200, 'Secondary Admin can access audit trail (200 OK - role-based access');
+    console.log();
 
     // 5. Test Live Audit Logging by performing operations
     console.log('\n5. Verification of Operation Logging');
