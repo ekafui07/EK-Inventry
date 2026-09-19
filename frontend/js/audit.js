@@ -1,14 +1,14 @@
 /**
- * Audit Trail Domain Module (Restricted to primary Administrator admin@ekgearflow.com)
+ * Audit Trail Domain Module (Accessible to all Administrator accounts)
  */
 
 function setupAuditTrail() {
   const btnAuditTab = document.getElementById('btn-audit-trail-tab');
   if (btnAuditTab) {
     btnAuditTab.addEventListener('click', () => {
-      const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+      const isAuditAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
       if (!isAuditAdmin) {
-        showToast('Access Denied: The Audit Trail is strictly for the primary Administrator account.', 'danger');
+        showToast('Access Denied: The Audit Trail is restricted to Administrator accounts only.', 'danger');
         return;
       }
       activeTab = 'audit';
@@ -24,7 +24,7 @@ function setupAuditTrail() {
   const btnRefresh = document.getElementById('btn-refresh-audit');
   if (btnRefresh) {
     btnRefresh.addEventListener('click', async () => {
-      const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+      const isAuditAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
       if (!isAuditAdmin) return;
       btnRefresh.disabled = true;
       try {
@@ -80,7 +80,7 @@ function renderAuditTrail(category = activeAuditCategory, query = '') {
   const tbody = document.getElementById('audit-table-body');
   if (!tbody) return;
 
-  const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+  const isAuditAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
   if (!isAuditAdmin) {
     tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">Access restricted to primary administrator account.</td></tr>`;
     return;

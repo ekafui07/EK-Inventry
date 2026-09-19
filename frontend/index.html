@@ -13,7 +13,7 @@
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css?v=26">
+  <link rel="stylesheet" href="style.css?v=30">
   <script>
     (function() {
       var saved = localStorage.getItem('EK_THEME') || 'dark';
@@ -94,17 +94,6 @@
         <div class="search-box">
           <i data-lucide="search" class="search-icon"></i>
           <input type="text" id="global-search" placeholder="Quick search serials, clients, or gear...">
-        </div>
-        <div class="action-buttons">
-          <button class="btn btn-secondary" id="btn-add-client">
-            <i data-lucide="user-plus"></i> Add Client
-          </button>
-          <button class="btn btn-secondary" id="btn-add-gear">
-            <i data-lucide="plus-circle"></i> Add Gear
-          </button>
-          <button class="btn btn-primary" id="btn-quick-rent">
-            <i data-lucide="key-round"></i> New Rental
-          </button>
         </div>
       </header>
 
@@ -236,13 +225,18 @@
       <div class="view-panel" id="view-rentals">
         <div class="panel-header-row">
           <h2>Rentals Tracker</h2>
-          <div class="filter-bar" id="rentals-filter-bar">
-            <button class="filter-tab active" data-rent-filter="all">All</button>
-            <button class="filter-tab" data-rent-filter="Booked">Booked</button>
-            <button class="filter-tab" data-rent-filter="Active">Active</button>
-            <button class="filter-tab" data-rent-filter="Returned">Returned</button>
-            <button class="filter-tab" data-rent-filter="Overdue">Overdue</button>
-            <button class="filter-tab" data-rent-filter="Cancelled">Cancelled</button>
+          <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+            <div class="filter-bar" id="rentals-filter-bar">
+              <button class="filter-tab active" data-rent-filter="all">All</button>
+              <button class="filter-tab" data-rent-filter="Booked">Booked</button>
+              <button class="filter-tab" data-rent-filter="Active">Active</button>
+              <button class="filter-tab" data-rent-filter="Returned">Returned</button>
+              <button class="filter-tab" data-rent-filter="Overdue">Overdue</button>
+              <button class="filter-tab" data-rent-filter="Cancelled">Cancelled</button>
+            </div>
+            <button type="button" class="btn btn-primary" id="btn-quick-rent" style="padding: 0.5rem 0.9rem; font-size: 0.82rem;">
+              <i data-lucide="plus-circle" style="width: 14px; height: 14px;"></i> Add Rental
+            </button>
           </div>
         </div>
         <div class="table-wrapper">
@@ -269,6 +263,9 @@
       <div class="view-panel" id="view-clients">
         <div class="panel-header-row">
           <h2>Client Directory</h2>
+          <button type="button" class="btn btn-primary" id="btn-add-client" style="padding: 0.5rem 0.9rem; font-size: 0.82rem;">
+            <i data-lucide="user-plus" style="width: 14px; height: 14px;"></i> Add Client
+          </button>
         </div>
         <div class="client-grid" id="clients-list">
           <!-- Dynamic grid of clients -->
@@ -814,14 +811,14 @@
   </div>
 
   <!-- Modular Frontend Architecture -->
-  <script src="js/utils.js?v=26"></script>
-  <script src="js/api.js?v=26"></script>
-  <script src="js/inventory.js?v=26"></script>
-  <script src="js/clients.js?v=26"></script>
-  <script src="js/rentals.js?v=26"></script>
-  <script src="js/staff.js?v=26"></script>
-  <script src="js/audit.js?v=26"></script>
-  <script src="app.js?v=26"></script>
+  <script src="js/utils.js?v=29"></script>
+  <script src="js/api.js?v=29"></script>
+  <script src="js/inventory.js?v=29"></script>
+  <script src="js/clients.js?v=29"></script>
+  <script src="js/rentals.js?v=29"></script>
+  <script src="js/staff.js?v=29"></script>
+  <script src="js/audit.js?v=29"></script>
+  <script src="app.js?v=29"></script>
 
 </body>
 

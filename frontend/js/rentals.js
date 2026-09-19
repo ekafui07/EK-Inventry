@@ -326,6 +326,30 @@ function setupCheckoutFormDynamicRows() {
   const listContainer = document.getElementById('checkout-gear-list');
   
   if (!addBtn || !listContainer) return;
+
+  function updateRemoveButtons() {
+    const rows = listContainer.querySelectorAll('.gear-select-row');
+    rows.forEach((row, index) => {
+      const removeBtn = row.querySelector('.btn-remove-gear');
+      if (rows.length === 1) {
+        removeBtn.style.display = 'none';
+      } else {
+        removeBtn.style.display = 'inline-flex';
+        removeBtn.disabled = false;
+        removeBtn.style.opacity = '1';
+        removeBtn.style.pointerEvents = 'auto';
+        
+        removeBtn.onclick = () => {
+          row.remove();
+          updateRemoveButtons();
+          populateCheckoutDropdowns();
+        };
+      }
+    });
+  }
+
+  // Initial call to hide remove button for the single default row
+  updateRemoveButtons();
   
   addBtn.addEventListener('click', () => {
     const firstRow = listContainer.querySelector('.gear-select-row');
@@ -335,21 +359,12 @@ function setupCheckoutFormDynamicRows() {
     const select = newRow.querySelector('.checkout-gear-select');
     select.value = '';
     
-    const removeBtn = newRow.querySelector('.btn-remove-gear');
-    removeBtn.disabled = false;
-    removeBtn.style.opacity = '1';
-    removeBtn.style.pointerEvents = 'auto';
-    
-    removeBtn.onclick = () => {
-      newRow.remove();
-      populateCheckoutDropdowns();
-    };
-    
     select.onchange = () => {
       populateCheckoutDropdowns();
     };
     
     listContainer.appendChild(newRow);
+    updateRemoveButtons();
     populateCheckoutDropdowns();
   });
 }
@@ -361,7 +376,7 @@ function setupRentalsFilter() {
     tab.addEventListener('click', () => {
       filterTabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      activeRentalsFilter = tab.getAttribute('data-status');
+      activeRentalsFilter = tab.getAttribute('data-rent-filter') || tab.getAttribute('data-status') || 'all';
       renderRentalsList(document.getElementById('global-search').value.toLowerCase().trim());
     });
   });

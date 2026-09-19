@@ -15,7 +15,11 @@
   - Date-range booking workflow with automatic total rental cost calculation.
   - **Server-Side Double-Booking Protection**: Prevents scheduling conflicts by validating overlapping dates before confirming bookings.
   - Check-in / Return equipment and cancel bookings with automatic status updates.
-- **👥 Client Directory**: Manage client profiles, production company affiliations, emails, and phone numbers.
+  - Flexible checkout with dynamic multi-item selection and granular removal.
+- **👥 Client & Staff Management**: 
+  - Manage client profiles, production company affiliations, emails, and phone numbers.
+  - **Enhanced Security**: Master admin isolation, self-edit locking, and real-time profile synchronization.
+- **🛡️ System Audit Trail**: Comprehensive activity logging accessible to all administrative roles.
 - **☁️ Hybrid Deployment Ready**:
   - **Local Development**: Runs with Node.js/Express and an offline JSON file database (`db-mock.json`).
   - **AWS Serverless**: Ready for AWS Lambda (`serverless-http`) backed by Amazon DynamoDB tables (`EK_Gear`, `EK_Clients`, `EK_Bookings`).

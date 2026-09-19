@@ -202,7 +202,7 @@ window.hasPermission = hasPermission;
 function applyPermissions() {
   if (!currentUser) return;
   const isAdmin = currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin');
-  const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+  const isAuditAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
 
   const navUsers = document.getElementById('nav-users');
   if (navUsers) {
@@ -449,7 +449,7 @@ async function refreshUsersData() {
 window.refreshUsersData = refreshUsersData;
 
 async function refreshAuditData() {
-  const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+  const isAuditAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
   if (!isAuditAdmin) {
     state.auditLogs = [];
     return;
@@ -473,25 +473,27 @@ function setupDomainEvents() {
 
   AppEvents.on('gear:changed', async () => {
     await refreshGearData();
-    const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+    const isAuditAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
     if (isAuditAdmin) refreshAuditData();
   });
 
   AppEvents.on('clients:changed', async () => {
     await refreshClientsData();
-    const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+    const isAuditAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
     if (isAuditAdmin) refreshAuditData();
   });
 
   AppEvents.on('rentals:changed', async () => {
     await refreshRentalsData();
-    const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+    const isAuditAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
     if (isAuditAdmin) refreshAuditData();
   });
 
   AppEvents.on('users:changed', async () => {
     await refreshUsersData();
-    const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+    // Re-sync the logged-in user's own profile so sidebar name/title always stays current
+    await syncLiveUserProfile();
+    const isAuditAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
     if (isAuditAdmin) refreshAuditData();
   });
 
@@ -506,7 +508,7 @@ async function refreshData(query = '') {
   try {
     await syncLiveUserProfile();
     const isAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
-    const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+    const isAuditAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
     const requests = [
       fetch(`${API_URL}/gear`).then(r => r.ok ? r.json() : Promise.reject(new Error(`Gear HTTP ${r.status}`))),
       fetch(`${API_URL}/clients`).then(r => r.ok ? r.json() : Promise.reject(new Error(`Clients HTTP ${r.status}`))),
@@ -592,7 +594,7 @@ function setupNavigation() {
     item.addEventListener('click', () => {
       const targetTab = item.getAttribute('data-tab');
       const isAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
-      const isAuditAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === 'admin@ekgearflow.com';
+      const isAuditAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
 
       if (targetTab === 'users' && !isAdmin) return;
       if (targetTab === 'audit' && !isAuditAdmin) return;
@@ -1185,6 +1187,15 @@ async function syncLiveUserProfile() {
         }
         if (currentUser.accountType !== live.accountType) {
           currentUser.accountType = live.accountType;
+          changed = true;
+        }
+        // Sync display name and title so sidebar always reflects latest edits
+        if (live.name && currentUser.name !== live.name) {
+          currentUser.name = live.name;
+          changed = true;
+        }
+        if (live.title && currentUser.title !== live.title) {
+          currentUser.title = live.title;
           changed = true;
         }
         if (changed) {

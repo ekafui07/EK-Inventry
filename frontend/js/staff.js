@@ -36,7 +36,9 @@ function renderUsers(query = '') {
   const isAdmin = currentUser && (currentUser.accountType === 'Admin' || (currentUser.role && currentUser.role.toLowerCase() === 'admin'));
   if (!isAdmin) return;
 
-  let users = state.users || [];
+  // Exclude the primary master admin account from staff management view
+  const MASTER_ADMIN_EMAIL = 'admin@ekgearflow.com';
+  let users = (state.users || []).filter(u => !u.email || u.email.toLowerCase() !== MASTER_ADMIN_EMAIL);
   if (query) {
     users = users.filter(u =>
       u.name.toLowerCase().includes(query) ||
@@ -75,8 +77,9 @@ function renderUsers(query = '') {
             ).join('')
           : '<span class="staff-perm-none">No active permissions</span>');
 
+    const isSelf = currentUser && currentUser.id === user.id;
     const card = document.createElement('div');
-    card.className = 'client-card staff-card' + (isBanned ? ' staff-card-banned' : '');
+    card.className = 'client-card staff-card' + (isBanned ? ' staff-card-banned' : '') + (isSelf ? ' staff-card-self' : '');
 
     card.innerHTML = `
       <div class="staff-header">
@@ -103,9 +106,16 @@ function renderUsers(query = '') {
       </div>
       
       <div class="staff-actions-row">
+        ${isSelf ? `
+        <button class="btn btn-secondary staff-btn staff-btn-self-disabled" disabled title="You cannot edit your own account from here">
+          <i data-lucide="pencil"></i> Edit
+        </button>
+        <span class="staff-self-badge"><i data-lucide="user" style="width:11px;height:11px"></i> You</span>
+        ` : `
         <button class="btn btn-secondary staff-btn" onclick="editUser('${user.id}')" title="Edit Profile & Permissions">
           <i data-lucide="pencil"></i> Edit
         </button>
+        `}
         ${currentUser && currentUser.id !== user.id ? `
         <button class="btn btn-secondary staff-btn staff-btn-reset" onclick="resetUserPasswordAction('${user.id}')" title="Reset password to default 12345">
           <i data-lucide="key"></i> Reset Pass

@@ -1310,6 +1310,37 @@ code {
   color: var(--color-danger);
   border-color: rgba(239, 68, 68, 0.3);
 }
+/* --- Self (logged-in user) card styles --- */
+.staff-card-self {
+  opacity: 0.6;
+  filter: grayscale(0.35);
+  border-style: dashed;
+  position: relative;
+}
+
+.staff-btn-self-disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  pointer-events: none;
+  color: var(--text-muted) !important;
+}
+
+.staff-self-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 20px;
+  padding: 0.2rem 0.6rem;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+
 
 .client-header {
   display: flex;
@@ -2970,6 +3001,19 @@ code {
   border-color: #2F6FED;
   color: #2558CA;
 }
+[data-theme="light"] .staff-card-self {
+  opacity: 0.55;
+  filter: grayscale(0.25);
+  border-color: #CBD5E1;
+}
+
+[data-theme="light"] .staff-self-badge {
+  color: #6B7688;
+  background: rgba(107, 118, 136, 0.08);
+  border-color: #CBD5E1;
+}
+
+
 
 [data-theme="light"] .staff-btn-ban {
   color: #E5484D;
