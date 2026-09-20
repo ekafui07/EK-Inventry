@@ -29,9 +29,9 @@
   - Date range filtering and CSV data export capabilities.
 - **🛡️ Root Audit Trail & Activity Logging**:
   - Comprehensive, tamper-resistant system audit log capturing user actions, timestamps, actor IDs, and operation categories.
-- **☁️ AWS Serverless & CloudFront Architecture**:
-  - **Local Development**: Runs with Node.js/Express and an offline JSON database (`db-mock.json`).
-  - **AWS Serverless**: AWS Lambda (`serverless-http`), Amazon API Gateway, Amazon DynamoDB, S3 Static Hosting, and AWS CloudFront Global CDN.
+- **☁️ Hybrid Deployment Architecture**:
+  - **Zero-Config Local Development**: Powered by an offline JSON database (`db-mock.json`) — no database server required.
+  - **AWS Serverless Cloud**: AWS Lambda (`serverless-http`), Amazon API Gateway, Amazon DynamoDB, S3 Static Hosting, and AWS CloudFront Global CDN.
 
 ---
 
@@ -44,9 +44,12 @@
 
 ### Backend & Cloud Infrastructure
 - **Runtime & Framework**: Node.js, Express.js
-- **AWS Services**: AWS Lambda, Amazon API Gateway, Amazon DynamoDB, Amazon S3, AWS CloudFront CDN
-- **Infrastructure as Code**: Serverless Framework (`serverless.yml`), AWS CloudFormation
-- **Security**: JWT Authentication, RBAC (Role-Based Access Control), bcrypt password hashing, input sanitization
+- **Database Engine**:
+  - **Local/Offline:** Embedded File Database (`backend/db-mock.json`) — zero external database server setup required.
+  - **Cloud:** Amazon DynamoDB (5 on-demand pay-per-request tables).
+- **AWS Services**: AWS Lambda, Amazon API Gateway, Amazon DynamoDB, Amazon S3, AWS CloudFront CDN.
+- **Infrastructure as Code**: Serverless Framework (`serverless.yml`), AWS CloudFormation.
+- **Security**: JWT Authentication, RBAC (Role-Based Access Control), bcrypt password hashing, input sanitization.
 
 ---
 
@@ -60,7 +63,7 @@ EK-Inventry/
 │   ├── deploy-frontend.js        # S3 asset uploader & CloudFront cache invalidator
 │   ├── wipe-demo-data.js         # Production demo data purge & reset script
 │   ├── seed-dynamodb.js          # Production database seeder
-│   ├── db-mock.json              # Local mock database for offline development
+│   ├── db-mock.json              # Local zero-config mock database
 │   ├── middleware/
 │   │   └── auth.js               # JWT verification & RBAC permission checks
 │   ├── src/
@@ -83,6 +86,8 @@ EK-Inventry/
 │       ├── rentals.js            # Rental tracker & checkout workflow
 │       ├── staff.js              # Staff accounts & permissions management
 │       └── utils.js              # Formatting & helper utilities
+├── SETUP_WINDOWS_NATIVE.md       # Standalone Native Windows PC installation guide
+├── SETUP_WINDOWS_WSL2.md         # Standalone Windows + WSL2 (Ubuntu) installation guide
 ├── package.json                  # Root runner & deployment scripts
 └── README.md                     # Project documentation
 ```
@@ -132,6 +137,15 @@ Open your browser and navigate to: **[http://localhost:8080](http://localhost:80
 
 ---
 
+## 💻 Client PC Deployment & Auto-Start Setup
+
+For permanent client workstation installations where the app should boot automatically when the PC turns on:
+
+- 📄 **[Native Windows Setup Guide (SETUP_WINDOWS_NATIVE.md)](file:///wsl.localhost/Ubuntu/home/ekafui07/EK-Inventry/SETUP_WINDOWS_NATIVE.md):** Step-by-step instructions for standard Windows 10/11 machines using native Node.js, `launch.bat`, `start-silent.vbs`, and Windows Startup integration.
+- 📄 **[Windows + WSL2 Ubuntu Setup Guide (SETUP_WINDOWS_WSL2.md)](file:///wsl.localhost/Ubuntu/home/ekafui07/EK-Inventry/SETUP_WINDOWS_WSL2.md):** Complete setup for running the Linux backend daemon inside WSL2 with seamless Windows desktop app integration.
+
+---
+
 ## 🔑 Default Login Credentials
 
 Sign in using one of the pre-configured accounts:
@@ -149,9 +163,57 @@ Sign in using one of the pre-configured accounts:
 
 ---
 
+## 💾 Local Database Architecture & Post-Setup Handover
+
+### 1. How the Local Database Works
+When running locally on a client machine, EK GearFlow uses an embedded JSON database located at:
+📁 `backend/db-mock.json`
+
+* **No DB Server Required:** There is no need to install or configure MongoDB, PostgreSQL, or DynamoDB locally.
+* **Instant Persistence:** All equipment additions, client records, rentals, and invoices are automatically saved to `db-mock.json`.
+
+---
+
+### 2. Post-Setup Client Handover (Wiping Test Data)
+After completing setup and testing on the client's PC, purge all test/dummy data to deliver a pristine system:
+
+1. Open `backend/db-mock.json`.
+2. Replace its content with the clean starter template:
+   ```json
+   {
+     "gear": [],
+     "clients": [],
+     "bookings": [],
+     "users": [
+       {
+         "id": "u1",
+         "name": "Admin",
+         "email": "admin@ekgearflow.com",
+         "role": "admin",
+         "accountType": "Admin",
+         "status": "Active",
+         "password": "admin123"
+       },
+       {
+         "id": "u_sarah_ek",
+         "name": "Sarah Adjei",
+         "email": "sarah@ekgearflow.com",
+         "role": "staff",
+         "accountType": "Staff",
+         "status": "Active",
+         "password": "BerlinB1214@"
+       }
+     ],
+     "auditLogs": []
+   }
+   ```
+3. Save the file. When the client opens the app, all tables will start fresh at **0 records**, with admin login accounts intact and ready.
+
+---
+
 ## ☁️ Deploying Changes to AWS CloudFront
 
-You can deploy updates directly from your terminal using the configured npm scripts:
+Deploy updates directly from your terminal using the configured npm scripts:
 
 ### 1. Deploy Frontend Only (HTML, CSS, JS)
 Uploads your latest frontend assets to the S3 bucket and **automatically invalidates the CloudFront CDN cache** so updates reflect globally within seconds:
@@ -179,11 +241,9 @@ npm run deploy
 
 ---
 
-## 🧹 Preparing Clean Data for a Client Demo
+## 🧹 Preparing Clean Data for a Cloud Demo (AWS DynamoDB)
 
-Before presenting a live demonstration to a client, you can purge test transactions to start with a clean slate.
-
-### Scenario A: Purging Live AWS Cloud Data (DynamoDB)
+### Scenario A: Purging Live AWS Cloud Data
 To wipe all test gear, test clients, dummy rentals, and audit logs from AWS DynamoDB while **preserving your core admin and staff login accounts**:
 
 ```bash
@@ -192,39 +252,8 @@ node wipe-demo-data.js --stage prod
 ```
 *After running this, refresh your live CloudFront link ([https://dbjo34z68f2kg.cloudfront.net](https://dbjo34z68f2kg.cloudfront.net)) to start with a fresh, clean database.*
 
-### Scenario B: Resetting Local Offline Data (`db-mock.json`)
-If you are presenting locally on `http://localhost:8080`, reset your [backend/db-mock.json](file:///wsl.localhost/Ubuntu/home/ekafui07/EK-Inventry/backend/db-mock.json) arrays:
-```json
-{
-  "gear": [],
-  "clients": [],
-  "bookings": [],
-  "users": [
-    {
-      "id": "u1",
-      "name": "Admin",
-      "email": "admin@ekgearflow.com",
-      "role": "admin",
-      "accountType": "Admin",
-      "status": "Active",
-      "password": "admin123"
-    },
-    {
-      "id": "u_sarah_ek",
-      "name": "Sarah Adjei",
-      "email": "sarah@ekgearflow.com",
-      "role": "staff",
-      "accountType": "Staff",
-      "status": "Active",
-      "password": "BerlinB1214@"
-    }
-  ],
-  "auditLogs": []
-}
-```
-
-### Scenario C: Pre-Loading Catalog Gear to AWS (Optional)
-If you want to sync your curated catalog items from local `db-mock.json` up to AWS DynamoDB before the meeting:
+### Scenario B: Pre-Loading Catalog Gear to AWS (Optional)
+If you want to sync curated catalog items from local `db-mock.json` up to AWS DynamoDB before a presentation:
 
 ```bash
 cd backend
