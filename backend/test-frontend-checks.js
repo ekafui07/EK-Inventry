@@ -140,21 +140,21 @@ if (!appJs.includes("clearModalForm('modal-add-gear')")) {
 }
 console.log('✅ Success: clearModalForm is thoroughly integrated into modal open, close, and submit flows.');
 
-// 6. Check Invoice Column & PDF Generation
-console.log('Check 6: Invoice column and Print Invoice generator...');
-if (!html.includes('<th>Invoice</th>')) {
-  throw new Error('<th>Invoice</th> header missing in index.html');
+// 6. Check Dedicated Invoice Generator & Custom Receipt Modal
+console.log('Check 6: Dedicated Invoice Generator & custom invoice modal...');
+if (!html.includes('id="view-invoice"')) {
+  throw new Error('view-invoice view missing in index.html');
 }
-if (!html.includes('id="modal-invoice-preview"')) {
-  throw new Error('modal-invoice-preview modal missing in index.html');
+if (!html.includes('id="modal-custom-invoice"')) {
+  throw new Error('modal-custom-invoice modal missing in index.html');
 }
-if (!appJs.includes('function openRentalInvoice(')) {
-  throw new Error('openRentalInvoice function missing in app.js');
+if (!appJs.includes('initInvoiceGenerator')) {
+  throw new Error('initInvoiceGenerator function missing in frontend scripts');
 }
-if (!appJs.includes('btn-print-invoice')) {
-  throw new Error('btn-print-invoice missing in app.js');
+if (!appJs.includes('previewInvoice')) {
+  throw new Error('previewInvoice missing in frontend scripts');
 }
-console.log('✅ Success: Invoice column, preview modal, and Print Invoice function verified.');
+console.log('✅ Success: Dedicated Invoice Generator and custom invoice modal verified.');
 
 // 7. Check Checkout Modal Delete Button Fix
 console.log('Check 7: Checkout modal delete button layout fix...');

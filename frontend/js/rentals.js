@@ -35,7 +35,7 @@ function renderRentalsList(query = '') {
   }
   
   if (bookings.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">${query ? 'No matching rental records found.' : 'No rental records found.'}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">${query ? 'No matching rental records found.' : 'No rental records found.'}</td></tr>`;
     return;
   }
 
@@ -45,16 +45,6 @@ function renderRentalsList(query = '') {
     
     const calculatedStatus = getBookingStatus(booking);
     const statusClass = calculatedStatus.toLowerCase();
-
-    // Print invoice button for all booked, active, returned, and overdue rentals
-    let invoiceButton = '<span style="color:var(--text-muted); font-size:0.8rem;">—</span>';
-    if (calculatedStatus !== 'Cancelled') {
-      invoiceButton = `
-        <button class="btn-print-invoice" onclick="openRentalInvoice('${booking.id}')" title="Print or Save Invoice PDF">
-          <i data-lucide="printer" style="width:13px; height:13px;"></i> Print Invoice
-        </button>
-      `;
-    }
 
     const canReturn = hasPermission('return_rentals');
     let actionButton = '—';
@@ -92,7 +82,6 @@ function renderRentalsList(query = '') {
       </td>
       <td>GH₵${escapeHtmlText(item.dailyRate)}/day</td>
       <td><span class="status-pill ${statusClass}">${escapeHtmlText(calculatedStatus)}</span></td>
-      <td>${invoiceButton}</td>
       <td>${actionButton}</td>
     `;
     tbody.appendChild(tr);
