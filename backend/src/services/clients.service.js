@@ -1,5 +1,6 @@
 const { PutCommand, ScanCommand, UpdateCommand, DeleteCommand } = require('@aws-sdk/lib-dynamodb');
 const { isLambda, docClient, TABLES, readLocalDb, writeLocalDb } = require('../config/db');
+const { getBookingsByClientId } = require('./bookings.service');
 
 async function getClients() {
   if (!isLambda) {
@@ -21,6 +22,18 @@ async function addClient(clientData) {
   if (!clientData.phone || typeof clientData.phone !== 'string' || clientData.phone.trim().length < 5) {
     throw new Error('Valid client phone number is required');
   }
+  if (!clientData.ghanaCardNumber || typeof clientData.ghanaCardNumber !== 'string' || clientData.ghanaCardNumber.trim().length < 5) {
+    throw new Error('Valid Ghana Card Number is required');
+  }
+  if (!clientData.guarantorName || typeof clientData.guarantorName !== 'string' || clientData.guarantorName.trim().length < 2) {
+    throw new Error('Valid Guarantor Name is required');
+  }
+  if (!clientData.guarantorGhanaCard || typeof clientData.guarantorGhanaCard !== 'string' || clientData.guarantorGhanaCard.trim().length < 5) {
+    throw new Error('Valid Guarantor Ghana Card is required');
+  }
+  if (!clientData.guarantorPhone || typeof clientData.guarantorPhone !== 'string' || clientData.guarantorPhone.trim().length < 5) {
+    throw new Error('Valid Guarantor Phone number is required');
+  }
 
   const cleanName = clientData.name.trim();
   const cleanEmail = clientData.email.trim().toLowerCase();
@@ -30,8 +43,13 @@ async function addClient(clientData) {
   const newClient = {
     id: clientData.id || 'c_' + Date.now(),
     name: cleanName,
+    companyName: clientData.companyName ? clientData.companyName.trim() : '',
     email: cleanEmail,
-    phone: cleanPhone
+    phone: cleanPhone,
+    ghanaCardNumber: clientData.ghanaCardNumber.trim().toUpperCase(),
+    guarantorName: clientData.guarantorName.trim(),
+    guarantorGhanaCard: clientData.guarantorGhanaCard.trim().toUpperCase(),
+    guarantorPhone: clientData.guarantorPhone.trim()
   };
 
   if (!isLambda) {
@@ -50,6 +68,23 @@ async function addClient(clientData) {
     });
     if (phoneConflict) {
       throw new Error('A client with this phone number already exists.');
+    }
+
+    const ghanaCardConflict = db.clients.find(c => c.ghanaCardNumber && c.ghanaCardNumber.toUpperCase() === newClient.ghanaCardNumber);
+    if (ghanaCardConflict) {
+      throw new Error('A client with this Ghana Card Number already exists.');
+    }
+
+    const guarantorMatch = db.clients.find(c => 
+      c.guarantorGhanaCard === newClient.guarantorGhanaCard || 
+      c.guarantorPhone === newClient.guarantorPhone
+    );
+    if (guarantorMatch) {
+      const gBookings = await getBookingsByClientId(guarantorMatch.id);
+      const hasActive = gBookings.some(b => b.status === 'Active' || b.status === 'Booked' || b.status === 'Overdue' || !b.status);
+      if (hasActive) {
+        throw new Error('This Guarantor is linked to another client who currently has active reservations or unchecked gear. They must return all gear before acting as a guarantor again.');
+      }
     }
 
     db.clients.push(newClient);
@@ -71,6 +106,23 @@ async function addClient(clientData) {
     throw new Error('A client with this phone number already exists.');
   }
 
+  const ghanaCardConflict = allClients.find(c => c.ghanaCardNumber && c.ghanaCardNumber.toUpperCase() === newClient.ghanaCardNumber);
+  if (ghanaCardConflict) {
+    throw new Error('A client with this Ghana Card Number already exists.');
+  }
+
+  const guarantorMatch = allClients.find(c => 
+    c.guarantorGhanaCard === newClient.guarantorGhanaCard || 
+    c.guarantorPhone === newClient.guarantorPhone
+  );
+  if (guarantorMatch) {
+    const gBookings = await getBookingsByClientId(guarantorMatch.id);
+    const hasActive = gBookings.some(b => b.status === 'Active' || b.status === 'Booked' || b.status === 'Overdue' || !b.status);
+    if (hasActive) {
+      throw new Error('This Guarantor is linked to another client who currently has active reservations or unchecked gear. They must return all gear before acting as a guarantor again.');
+    }
+  }
+
   await docClient.send(new PutCommand({ TableName: TABLES.CLIENTS, Item: newClient }));
   return newClient;
 }
@@ -78,6 +130,7 @@ async function addClient(clientData) {
 async function updateClient(id, clientData) {
   const cleanEmail = clientData.email !== undefined ? clientData.email.trim().toLowerCase() : undefined;
   const cleanPhone = clientData.phone !== undefined ? clientData.phone.trim() : undefined;
+  const cleanGhanaCard = clientData.ghanaCardNumber !== undefined ? clientData.ghanaCardNumber.trim().toUpperCase() : undefined;
   const normPhone = cleanPhone !== undefined ? cleanPhone.replace(/\D/g, '') : undefined;
 
   if (!isLambda) {
@@ -101,12 +154,22 @@ async function updateClient(id, clientData) {
       client.phone = cleanPhone;
     }
 
+    if (cleanGhanaCard !== undefined) {
+      const ghanaCardConflict = db.clients.find(c => c.id !== id && c.ghanaCardNumber && c.ghanaCardNumber.toUpperCase() === cleanGhanaCard);
+      if (ghanaCardConflict) throw new Error('A client with this Ghana Card Number already exists.');
+    }
+
     if (clientData.name !== undefined) client.name = clientData.name.trim();
+    if (clientData.companyName !== undefined) client.companyName = clientData.companyName.trim();
+    if (clientData.ghanaCardNumber !== undefined) client.ghanaCardNumber = clientData.ghanaCardNumber.trim().toUpperCase();
+    if (clientData.guarantorName !== undefined) client.guarantorName = clientData.guarantorName.trim();
+    if (clientData.guarantorGhanaCard !== undefined) client.guarantorGhanaCard = clientData.guarantorGhanaCard.trim().toUpperCase();
+    if (clientData.guarantorPhone !== undefined) client.guarantorPhone = clientData.guarantorPhone.trim();
     writeLocalDb(db);
     return client;
   }
 
-  if (cleanEmail !== undefined || cleanPhone !== undefined) {
+  if (cleanEmail !== undefined || cleanPhone !== undefined || cleanGhanaCard !== undefined) {
     const allClients = await getClients();
     if (cleanEmail !== undefined) {
       const emailConflict = allClients.find(c => c.id !== id && c.email && c.email.trim().toLowerCase() === cleanEmail);
@@ -120,6 +183,10 @@ async function updateClient(id, clientData) {
       });
       if (phoneConflict) throw new Error('A client with this phone number already exists.');
     }
+    if (cleanGhanaCard !== undefined) {
+      const ghanaCardConflict = allClients.find(c => c.id !== id && c.ghanaCardNumber && c.ghanaCardNumber.toUpperCase() === cleanGhanaCard);
+      if (ghanaCardConflict) throw new Error('A client with this Ghana Card Number already exists.');
+    }
   }
 
   const updateParts = [];
@@ -127,6 +194,11 @@ async function updateClient(id, clientData) {
   const exprValues = {};
 
   if (clientData.name !== undefined) { updateParts.push('#n = :name'); exprNames['#n'] = 'name'; exprValues[':name'] = clientData.name.trim(); }
+  if (clientData.companyName !== undefined) { updateParts.push('companyName = :cn'); exprValues[':cn'] = clientData.companyName.trim(); }
+  if (clientData.ghanaCardNumber !== undefined) { updateParts.push('ghanaCardNumber = :gcn'); exprValues[':gcn'] = clientData.ghanaCardNumber.trim().toUpperCase(); }
+  if (clientData.guarantorName !== undefined) { updateParts.push('guarantorName = :gn'); exprValues[':gn'] = clientData.guarantorName.trim(); }
+  if (clientData.guarantorGhanaCard !== undefined) { updateParts.push('guarantorGhanaCard = :ggc'); exprValues[':ggc'] = clientData.guarantorGhanaCard.trim().toUpperCase(); }
+  if (clientData.guarantorPhone !== undefined) { updateParts.push('guarantorPhone = :gp'); exprValues[':gp'] = clientData.guarantorPhone.trim(); }
   if (cleanEmail !== undefined) { updateParts.push('email = :em'); exprValues[':em'] = cleanEmail; }
   if (cleanPhone !== undefined) { updateParts.push('phone = :ph'); exprValues[':ph'] = cleanPhone; }
 

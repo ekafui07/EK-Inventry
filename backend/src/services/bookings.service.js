@@ -94,8 +94,7 @@ async function createBooking(bookingData) {
 
       const createdBookings = [];
       const timestamp = Date.now();
-      const todayStr = new Date().toISOString().split('T')[0];
-      const isOutToday = bookingData.startDate <= todayStr;
+      const isActive = bookingData.status === 'Active';
       
       if (!db.bookings) db.bookings = [];
       for (let i = 0; i < gearIds.length; i++) {
@@ -106,10 +105,10 @@ async function createBooking(bookingData) {
           clientId: bookingData.clientId,
           startDate: bookingData.startDate,
           endDate: bookingData.endDate,
-          status: 'Active'
+          status: bookingData.status || 'Booked'
         };
 
-        if (isOutToday) {
+        if (isActive) {
           const gearItem = (db.gear || []).find(g => g.id === gId);
           if (gearItem && gearItem.status !== 'Maintenance') gearItem.status = 'Rented';
         }
@@ -139,8 +138,7 @@ async function createBooking(bookingData) {
 
     const createdBookings = [];
     const timestamp = Date.now();
-    const todayStr = new Date().toISOString().split('T')[0];
-    const isOutToday = bookingData.startDate <= todayStr;
+    const isActive = bookingData.status === 'Active';
     
     for (let i = 0; i < gearIds.length; i++) {
       const gId = gearIds[i];
@@ -150,10 +148,10 @@ async function createBooking(bookingData) {
         clientId: bookingData.clientId,
         startDate: bookingData.startDate,
         endDate: bookingData.endDate,
-        status: 'Active'
+        status: bookingData.status || 'Booked'
       };
 
-      if (isOutToday) await updateGear(gId, { status: 'Rented' });
+      if (isActive) await updateGear(gId, { status: 'Rented' });
       await docClient.send(new PutCommand({ TableName: TABLES.BOOKINGS, Item: newBooking }));
       createdBookings.push(newBooking);
     }
@@ -216,11 +214,39 @@ async function cancelBooking(bookingId) {
   return { success: true, gearId: booking.gearId };
 }
 
+async function checkoutBooking(bookingId) {
+  if (!isLambda) {
+    const db = readLocalDb();
+    const booking = (db.bookings || []).find(b => b.id === bookingId);
+    if (!booking) return { success: false, gearId: null };
+    
+    booking.status = 'Active';
+    recomputeGearStatusLocal(db, booking.gearId);
+    writeLocalDb(db);
+    return { success: true, gearId: booking.gearId };
+  }
+
+  const bookingRes = await docClient.send(new GetCommand({ TableName: TABLES.BOOKINGS, Key: { id: bookingId } }));
+  const booking = bookingRes.Item;
+  if (!booking) return { success: false, gearId: null };
+
+  await docClient.send(new UpdateCommand({
+    TableName: TABLES.BOOKINGS,
+    Key: { id: bookingId },
+    UpdateExpression: 'set #s = :status',
+    ExpressionAttributeNames: { '#s': 'status' },
+    ExpressionAttributeValues: { ':status': 'Active' }
+  }));
+  await recomputeGearStatus(booking.gearId);
+  return { success: true, gearId: booking.gearId };
+}
+
 module.exports = {
   getBookings,
   getBookingsByGearId,
   getBookingsByClientId,
   createBooking,
   returnBooking,
-  cancelBooking
+  cancelBooking,
+  checkoutBooking
 };

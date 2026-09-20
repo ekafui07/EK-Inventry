@@ -55,6 +55,7 @@ async function runConcurrencyTests() {
       password: 'admin123',
       accountType: 'Admin'
     });
+    if (adminLogin.status !== 200) console.error('LOGIN FAILED:', adminLogin);
     assert(adminLogin.status === 200 && adminLogin.data.token, 'Admin authenticated');
     const adminToken = adminLogin.data.token;
 

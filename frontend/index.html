@@ -13,7 +13,7 @@
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css?v=30">
+  <link rel="stylesheet" href="style.css?v=40">
   <script>
     (function() {
       var saved = localStorage.getItem('EK_THEME') || 'dark';
@@ -61,6 +61,14 @@
           <i data-lucide="clipboard-list"></i>
           <span>Audit Trail</span>
         </button>
+        <button class="nav-item" data-tab="finances" id="nav-finances" style="display: none;">
+          <i data-lucide="pie-chart"></i>
+          <span>Finances</span>
+        </button>
+        <button class="nav-item" data-tab="invoice" id="nav-invoice" style="display: none;">
+          <i data-lucide="file-text"></i>
+          <span>Invoice</span>
+        </button>
       </nav>
 
       <div class="sidebar-footer">
@@ -93,7 +101,7 @@
       <header class="top-bar">
         <div class="search-box">
           <i data-lucide="search" class="search-icon"></i>
-          <input type="text" id="global-search" placeholder="Quick search serials, clients, or gear...">
+          <input type="text" id="global-search" name="global-search" placeholder="Quick search serials, clients, or gear...">
         </div>
       </header>
 
@@ -248,7 +256,6 @@
                 <th>Rental Period</th>
                 <th>Daily Price</th>
                 <th>Status</th>
-                <th>Invoice</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -356,7 +363,7 @@
           </div>
           <div class="search-box" style="max-width: 320px; width: 100%;">
             <i data-lucide="search" class="search-icon"></i>
-            <input type="text" id="audit-search-input" placeholder="Search actor, action, details...">
+            <input type="text" id="audit-search-input" name="audit-search-input" placeholder="Search actor, action, details...">
           </div>
         </div>
 
@@ -369,13 +376,192 @@
                 <th style="width: 220px;">Actor / User</th>
                 <th style="width: 140px;">Category</th>
                 <th>Activity Description</th>
-                <th style="width: 120px; text-align: right;">IP Address</th>
               </tr>
             </thead>
             <tbody id="audit-table-body">
               <!-- Dynamically populated rows -->
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- Financial Dashboard View -->
+      <div class="view-panel" id="view-finances">
+        <div class="panel-header-row">
+          <div>
+            <h2>Financial Overview</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">
+              Revenue tracking and breakdown across all gear categories
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+            <div style="display: flex; gap: 0.4rem; align-items: center;">
+              <input type="date" id="finance-date-start" name="finance-date-start" class="form-control" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.82rem;" title="Start Date">
+              <span style="color: var(--text-muted); font-size: 0.8rem;">to</span>
+              <input type="date" id="finance-date-end" name="finance-date-end" class="form-control" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.82rem;" title="End Date">
+            </div>
+            <select id="finance-cat-filter" name="finance-cat-filter" class="form-control" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.82rem;">
+              <option value="all">All Categories</option>
+            </select>
+            <button type="button" class="btn btn-primary" id="btn-export-finances" style="padding: 0.5rem 0.9rem; font-size: 0.82rem;">
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i> Export to CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- Finances Statistics Grid -->
+        <section class="stats-grid" style="margin-bottom: 1.5rem;">
+          <div class="stat-card">
+            <div class="stat-icon icon-rented">
+              <i data-lucide="banknote"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="finance-total-revenue">GH₵0.00</span>
+              <span class="stat-label">Total Revenue Generated</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon icon-maintenance">
+              <i data-lucide="clock"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="finance-active-revenue">GH₵0.00</span>
+              <span class="stat-label">Active Bookings Value</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon icon-available">
+              <i data-lucide="list-checks"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="finance-total-bookings">0</span>
+              <span class="stat-label">Total Completed Bookings</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Category & Top Earners Split -->
+        <div class="dashboard-split">
+          <div class="panel-card flex-1">
+            <div class="panel-header">
+              <h2>Revenue by Category</h2>
+            </div>
+            <div class="category-list" id="finance-category-chart">
+              <!-- Dynamic category revenue list -->
+            </div>
+          </div>
+          
+          <div class="panel-card flex-2">
+            <div class="panel-header">
+              <h2>Top Earning Equipment</h2>
+            </div>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Gear Item</th>
+                    <th>Asset Tag</th>
+                    <th>Category</th>
+                    <th style="text-align: right;">Total Days Rented</th>
+                    <th style="text-align: right;">Revenue Generated</th>
+                  </tr>
+                </thead>
+                <tbody id="finance-top-earners">
+                  <!-- Dynamic top earners -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Invoice Generator View -->
+      <div class="view-panel" id="view-invoice">
+        <div class="panel-header-row">
+          <div>
+            <h2>Invoice Generator</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">
+              Build and print custom invoices before payments
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.6rem; align-items: center;">
+            <button type="button" class="btn btn-primary" id="btn-preview-invoice" style="padding: 0.5rem 0.9rem; font-size: 0.82rem;">
+              <i data-lucide="printer" style="width: 14px; height: 14px;"></i> Preview &amp; Print Invoice
+            </button>
+          </div>
+        </div>
+
+        <div class="panel-card" style="margin-bottom: 1.5rem;">
+          <div class="form-row">
+            <div class="form-group" style="position: relative; flex: 2;">
+              <label for="invoice-client-search">Invoice To (Client)</label>
+              <input type="text" id="invoice-client-search" name="invoice-client-search" class="form-control" placeholder="Search client by name or phone..." autocomplete="off">
+              <div id="invoice-client-dropdown" class="autocomplete-dropdown" style="display:none; position:absolute; top:100%; left:0; width:100%; z-index:50;"></div>
+              <input type="hidden" id="invoice-client-id" name="invoice-client-id">
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label for="invoice-sale-date">Sale Date</label>
+              <input type="date" id="invoice-sale-date" name="invoice-sale-date" class="form-control">
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label for="invoice-status">Status</label>
+              <select id="invoice-status" name="invoice-status" class="form-control">
+                <option value="Unpaid" selected>Unpaid</option>
+                <option value="Paid">Paid</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-split" style="align-items: flex-start;">
+          <div class="panel-card flex-1">
+            <div class="panel-header">
+              <h2>Add Gear Item</h2>
+            </div>
+            <div class="form-group" style="position: relative; margin-bottom: 1rem;">
+              <label for="invoice-gear-search">Search Inventory</label>
+              <input type="text" id="invoice-gear-search" name="invoice-gear-search" class="form-control" placeholder="Search gear by name or asset tag..." autocomplete="off">
+              <div id="invoice-gear-dropdown" class="autocomplete-dropdown" style="display:none; position:absolute; top:100%; left:0; width:100%; z-index:50;"></div>
+              <input type="hidden" id="invoice-gear-id" name="invoice-gear-id">
+            </div>
+            <button type="button" id="btn-invoice-add-item" class="btn btn-secondary" style="width: 100%; justify-content: center;" disabled>
+              <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Add to Invoice
+            </button>
+          </div>
+
+          <div class="panel-card flex-2">
+            <div class="panel-header">
+              <h2>Invoice Items</h2>
+            </div>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th style="width: 80px; text-align: center;">Qty</th>
+                    <th style="width: 120px; text-align: right;">Unit Price</th>
+                    <th style="width: 120px; text-align: right;">Total</th>
+                    <th style="width: 50px;"></th>
+                  </tr>
+                </thead>
+                <tbody id="invoice-items-body">
+                  <tr id="invoice-empty-row"><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">No items added to invoice yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+              <div style="width: 250px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: var(--text-muted);">
+                  <span>Sub Total</span>
+                  <span id="invoice-subtotal">GH₵ 0.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; color: var(--text-main);">
+                  <span>Total</span>
+                  <span id="invoice-total">GH₵ 0.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -394,25 +580,25 @@
       <form id="form-add-gear" class="modal-form" autocomplete="off">
         <div class="form-group">
           <label for="gear-name">Gear Name & Model</label>
-          <input type="text" id="gear-name" required placeholder="e.g. Cinema Camera 6K" autocomplete="off">
+          <input type="text" id="gear-name" name="gear-name" required placeholder="e.g. Cinema Camera 6K" autocomplete="off">
         </div>
         <div class="form-row">
           <div class="form-group">
             <label for="gear-asset-tag">Asset Tag</label>
-            <input type="text" id="gear-asset-tag" required placeholder="e.g. EQ-101" autocomplete="off">
+            <input type="text" id="gear-asset-tag" name="gear-asset-tag" required placeholder="e.g. EQ-101" autocomplete="off">
           </div>
           <div class="form-group">
             <label for="gear-category">Category</label>
-            <input type="text" id="gear-category" required placeholder="e.g. Cameras, Lenses, Lighting" autocomplete="off">
+            <input type="text" id="gear-category" name="gear-category" required placeholder="e.g. Cameras, Lenses, Lighting" autocomplete="off">
           </div>
         </div>
         <div class="form-group">
           <label for="gear-serial">Serial Number</label>
-          <input type="text" id="gear-serial" required placeholder="e.g. SN-000000" autocomplete="off">
+          <input type="text" id="gear-serial" name="gear-serial" required placeholder="e.g. SN-000000" autocomplete="off">
         </div>
         <div class="form-group">
           <label for="gear-rate">Daily Rental Rate (GH₵)</label>
-          <input type="number" id="gear-rate" required min="0" placeholder="e.g. 150" autocomplete="off">
+          <input type="number" id="gear-rate" name="gear-rate" required min="0" placeholder="e.g. 150" autocomplete="off">
         </div>
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
@@ -424,23 +610,52 @@
 
   <!-- Add Client Modal -->
   <div class="modal-backdrop" id="modal-add-client">
-    <div class="modal">
+    <div class="modal" style="max-width: 600px;">
       <div class="modal-header">
         <h2>Register Client Details</h2>
         <button class="modal-close"><i data-lucide="x"></i></button>
       </div>
       <form id="form-add-client" class="modal-form" autocomplete="off">
-        <div class="form-group">
-          <label for="client-name">Full Name / Production Co</label>
-          <input type="text" id="client-name" required placeholder="e.g. Jane Doe (Prime Productions)" autocomplete="off">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="client-name">Full Name</label>
+            <input type="text" id="client-name" name="client-name" required placeholder="e.g. Jane Doe" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="client-company">Company Name (Optional)</label>
+            <input type="text" id="client-company" name="client-company" placeholder="e.g. Prime Productions" autocomplete="off">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="client-email">Email Address</label>
+            <input type="email" id="client-email" name="client-email" required placeholder="client@domain.com" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="client-phone">Phone Number</label>
+            <input type="tel" id="client-phone" name="client-phone" required placeholder="e.g. +233 20 000 0000" autocomplete="off">
+          </div>
         </div>
         <div class="form-group">
-          <label for="client-email">Email Address</label>
-          <input type="email" id="client-email" required placeholder="client@domain.com" autocomplete="off">
+          <label for="client-ghana-card">Ghana Card Number</label>
+          <input type="text" id="client-ghana-card" name="client-ghana-card" required placeholder="GHA-123456789-0" autocomplete="off" style="text-transform: uppercase;">
+        </div>
+        
+        <h4 style="margin: 0.5rem 0 0.2rem 0; color: var(--text-muted); font-size: 0.9rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3rem;">Guarantor Details</h4>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="client-guarantor-name">Guarantor Name</label>
+            <input type="text" id="client-guarantor-name" name="client-guarantor-name" required placeholder="e.g. John Doe" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="client-guarantor-ghana-card">Guarantor Ghana Card Number</label>
+            <input type="text" id="client-guarantor-ghana-card" name="client-guarantor-ghana-card" required placeholder="GHA-987654321-0" autocomplete="off" style="text-transform: uppercase;">
+          </div>
         </div>
         <div class="form-group">
-          <label for="client-phone">Phone Number</label>
-          <input type="tel" id="client-phone" required placeholder="e.g. +233 20 000 0000" autocomplete="off">
+          <label for="client-guarantor-phone">Guarantor Phone Number</label>
+          <input type="tel" id="client-guarantor-phone" name="client-guarantor-phone" required placeholder="e.g. +233 24 000 0000" autocomplete="off">
         </div>
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
@@ -459,13 +674,14 @@
       </div>
       <form id="form-checkout" class="modal-form" autocomplete="off">
         <div class="form-group">
-          <label>Select Gear Item(s)</label>
+          <div class="fake-label">Select Gear Item(s)</div>
           <div id="checkout-gear-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
             <div class="gear-select-row">
-              <select class="checkout-gear-select" required>
-                <option value="" disabled selected>Choose available gear...</option>
-                <!-- Dynamic available gear -->
-              </select>
+              <div class="autocomplete-container" style="flex: 1;">
+                <input type="text" id="checkout-gear-search-0" name="checkout-gear-search" class="checkout-gear-search form-control" placeholder="Search gear by name or asset tag..." autocomplete="off" required>
+                <input type="hidden" name="checkout-gear-value" class="checkout-gear-value" required>
+                <div class="autocomplete-list checkout-gear-listbox"></div>
+              </div>
               <button type="button" class="btn-remove-gear" style="display: none;" title="Remove item">
                 <i data-lucide="trash-2" style="width:16px; height:16px; color: var(--color-danger)"></i>
               </button>
@@ -477,20 +693,40 @@
           </button>
         </div>
         <div class="form-group">
-          <label for="checkout-client">Renter (Client)</label>
-          <select id="checkout-client" required>
-            <option value="" disabled selected>Select client...</option>
-            <!-- Dynamic clients -->
-          </select>
+          <label for="checkout-client-search">Renter (Client)</label>
+          <div class="autocomplete-container">
+            <input type="text" id="checkout-client-search" name="checkout-client-search" class="form-control" placeholder="Search client by name or email..." autocomplete="off" required>
+            <input type="hidden" id="checkout-client-value" name="checkout-client-value" required>
+            <div id="checkout-client-listbox" class="autocomplete-list"></div>
+          </div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label for="checkout-start">Rental Start Date</label>
-            <input type="date" id="checkout-start" required>
+          <div class="form-group" style="flex: 1;">
+            <div class="fake-label">Rental Start - Return</div>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <input type="date" id="checkout-start-date" name="checkout-start-date" class="form-control" title="Rental Start Date" required>
+              <input type="date" id="checkout-end-date" name="checkout-end-date" class="form-control" title="Expected Return Date" required>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="checkout-end">Expected Return Date</label>
-            <input type="date" id="checkout-end" required>
+          <div class="form-group" style="flex: 1;">
+            <div class="fake-label">Pick Up Time - Return</div>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <input type="time" id="checkout-start-time" name="checkout-start-time" class="form-control" title="Pick Up Time" required>
+              <input type="time" id="checkout-end-time" name="checkout-end-time" class="form-control" title="Return Time" required>
+            </div>
+          </div>
+        </div>
+        <div class="form-row" style="margin-top: 1rem; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.02); padding: 0.75rem; border-radius: 8px;">
+          <div class="fake-label" style="margin-bottom: 0;">Checkout Type</div>
+          <div style="display: flex; gap: 1rem; margin-top: 0.25rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: normal; margin-bottom: 0;">
+              <input type="radio" name="checkout-type" value="Active">
+              Instant Pick-Up
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: normal; margin-bottom: 0;">
+              <input type="radio" name="checkout-type" value="Booked" checked>
+              Reserve for Later
+            </label>
           </div>
         </div>
         <div class="modal-actions">
@@ -522,6 +758,85 @@
     </div>
   </div>
 
+  <!-- Custom Invoice Generator Modal -->
+  <div class="modal-backdrop" id="modal-custom-invoice">
+    <div class="modal" style="max-width: 800px;">
+      <div class="modal-header">
+        <h2 id="custom-invoice-modal-title">Generated Invoice</h2>
+        <button class="modal-close"><i data-lucide="x"></i></button>
+      </div>
+      <div class="invoice-preview-container" style="background: var(--bg-card); max-height: 70vh; overflow-y: auto; padding: 1.5rem;">
+        <div class="invoice-document" id="printable-custom-invoice" style="background: white; color: black; padding: 2rem; font-family: 'Inter', sans-serif; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          <!-- Header -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2.5rem;">
+            <div style="display: flex; gap: 1rem; align-items: center;">
+              <div style="width: 60px; height: 60px; background: #e0f2fe; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5rem; color: #0284c7;">
+                EK
+              </div>
+              <div style="font-size: 0.9rem; line-height: 1.4;">
+                <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 2px;">EK Inventory</div>
+                <div style="color: #2563eb;">+233 20 000 0000</div>
+                <div style="color: #475569;">Accra, Ghana</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <h1 style="margin: 0; font-size: 2rem; font-weight: 700; color: #0f172a; margin-bottom: 0.5rem;">Receipt</h1>
+              <div id="invoice-print-status" style="font-size: 1.1rem; font-weight: bold; color: #22c55e;">Paid</div>
+            </div>
+          </div>
+
+          <!-- Info row -->
+          <div style="display: flex; justify-content: space-between; margin-bottom: 2rem;">
+            <div style="font-size: 0.95rem;">
+              <div style="font-weight: bold; color: #0f172a; margin-bottom: 0.2rem;">Invoiced to:</div>
+              <div id="invoice-print-client-name" style="color: #334155; margin-bottom: 0.1rem;">Client Name</div>
+              <div id="invoice-print-client-phone" style="color: #334155;">Phone Number</div>
+            </div>
+            <div style="text-align: right; font-size: 0.95rem; color: #334155;">
+              <div style="margin-bottom: 0.2rem;"><strong style="color: #0f172a;">Receipt number:</strong> <span id="invoice-print-number">REC-00000</span></div>
+              <div><strong style="color: #0f172a;">Sale date:</strong> <span id="invoice-print-date">01 Jan 2026</span></div>
+            </div>
+          </div>
+
+          <!-- Items Table -->
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 2.5rem; font-size: 0.95rem;">
+            <thead>
+              <tr style="border-bottom: 2px solid #cbd5e1; border-top: 2px solid #cbd5e1;">
+                <th style="text-align: left; padding: 0.75rem 0.5rem; color: #0f172a;">Item</th>
+                <th style="text-align: center; padding: 0.75rem 0.5rem; color: #0f172a; width: 100px;">Quantity</th>
+                <th style="text-align: right; padding: 0.75rem 0.5rem; color: #0f172a; width: 120px;">Unit Price</th>
+                <th style="text-align: right; padding: 0.75rem 0.5rem; color: #0f172a; width: 120px;">Total</th>
+              </tr>
+            </thead>
+            <tbody id="invoice-print-items">
+              <!-- Rendered items go here -->
+            </tbody>
+          </table>
+
+          <!-- Totals -->
+          <div style="display: flex; justify-content: flex-end;">
+            <div style="width: 300px; font-size: 0.95rem;">
+              <div style="display: flex; justify-content: space-between; padding: 0.5rem; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
+                <strong style="color: #0f172a;">Sub Total</strong>
+                <span id="invoice-print-subtotal" style="color: #334155;">GH₵ 0.00</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 0.5rem; margin-top: 0.5rem; font-size: 1.1rem;">
+                <strong style="color: #0f172a;">Total</strong>
+                <span id="invoice-print-total" style="color: #0f172a;">GH₵ 0.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions" style="margin-top: 0.5rem;">
+        <button type="button" class="btn btn-secondary modal-cancel">Close</button>
+        <button type="button" class="btn btn-primary" id="btn-trigger-custom-print">
+          <i data-lucide="printer"></i> Print Receipt
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Edit Gear Modal -->
   <div class="modal-backdrop" id="modal-edit-gear">
     <div class="modal">
@@ -530,28 +845,28 @@
         <button class="modal-close"><i data-lucide="x"></i></button>
       </div>
       <form id="form-edit-gear" class="modal-form">
-        <input type="hidden" id="edit-gear-id">
+        <input type="hidden" id="edit-gear-id" name="edit-gear-id">
         <div class="form-group">
           <label for="edit-gear-name">Gear Name & Model</label>
-          <input type="text" id="edit-gear-name" required placeholder="e.g. Cinema Camera 6K">
+          <input type="text" id="edit-gear-name" name="edit-gear-name" required placeholder="e.g. Cinema Camera 6K">
         </div>
         <div class="form-row">
           <div class="form-group">
             <label for="edit-gear-asset-tag">Asset Tag</label>
-            <input type="text" id="edit-gear-asset-tag" placeholder="e.g. EQ-101">
+            <input type="text" id="edit-gear-asset-tag" name="edit-gear-asset-tag" placeholder="e.g. EQ-101">
           </div>
           <div class="form-group">
             <label for="edit-gear-category">Category</label>
-            <input type="text" id="edit-gear-category" required placeholder="e.g. Cameras, Lenses, Lighting">
+            <input type="text" id="edit-gear-category" name="edit-gear-category" required placeholder="e.g. Cameras, Lenses, Lighting">
           </div>
         </div>
         <div class="form-group">
           <label for="edit-gear-serial">Serial Number</label>
-          <input type="text" id="edit-gear-serial" required placeholder="e.g. SN-000000">
+          <input type="text" id="edit-gear-serial" name="edit-gear-serial" required placeholder="e.g. SN-000000">
         </div>
         <div class="form-group">
           <label for="edit-gear-rate">Daily Rental Rate (GH₵)</label>
-          <input type="number" id="edit-gear-rate" required min="0" placeholder="e.g. 150">
+          <input type="number" id="edit-gear-rate" name="edit-gear-rate" required min="0" placeholder="e.g. 150">
         </div>
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
@@ -563,24 +878,53 @@
 
   <!-- Edit Client Modal -->
   <div class="modal-backdrop" id="modal-edit-client">
-    <div class="modal">
+    <div class="modal" style="max-width: 600px;">
       <div class="modal-header">
         <h2>Edit Client Details</h2>
         <button class="modal-close"><i data-lucide="x"></i></button>
       </div>
       <form id="form-edit-client" class="modal-form">
-        <input type="hidden" id="edit-client-id">
-        <div class="form-group">
-          <label for="edit-client-name">Full Name / Production Co</label>
-          <input type="text" id="edit-client-name" required placeholder="e.g. Jane Doe (Prime Productions)">
+        <input type="hidden" id="edit-client-id" name="edit-client-id">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-client-name">Full Name</label>
+            <input type="text" id="edit-client-name" name="edit-client-name" required placeholder="e.g. Jane Doe">
+          </div>
+          <div class="form-group">
+            <label for="edit-client-company">Company Name (Optional)</label>
+            <input type="text" id="edit-client-company" name="edit-client-company" placeholder="e.g. Prime Productions">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-client-email">Email Address</label>
+            <input type="email" id="edit-client-email" name="edit-client-email" required placeholder="client@domain.com">
+          </div>
+          <div class="form-group">
+            <label for="edit-client-phone">Phone Number</label>
+            <input type="tel" id="edit-client-phone" name="edit-client-phone" required placeholder="e.g. +233 20 000 0000">
+          </div>
         </div>
         <div class="form-group">
-          <label for="edit-client-email">Email Address</label>
-          <input type="email" id="edit-client-email" required placeholder="client@domain.com">
+          <label for="edit-client-ghana-card">Ghana Card Number</label>
+          <input type="text" id="edit-client-ghana-card" name="edit-client-ghana-card" required placeholder="GHA-123456789-0" style="text-transform: uppercase;">
+        </div>
+        
+        <h4 style="margin: 0.5rem 0 0.2rem 0; color: var(--text-muted); font-size: 0.9rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3rem;">Guarantor Details</h4>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-client-guarantor-name">Guarantor Name</label>
+            <input type="text" id="edit-client-guarantor-name" name="edit-client-guarantor-name" required placeholder="e.g. John Doe">
+          </div>
+          <div class="form-group">
+            <label for="edit-client-guarantor-ghana-card">Guarantor Ghana Card Number</label>
+            <input type="text" id="edit-client-guarantor-ghana-card" name="edit-client-guarantor-ghana-card" required placeholder="GHA-987654321-0" style="text-transform: uppercase;">
+          </div>
         </div>
         <div class="form-group">
-          <label for="edit-client-phone">Phone Number</label>
-          <input type="tel" id="edit-client-phone" required placeholder="e.g. +233 20 000 0000">
+          <label for="edit-client-guarantor-phone">Guarantor Phone Number</label>
+          <input type="tel" id="edit-client-guarantor-phone" name="edit-client-guarantor-phone" required placeholder="e.g. +233 24 000 0000">
         </div>
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
@@ -600,33 +944,36 @@
       <form id="form-add-user" class="modal-form" autocomplete="off">
         <div class="form-group">
           <label for="user-name">Full Name</label>
-          <input type="text" id="user-name" required placeholder="e.g. Alex Morgan" autocomplete="off">
+          <input type="text" id="user-name" name="user-name" required placeholder="e.g. Alex Morgan" autocomplete="off">
         </div>
         <div class="form-row">
           <div class="form-group">
             <label for="user-email">Email Address</label>
-            <input type="email" id="user-email" required placeholder="agent@ekgearflow.com" autocomplete="off">
+            <input type="email" id="user-email" name="user-email" required placeholder="agent@ekgearflow.com" autocomplete="off">
           </div>
           <div class="form-group">
             <label for="user-title">Job Title</label>
-            <input type="text" id="user-title" required placeholder="e.g. Inventory Specialist" autocomplete="off">
+            <input type="text" id="user-title" name="user-title" required placeholder="e.g. Inventory Specialist" autocomplete="off">
           </div>
         </div>
         <div class="form-group">
           <label for="user-account-type">Account Type</label>
-          <select id="user-account-type" required>
+          <select id="user-account-type" name="user-account-type" required>
             <option value="Staff" selected>Staff Member</option>
             <option value="Admin">Administrator</option>
           </select>
         </div>
         <div class="form-group" id="add-user-permissions-group">
-          <label>Assigned Task Permissions</label>
-          <div class="permissions-checkbox-group" style="display:flex; flex-direction:column; gap:0.5rem; background:rgba(255,255,255,0.03); padding:0.85rem; border-radius:8px; border:1px solid var(--border-color);">
-            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="manage_gear" checked> <span>Manage Gear Inventory (Add/Edit/Delete/Maintenance)</span></label>
-            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="manage_clients" checked> <span>Manage Clients (Add/Edit/Delete)</span></label>
+          <div class="fake-label">Assigned Task Permissions</div>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="manage_gear" checked> <span>Manage Gear Inventory (Add/Edit)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="manage_clients" checked> <span>Manage Clients (Add/Edit)</span></label>
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="create_rentals" checked> <span>Process Checkouts &amp; Reservations</span></label>
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="return_rentals" checked> <span>Process Check-Ins &amp; Cancellations</span></label>
-          </div>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="override_status"> <span>Override Gear Status (Maintenance/Lost)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="view_finances"> <span>View Financial Dashboard</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="delete_records"> <span>Delete Records (Clients/Gear)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="export_data"> <span>Export Data (CSV/Excel)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="add-perm" value="generate_invoices"> <span>Generate Invoices</span></label>
         </div>
         <div id="add-user-admin-notice" style="display:none; background:rgba(2,132,199,0.1); border:1px solid rgba(2,132,199,0.25); border-radius:10px; padding:1rem; align-items:center; gap:0.75rem;">
           <i data-lucide="shield-check" style="width:24px; height:24px; color:#38bdf8; flex-shrink:0;"></i>
@@ -652,35 +999,40 @@
         <button class="modal-close"><i data-lucide="x"></i></button>
       </div>
       <form id="form-edit-user" class="modal-form" autocomplete="off">
-        <input type="hidden" id="edit-user-id">
+        <input type="hidden" id="edit-user-id" name="edit-user-id">
         <div class="form-group">
           <label for="edit-user-name">Full Name</label>
-          <input type="text" id="edit-user-name" required placeholder="e.g. Alex Morgan">
+          <input type="text" id="edit-user-name" name="edit-user-name" required placeholder="e.g. Alex Morgan">
         </div>
         <div class="form-row">
           <div class="form-group">
             <label for="edit-user-email">Email Address</label>
-            <input type="email" id="edit-user-email" required placeholder="agent@ekgearflow.com">
+            <input type="email" id="edit-user-email" name="edit-user-email" required placeholder="agent@ekgearflow.com">
           </div>
           <div class="form-group">
             <label for="edit-user-title">Job Title</label>
-            <input type="text" id="edit-user-title" required placeholder="e.g. Inventory Specialist">
+            <input type="text" id="edit-user-title" name="edit-user-title" required placeholder="e.g. Inventory Specialist">
           </div>
         </div>
         <div class="form-group" id="edit-user-account-type-group">
           <label for="edit-user-account-type">Account Type</label>
-          <select id="edit-user-account-type" required>
+          <select id="edit-user-account-type" name="edit-user-account-type" required>
             <option value="Staff">Staff Member</option>
             <option value="Admin">Administrator</option>
           </select>
         </div>
         <div class="form-group" id="edit-user-permissions-group">
-          <label>Assigned Task Permissions</label>
+          <div class="fake-label">Assigned Task Permissions</div>
           <div class="permissions-checkbox-group" style="display:flex; flex-direction:column; gap:0.5rem; background:rgba(255,255,255,0.03); padding:0.85rem; border-radius:8px; border:1px solid var(--border-color);">
-            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="manage_gear"> <span>Manage Gear Inventory (Add/Edit/Delete/Maintenance)</span></label>
-            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="manage_clients"> <span>Manage Clients (Add/Edit/Delete)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="manage_gear"> <span>Manage Gear Inventory (Add/Edit)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="manage_clients"> <span>Manage Clients (Add/Edit)</span></label>
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="create_rentals"> <span>Process Checkouts &amp; Reservations</span></label>
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="return_rentals"> <span>Process Check-Ins &amp; Cancellations</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="override_status"> <span>Override Gear Status (Maintenance/Lost)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="view_finances"> <span>View Financial Dashboard</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="delete_records"> <span>Delete Records (Clients/Gear)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="export_data"> <span>Export Data (CSV/Excel)</span></label>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;"><input type="checkbox" name="edit-perm" value="generate_invoices"> <span>Generate Invoices</span></label>
           </div>
         </div>
         <div id="edit-user-admin-notice" style="display:none; background:rgba(2,132,199,0.1); border:1px solid rgba(2,132,199,0.25); border-radius:10px; padding:1rem; align-items:center; gap:0.75rem;">
@@ -708,11 +1060,11 @@
         <p style="font-size: 0.85rem; color: var(--text-muted);">You are currently using a default or reset password. You must set a new secure password before proceeding.</p>
         <div class="form-group">
           <label for="force-new-password">New Password</label>
-          <input type="password" id="force-new-password" required minlength="4" placeholder="Enter new password">
+          <input type="password" id="force-new-password" name="force-new-password" required minlength="4" placeholder="Enter new password">
         </div>
         <div class="form-group">
           <label for="force-confirm-password">Confirm New Password</label>
-          <input type="password" id="force-confirm-password" required minlength="4" placeholder="Re-enter new password">
+          <input type="password" id="force-confirm-password" name="force-confirm-password" required minlength="4" placeholder="Re-enter new password">
         </div>
         <div class="modal-actions">
           <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Update Password &amp; Continue</button>
@@ -760,13 +1112,13 @@
         </div>
 
         <form id="form-login" class="modal-form">
-          <input type="hidden" id="login-account-type" value="Staff">
+          <input type="hidden" id="login-account-type" name="login-account-type" value="Staff">
           
           <div class="form-group icon-input-group">
             <label for="login-email">Email Address</label>
             <div class="input-wrapper">
               <i data-lucide="mail" class="input-icon"></i>
-              <input type="email" id="login-email" required placeholder="name@company.com">
+              <input type="email" id="login-email" name="login-email" required placeholder="name@company.com">
             </div>
           </div>
 
@@ -774,7 +1126,7 @@
             <label for="login-password">Password</label>
             <div class="input-wrapper">
               <i data-lucide="lock" class="input-icon"></i>
-              <input type="password" id="login-password" required placeholder="••••••••">
+              <input type="password" id="login-password" name="login-password" required placeholder="••••••••">
             </div>
           </div>
 
@@ -811,14 +1163,15 @@
   </div>
 
   <!-- Modular Frontend Architecture -->
-  <script src="js/utils.js?v=29"></script>
-  <script src="js/api.js?v=29"></script>
-  <script src="js/inventory.js?v=29"></script>
-  <script src="js/clients.js?v=29"></script>
-  <script src="js/rentals.js?v=29"></script>
-  <script src="js/staff.js?v=29"></script>
-  <script src="js/audit.js?v=29"></script>
-  <script src="app.js?v=29"></script>
+  <script src="js/utils.js?v=35"></script>
+  <script src="js/api.js?v=33"></script>
+  <script src="js/inventory.js?v=36"></script>
+  <script src="js/clients.js?v=34"></script>
+  <script src="js/rentals.js?v=39"></script>
+  <script src="js/staff.js?v=33"></script>
+  <script src="js/audit.js?v=34"></script>
+  <script src="js/invoice.js?v=3"></script>
+  <script src="app.js?v=43"></script>
 
 </body>
 

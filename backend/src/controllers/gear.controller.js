@@ -27,9 +27,17 @@ async function createGearHandler(req, res) {
 
 async function updateGearHandler(req, res) {
   try {
+    const isMaintToggle = req.body.status !== undefined && Object.keys(req.body).length === 1;
+    const userPerms = req.user.permissions || [];
+    const isAdmin = req.user.role === 'admin';
+    const hasManageGear = isAdmin || userPerms.includes('manage_gear');
+
+    if (!hasManageGear && !isMaintToggle) {
+      return res.status(403).json({ error: 'Forbidden: You only have permission to override gear status, not edit gear details.' });
+    }
+
     const updated = await updateGear(req.params.id, req.body);
     if (!updated) return res.status(404).json({ error: 'Gear not found' });
-    const isMaintToggle = req.body.status !== undefined && Object.keys(req.body).length === 1;
     await recordAuditLog({
       req,
       action: isMaintToggle ? 'MAINTENANCE_TOGGLE' : 'UPDATE_GEAR',

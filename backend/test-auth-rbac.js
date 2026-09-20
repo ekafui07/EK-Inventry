@@ -130,13 +130,14 @@ async function runAuthTests() {
     }
 
     console.log('Test 4.2: Staff WITH manage_gear successfully adding gear (201 Created)...');
+    const withGearToken = jwt.sign({ id: 'u_with_gear', email: 'withgear@gearflow.com', role: 'staff', permissions: ['manage_gear'] }, JWT_SECRET);
     const staffAddGearRes = await request('POST', '/api/gear', {
       name: 'Authorized Staff Gear',
       assetTag: 'TAG-STAFF-01',
       category: 'Cameras',
       serialNumber: 'SN-STAFF-001',
       dailyRate: 150
-    }, staffToken);
+    }, withGearToken);
     if (staffAddGearRes.statusCode === 201) {
       console.log('✅ Success: Staff with manage_gear created gear (201 Created).\n');
       await request('DELETE', `/api/gear/${staffAddGearRes.body.id}`, null, adminToken);

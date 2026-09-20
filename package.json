@@ -4,9 +4,15 @@
   "description": "EK GearFlow - Media Rental Registry Root Runner",
   "scripts": {
     "start": "npx concurrently \"npm --prefix backend start\" \"python3 -m http.server 8080 --directory frontend\"",
-    "test": "npm --prefix backend run test:all"
+    "test": "npm --prefix backend run test:all",
+    "lint": "eslint frontend/js backend/src",
+    "lint:fix": "eslint frontend/js backend/src --fix",
+    "lint:html": "htmlhint frontend/**/*.html"
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "@eslint/js": "^10.0.1",
+    "concurrently": "^9.1.2",
+    "eslint": "^10.11.0",
+    "htmlhint": "^1.9.2"
   }
 }

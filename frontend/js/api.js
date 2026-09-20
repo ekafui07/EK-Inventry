@@ -60,3 +60,21 @@ window.fetch = async (...args) => {
   
   return response;
 };
+
+/**
+ * Log a frontend activity to the backend audit trail.
+ */
+window.apiLogActivity = async function(action, category, summary, details = {}) {
+  try {
+    const url = `${API_BASE_URL}/audit/log`;
+    await window.fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ action, category, summary, details })
+    });
+  } catch (err) {
+    console.error('Failed to log activity to audit trail:', err);
+  }
+};

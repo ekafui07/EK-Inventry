@@ -165,7 +165,19 @@ function renderAuditTrail(category = activeAuditCategory, query = '') {
       catBadge = `<span class="badge badge-cat">${escapeHtmlText(cat)}</span>`;
     }
 
-    const detailsStr = log.details ? (typeof log.details === 'string' ? log.details : JSON.stringify(log.details)) : '';
+    let detailsStr = '';
+    if (log.details) {
+      if (typeof log.details === 'string') {
+        try {
+          const parsed = JSON.parse(log.details);
+          detailsStr = formatLogDetailsObject(parsed);
+        } catch(e) {
+          detailsStr = log.details;
+        }
+      } else {
+        detailsStr = formatLogDetailsObject(log.details);
+      }
+    }
 
     return `
       <tr>
@@ -197,16 +209,11 @@ function renderAuditTrail(category = activeAuditCategory, query = '') {
               ${escapeHtmlText(log.summary || log.action || '')}
             </div>
             ${detailsStr ? `
-              <div style="font-size: 0.77rem; color: var(--text-muted); line-height: 1.35; word-break: break-word;">
+              <div style="font-size: 0.77rem; color: var(--text-main); line-height: 1.4; word-break: break-word;">
                 ${escapeHtmlText(detailsStr)}
               </div>
             ` : ''}
           </div>
-        </td>
-        <td style="text-align: right; vertical-align: middle;">
-          <span class="audit-ip-pill">
-            ${escapeHtmlText(log.ip || '127.0.0.1')}
-          </span>
         </td>
       </tr>
     `;
@@ -229,7 +236,7 @@ function formatLogDetailsObject(obj) {
   if (obj.assetTag) parts.push(`Asset Tag: ${obj.assetTag}`);
   if (obj.serialNumber) parts.push(`SN: ${obj.serialNumber}`);
   if (obj.dailyRate !== undefined) parts.push(`Daily Rate: GH₵${Number(obj.dailyRate).toFixed(2)}`);
-  if (obj.startDate && obj.endDate) parts.push(`Rental Period: ${obj.startDate} to ${obj.endDate}`);
+  if (obj.startDate && obj.endDate) parts.push(`Rental Period: ${window.formatDateReadable(obj.startDate)} to ${window.formatDateReadable(obj.endDate)}`);
   if (obj.status) parts.push(`Status: ${obj.status}`);
   if (obj.title) parts.push(`Job Title: ${obj.title}`);
   if (obj.accountType) parts.push(`Role: ${obj.accountType}`);
@@ -238,14 +245,21 @@ function formatLogDetailsObject(obj) {
   if (obj.reason) parts.push(`Reason: ${obj.reason}`);
 
   if (parts.length === 0) {
-    for (const [k, v] of Object.entries(obj)) {
-      if (/id$/i.test(k) || k === 'id' || k === 'password' || k === 'token') continue;
-      if (typeof v === 'object' && v !== null) continue;
-      parts.push(`${k}: ${v}`);
-    }
+    const extractFields = (objParam) => {
+      for (const [k, v] of Object.entries(objParam)) {
+        if (/id$/i.test(k) || k === 'id' || k === 'password' || k === 'token') continue;
+        if (typeof v === 'object' && v !== null) {
+          extractFields(v);
+          continue;
+        }
+        const formattedKey = k.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+        parts.push(`${formattedKey} = ${v}`);
+      }
+    };
+    extractFields(obj);
   }
 
-  return parts.length > 0 ? parts.join(' | ') : 'Completed successfully';
+  return parts.length > 0 ? parts.join('. ') : 'Completed successfully';
 }
 
 function formatLogDetailsForExport(log) {

@@ -7,6 +7,7 @@
     "start": "node index.js",
     "test": "node test-runner.js",
     "test:all": "node test-runner.js",
+    "test:unit": "jest",
     "test:rbac": "node test-auth-rbac.js",
     "test:comprehensive": "node test-comprehensive.js",
     "predeploy": "npm test",
@@ -31,6 +32,7 @@
     "serverless-http": "^3.2.0"
   },
   "devDependencies": {
+    "jest": "^30.5.2",
     "nodemon": "^3.1.14",
     "serverless": "^3.38.0"
   }

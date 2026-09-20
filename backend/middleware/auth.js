@@ -115,11 +115,39 @@ function requirePermission(...requiredPermissions) {
   };
 }
 
+/**
+ * Permission-Based Access Control middleware:
+ * Admin bypasses automatically. Staff must possess AT LEAST ONE of the required permissions.
+ */
+function requireAnyPermission(...allowedPermissions) {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    if (req.user.role === 'admin') {
+      return next();
+    }
+
+    const userPerms = req.user.permissions || [];
+    const hasAny = allowedPermissions.some(perm => userPerms.includes(perm));
+
+    if (hasAny) {
+      return next();
+    }
+
+    return res.status(403).json({
+      error: `Forbidden: Missing required permissions: requires one of ${allowedPermissions.join(', ')}`
+    });
+  };
+}
+
 module.exports = {
   authenticate,
   verifyToken: authenticate, // backwards compatibility alias
   requireRole,
   requirePermission,
+  requireAnyPermission,
   setUserLookup,
   JWT_SECRET
 };

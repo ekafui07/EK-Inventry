@@ -547,6 +547,17 @@ body {
   gap: 1.25rem;
 }
 
+/* Elevate stacking context when dropdowns/inputs are active to prevent clipping */
+.panel-card:focus-within {
+  z-index: 50;
+  position: relative;
+}
+
+.form-group:focus-within {
+  z-index: 50;
+  position: relative;
+}
+
 .panel-header {
   display: flex;
   justify-content: space-between;
@@ -1492,7 +1503,8 @@ code {
   min-width: 0;
 }
 
-.form-group label {
+.form-group label,
+.fake-label {
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-muted);
@@ -1514,6 +1526,55 @@ code {
   color: var(--text-main);
 }
 
+.autocomplete-container {
+  position: relative;
+  width: 100%;
+}
+
+.autocomplete-container:focus-within {
+  z-index: 50;
+  position: relative;
+}
+
+.autocomplete-container input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.autocomplete-list,
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #FFFFFF;
+  border: 1px solid #E5E9F0;
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10000;
+  margin-top: 4px;
+  box-shadow: 0 1px 2px rgba(16,24,40,0.04), 0 1px 3px rgba(16,24,40,0.06);
+  display: none;
+}
+
+.autocomplete-item {
+  padding: 0.6rem 1rem;
+  color: #1B2436;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-bottom: 1px solid #E5E9F0;
+  transition: background-color var(--transition-fast);
+}
+
+.autocomplete-item:last-child {
+  border-bottom: none;
+}
+
+.autocomplete-item:hover, .autocomplete-item.active {
+  background-color: #F5F7FA;
+}
+
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
@@ -1524,7 +1585,7 @@ code {
 
 .modal-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 0.75rem;
   margin-top: 1rem;
 }
@@ -2136,7 +2197,8 @@ code {
   width: 100%;
 }
 
-.gear-select-row .checkout-gear-select {
+.gear-select-row .checkout-gear-select,
+.gear-select-row .autocomplete-container {
   flex: 1 1 0;
   min-width: 0;
   width: 0;
@@ -3282,10 +3344,14 @@ code {
   }
   #modal-invoice-preview,
   #modal-invoice-preview .invoice-document,
-  #modal-invoice-preview .invoice-document * {
+  #modal-invoice-preview .invoice-document *,
+  #modal-custom-invoice,
+  #modal-custom-invoice .invoice-document,
+  #modal-custom-invoice .invoice-document * {
     visibility: visible;
   }
-  #modal-invoice-preview {
+  #modal-invoice-preview,
+  #modal-custom-invoice {
     position: absolute;
     left: 0;
     top: 0;
@@ -3295,7 +3361,8 @@ code {
     background: #ffffff !important;
     display: block !important;
   }
-  #modal-invoice-preview .modal {
+  #modal-invoice-preview .modal,
+  #modal-custom-invoice .modal {
     max-width: 100% !important;
     width: 100% !important;
     padding: 0 !important;
@@ -3304,7 +3371,9 @@ code {
     background: #ffffff !important;
   }
   #modal-invoice-preview .modal-header,
-  #modal-invoice-preview .modal-actions {
+  #modal-invoice-preview .modal-actions,
+  #modal-custom-invoice .modal-header,
+  #modal-custom-invoice .modal-actions {
     display: none !important;
   }
   .invoice-preview-container {

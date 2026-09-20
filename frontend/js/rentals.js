@@ -35,7 +35,7 @@ function renderRentalsList(query = '') {
   }
   
   if (bookings.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">${query ? 'No matching rental records found.' : 'No rental records found.'}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">${query ? 'No matching rental records found.' : 'No rental records found.'}</td></tr>`;
     return;
   }
 
@@ -46,24 +46,19 @@ function renderRentalsList(query = '') {
     const calculatedStatus = getBookingStatus(booking);
     const statusClass = calculatedStatus.toLowerCase();
 
-    // Print invoice button for all booked, active, returned, and overdue rentals
-    let invoiceButton = '<span style="color:var(--text-muted); font-size:0.8rem;">—</span>';
-    if (calculatedStatus !== 'Cancelled') {
-      invoiceButton = `
-        <button class="btn-print-invoice" onclick="openRentalInvoice('${booking.id}')" title="Print or Save Invoice PDF">
-          <i data-lucide="printer" style="width:13px; height:13px;"></i> Print Invoice
-        </button>
-      `;
-    }
-
     const canReturn = hasPermission('return_rentals');
     let actionButton = '—';
     if (canReturn) {
       if (calculatedStatus === 'Booked') {
         actionButton = `
-          <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-danger); border-color: rgba(239, 68, 68, 0.3);" onclick="cancelBookingAction('${booking.id}')" title="Void Reservation">
-            <i data-lucide="x-circle" style="width:12px; height:12px"></i> Cancel
-          </button>
+          <div style="display: flex; gap: 0.5rem; justify-content: flex-start;">
+            <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-primary); border-color: rgba(37, 99, 235, 0.3);" onclick="checkoutBookingAction('${booking.id}')" title="Check Out Gear">
+              <i data-lucide="log-out" style="width:12px; height:12px"></i> Check Out
+            </button>
+            <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-danger); border-color: rgba(239, 68, 68, 0.3);" onclick="cancelBookingAction('${booking.id}')" title="Void Reservation">
+              <i data-lucide="x-circle" style="width:12px; height:12px"></i> Cancel
+            </button>
+          </div>
         `;
       } else if (calculatedStatus === 'Active' || calculatedStatus === 'Overdue') {
         actionButton = `
@@ -78,10 +73,15 @@ function renderRentalsList(query = '') {
     tr.innerHTML = `
       <td><strong>${escapeHtmlText(client.name)}</strong></td>
       <td><strong>${escapeHtmlText(item.name)}</strong></td>
-      <td>${escapeHtmlText(booking.startDate)} to ${escapeHtmlText(booking.endDate)}</td>
+      <td>
+        <div style="line-height:1.3;">
+          <div style="font-weight: 500;">${window.formatDateReadable(booking.startDate)}</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin: 0.15rem 0;">to</div>
+          <div style="font-weight: 500;">${window.formatDateReadable(booking.endDate)}</div>
+        </div>
+      </td>
       <td>GH₵${escapeHtmlText(item.dailyRate)}/day</td>
       <td><span class="status-pill ${statusClass}">${escapeHtmlText(calculatedStatus)}</span></td>
-      <td>${invoiceButton}</td>
       <td>${actionButton}</td>
     `;
     tbody.appendChild(tr);
@@ -108,7 +108,7 @@ function renderDashboardRentals(query = '') {
   }
   
   if (activeBookings.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">${query ? 'No matching active checkouts found.' : 'No active rentals at the moment.'}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">${query ? 'No matching active checkouts found.' : 'No active rentals at the moment.'}</td></tr>`;
     return;
   }
   
@@ -123,18 +123,14 @@ function renderDashboardRentals(query = '') {
     const statusText = isOverdue ? 'Overdue' : 'Active';
     const statusClass = isOverdue ? 'overdue' : 'active';
     
-    const invoiceButton = `
-      <button class="btn-print-invoice" onclick="openRentalInvoice('${booking.id}')" title="Print or Save Invoice PDF">
-        <i data-lucide="printer" style="width:13px; height:13px;"></i> Print Invoice
-      </button>
-    `;
+
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><strong>${escapeHtmlText(item.name)}</strong></td>
       <td>${escapeHtmlText(client.name)}</td>
-      <td>${escapeHtmlText(booking.startDate)}</td>
-      <td>${escapeHtmlText(booking.endDate)}</td>
+      <td>${window.formatDateReadable(booking.startDate)}</td>
+      <td>${window.formatDateReadable(booking.endDate)}</td>
       <td><span class="status-pill ${statusClass}">${statusText}</span></td>
     `;
     tbody.appendChild(tr);
@@ -321,6 +317,28 @@ async function cancelBookingAction(bookingId) {
 }
 window.cancelBookingAction = cancelBookingAction;
 
+async function checkoutBookingAction(bookingId) {
+  if (!hasPermission('create_rentals')) {
+    showToast('Permission Denied: You do not have permission to check out gear.', 'danger');
+    return;
+  }
+  try {
+    const res = await fetch(`${API_URL}/bookings/${bookingId}/checkout`, {
+      method: 'PUT'
+    });
+    if (!res.ok) throw new Error('API Error');
+    showToast('Gear checked out successfully');
+    if (window.AppEvents) {
+      AppEvents.emit('rentals:changed');
+    } else {
+      await refreshData();
+    }
+  } catch (err) {
+    showToast('Error checking out booking', 'danger');
+  }
+}
+window.checkoutBookingAction = checkoutBookingAction;
+
 function setupCheckoutFormDynamicRows() {
   const addBtn = document.getElementById('btn-add-gear-row');
   const listContainer = document.getElementById('checkout-gear-list');
@@ -356,12 +374,27 @@ function setupCheckoutFormDynamicRows() {
     if (!firstRow) return;
     
     const newRow = firstRow.cloneNode(true);
-    const select = newRow.querySelector('.checkout-gear-select');
-    select.value = '';
     
-    select.onchange = () => {
-      populateCheckoutDropdowns();
-    };
+    // Reset autocomplete inputs in the cloned row
+    const searchInput = newRow.querySelector('.checkout-gear-search');
+    const valueInput = newRow.querySelector('.checkout-gear-value');
+    const listbox = newRow.querySelector('.checkout-gear-listbox');
+    
+    if (searchInput) {
+      searchInput.value = '';
+      searchInput.removeAttribute('data-ac-bound');
+      // Assign a unique ID to prevent duplicate IDs in the DOM
+      const rowCount = listContainer.querySelectorAll('.gear-select-row').length;
+      searchInput.id = `checkout-gear-search-${rowCount}`;
+      // Clone again to drop any previous addEventListeners
+      const cleanSearchInput = searchInput.cloneNode(true);
+      searchInput.parentNode.replaceChild(cleanSearchInput, searchInput);
+    }
+    if (valueInput) valueInput.value = '';
+    if (listbox) {
+      listbox.innerHTML = '';
+      listbox.style.display = 'none';
+    }
     
     listContainer.appendChild(newRow);
     updateRemoveButtons();

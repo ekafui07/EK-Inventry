@@ -1,4 +1,4 @@
-const { getAuditLogs } = require('../services/audit.service');
+const { getAuditLogs, recordAuditLog } = require('../services/audit.service');
 
 async function getAuditLogsHandler(req, res) {
   try {
@@ -18,6 +18,24 @@ async function getAuditLogsHandler(req, res) {
   }
 }
 
+async function createAuditLogHandler(req, res) {
+  try {
+    const { action, category, summary, details } = req.body;
+    await recordAuditLog({
+      req,
+      user: req.user,
+      action,
+      category: category || 'General',
+      summary: summary || action,
+      details: details || {}
+    });
+    res.status(201).json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
 module.exports = {
-  getAuditLogsHandler
+  getAuditLogsHandler,
+  createAuditLogHandler
 };

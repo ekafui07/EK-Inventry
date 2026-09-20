@@ -254,4 +254,60 @@ const AppEvents = {
 };
 window.AppEvents = AppEvents;
 
+/**
+ * Structural measure to prevent modal-actions from breaking forms globally.
+ * Finds any modal-actions that accidentally fell outside of a modal-form 
+ * (usually due to a stray closing </div> tag) and repairs the structure and functionality.
+ */
+function repairModalStructures() {
+  const backdrops = document.querySelectorAll('.modal-backdrop');
+  backdrops.forEach(backdrop => {
+    const modal = backdrop.querySelector('.modal');
+    if (!modal) return;
+    
+    const form = modal.querySelector('form');
+    const actions = backdrop.querySelectorAll('.modal-actions');
+    
+    actions.forEach(actionBlock => {
+      // 1. Layout Fix: If the action block dropped entirely out of the modal box, move it back in
+      if (actionBlock.parentElement === backdrop) {
+        modal.appendChild(actionBlock);
+      }
+      
+      // 2. Functionality Fix: Ensure the submit button still triggers the form even if it fell outside it
+      if (form && form.id) {
+        const submitBtns = actionBlock.querySelectorAll('button[type="submit"]');
+        submitBtns.forEach(btn => btn.setAttribute('form', form.id));
+      }
+    });
+  });
+}
 
+document.addEventListener('DOMContentLoaded', repairModalStructures);
+
+window.repairModalStructures = repairModalStructures;
+
+/**
+ * Format an ISO date string into a human-readable form.
+ * Date-only strings → "Sep 20, 2026"
+ * Datetime strings  → "Sep 20, 2026, 1:45 PM"
+ */
+window.formatDateReadable = function(isoStr) {
+  if (!isoStr) return '';
+  try {
+    const d = new Date(isoStr);
+    if (isNaN(d.getTime())) return isoStr;
+
+    // If the string doesn't contain time info, show date only
+    if (!isoStr.includes('T') && !isoStr.includes(' ')) {
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    return d.toLocaleString('en-US', {
+      month: 'short', day: 'numeric', year: 'numeric',
+      hour: 'numeric', minute: '2-digit'
+    });
+  } catch(e) {
+    return isoStr;
+  }
+};

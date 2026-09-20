@@ -139,7 +139,11 @@ async function loginUser({ email, password, accountType }) {
       'manage_clients',
       'create_rentals',
       'return_rentals',
-      'cancel_rentals'
+      'cancel_rentals',
+      'view_finances',
+      'delete_records',
+      'export_data',
+      'override_status'
     ]
   };
   const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: '24h' });
@@ -163,8 +167,8 @@ async function addUser(userData) {
   const role = (userData.role || userData.accountType || 'Staff').toLowerCase();
   const normalizedAccountType = role === 'admin' ? 'Admin' : 'Staff';
   let assignedPermissions = userData.permissions || (role === 'admin'
-    ? ['manage_gear', 'manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals', 'manage_users']
-    : ['manage_gear', 'manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals']);
+    ? ['manage_gear', 'manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals', 'manage_users', 'view_finances', 'delete_records', 'export_data', 'override_status']
+    : ['manage_gear', 'manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals', 'view_finances', 'delete_records', 'export_data', 'override_status']);
   if (role !== 'admin') {
     assignedPermissions = assignedPermissions.filter(p => p !== 'manage_users');
   }
@@ -438,7 +442,7 @@ async function seedInitialUsers() {
         title: 'System Administrator',
         accountType: 'Admin',
         role: 'admin',
-        permissions: ['manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals', 'manage_gear', 'manage_users'],
+        permissions: ['manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals', 'manage_gear', 'manage_users', 'generate_invoices'],
         status: 'Active',
         mustChangePassword: false
       },
@@ -462,7 +466,7 @@ async function seedInitialUsers() {
         title: 'Admin',
         accountType: 'Admin',
         role: 'admin',
-        permissions: ['manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals', 'manage_gear', 'manage_users'],
+        permissions: ['manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals', 'manage_gear', 'manage_users', 'generate_invoices'],
         status: 'Active',
         mustChangePassword: false
       },

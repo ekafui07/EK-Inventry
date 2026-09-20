@@ -19,6 +19,9 @@ window.currentUser = currentUser;
 let activeTab = 'dashboard';
 let activeRentalsFilter = 'all';
 let activeAuditCategory = 'All';
+let activeFinanceDateStart = '';
+let activeFinanceDateEnd = '';
+let activeFinanceCat = 'all';
 
 // Form Sanitization & Reset Helper (Preserved for test-frontend-checks compliance)
 function clearModalForm(modalOrId) {
@@ -42,140 +45,8 @@ function clearModalForm(modalOrId) {
 }
 window.clearModalForm = clearModalForm;
 
-// High-Fidelity Printable Invoice Generator (btn-print-invoice)
-function openRentalInvoice(bookingId) {
-  const booking = state.bookings.find(b => b.id === bookingId);
-  if (!booking) return;
-
-  const item = state.gear.find(g => g.id === booking.gearId) || {
-    name: 'Cinema Equipment',
-    category: 'Media Gear',
-    assetTag: '—',
-    serialNumber: '—',
-    dailyRate: 0
-  };
-  const client = state.clients.find(c => c.id === booking.clientId) || {
-    name: 'Valued Client',
-    email: '—',
-    phone: '—'
-  };
-
-  const start = new Date(booking.startDate);
-  const end = new Date(booking.endDate);
-  const diffTime = Math.abs(end - start);
-  const durationDays = Math.max(1, Math.round(diffTime / (1000 * 60 * 60 * 24)) + 1);
-  const dailyRate = Number(item.dailyRate) || 0;
-  const lineTotal = dailyRate * durationDays;
-  const invoiceNumber = `INV-${booking.id.replace(/^b_/, '').slice(-6).toUpperCase()}`;
-  const todayFormatted = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-  const status = typeof getBookingStatus === 'function' ? getBookingStatus(booking) : 'Active';
-
-  const container = document.getElementById('printable-invoice-content');
-  if (!container) return;
-
-  container.innerHTML = `
-    <div class="inv-brand-row">
-      <div>
-        <div class="inv-logo-title">EK GEARFLOW</div>
-        <div class="inv-subtitle">Professional Media Equipment Rental Registry</div>
-        <div style="font-size: 0.8rem; color: #64748b; margin-top: 0.35rem;">
-          Accra, Greater Accra, Ghana &bull; rentals@ekgearflow.com &bull; +233 24 000 0000
-        </div>
-      </div>
-      <div class="inv-meta-box">
-        <div class="inv-meta-title">RENTAL INVOICE</div>
-        <div class="inv-meta-detail"><strong>Invoice #:</strong> ${invoiceNumber}</div>
-        <div class="inv-meta-detail"><strong>Date Issued:</strong> ${todayFormatted}</div>
-        <div class="inv-meta-detail"><strong>Status:</strong> <span style="display:inline-block; padding: 2px 8px; border-radius: 12px; font-weight:700; font-size:0.75rem; background:#e0f2fe; color:#0369a1;">${status.toUpperCase()}</span></div>
-      </div>
-    </div>
-
-    <div class="inv-two-col">
-      <div>
-        <div class="inv-section-title">Billed To (Client Details)</div>
-        <div class="inv-info-block">
-          <strong>${escapeHtmlText(client.name)}</strong><br>
-          Email: ${escapeHtmlText(client.email || '—')}<br>
-          Phone: ${escapeHtmlText(client.phone || '—')}
-        </div>
-      </div>
-      <div>
-        <div class="inv-section-title">Rental Schedule</div>
-        <div class="inv-info-block">
-          <strong>Booking ID:</strong> ${escapeHtmlText(booking.id)}<br>
-          <strong>Check-Out Date:</strong> ${escapeHtmlText(booking.startDate)}<br>
-          <strong>Return Due Date:</strong> ${escapeHtmlText(booking.endDate)}<br>
-          <strong>Duration:</strong> ${durationDays} Day${durationDays > 1 ? 's' : ''}
-        </div>
-      </div>
-    </div>
-
-    <table class="inv-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Equipment Description</th>
-          <th>Asset Tag</th>
-          <th>Serial Number</th>
-          <th style="text-align:right">Daily Rate</th>
-          <th style="text-align:center">Days</th>
-          <th style="text-align:right">Amount (GH₵)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>
-            <strong>${escapeHtmlText(item.name)}</strong><br>
-            <span style="font-size:0.75rem; color:#64748b;">Category: ${escapeHtmlText(item.category || 'Gear')}</span>
-          </td>
-          <td><code>${escapeHtmlText(item.assetTag || '—')}</code></td>
-          <td><code>${escapeHtmlText(item.serialNumber || '—')}</code></td>
-          <td style="text-align:right">GH₵${dailyRate.toFixed(2)}</td>
-          <td style="text-align:center">${durationDays}</td>
-          <td style="text-align:right"><strong>GH₵${lineTotal.toFixed(2)}</strong></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="inv-totals-wrap">
-      <div class="inv-totals-box">
-        <div class="inv-totals-row">
-          <span>Subtotal:</span>
-          <span>GH₵${lineTotal.toFixed(2)}</span>
-        </div>
-        <div class="inv-totals-row">
-          <span>Taxes / Fees (0%):</span>
-          <span>GH₵0.00</span>
-        </div>
-        <div class="inv-totals-row grand-total">
-          <span>Total Due:</span>
-          <span>GH₵${lineTotal.toFixed(2)}</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="inv-terms-box">
-      <strong>Rental Agreement &amp; Equipment Verification:</strong><br>
-      The renter acknowledges receipt of the equipment listed above in clean, fully operational working condition. 
-      The renter agrees to operate the gear in accordance with manufacturer guidelines and assumes liability for any damages, 
-      loss, or overdue rental fees accrued until official check-in by EK GearFlow operations.
-    </div>
-
-    <div class="inv-signatures-row">
-      <div class="inv-sig-box">
-        Client / Renter Signature &amp; Date
-      </div>
-      <div class="inv-sig-box">
-        Authorized EK GearFlow Desk Agent
-      </div>
-    </div>
-  `;
-
-  openModal('modal-invoice-preview');
-  if (window.lucide) lucide.createIcons();
-}
-window.openRentalInvoice = openRentalInvoice;
+// NOTE: openRentalInvoice is defined in js/rentals.js (the domain module).
+// Do NOT duplicate it here — rentals.js is the single source of truth.
 
 // Expose action functions to global scope immediately for inline onclick= handlers
 window.toggleMaintenance = toggleMaintenance;
@@ -206,15 +77,25 @@ function applyPermissions() {
 
   const navUsers = document.getElementById('nav-users');
   if (navUsers) {
-    navUsers.style.display = isAdmin ? 'flex' : 'none';
+    navUsers.style.display = hasPermission('manage_users') ? 'flex' : 'none';
   }
 
   const navAudit = document.getElementById('nav-audit');
   if (navAudit) {
-    navAudit.style.display = isAuditAdmin ? 'flex' : 'none';
+    navAudit.style.display = isAdmin ? 'flex' : 'none';
   }
 
-  if (!isAdmin && activeTab === 'users') {
+  const navFinances = document.getElementById('nav-finances');
+  if (navFinances) {
+    navFinances.style.display = hasPermission('view_finances') ? 'flex' : 'none';
+  }
+
+  const navInvoice = document.getElementById('nav-invoice');
+  if (navInvoice) {
+    navInvoice.style.display = hasPermission('generate_invoices') ? 'flex' : 'none';
+  }
+
+  if (!hasPermission('manage_users') && activeTab === 'users') {
     activeTab = 'dashboard';
     document.querySelectorAll('.nav-item').forEach(nav => {
       nav.classList.toggle('active', nav.getAttribute('data-tab') === 'dashboard');
@@ -224,7 +105,27 @@ function applyPermissions() {
     });
   }
 
-  if (!isAuditAdmin && activeTab === 'audit') {
+  if (!hasPermission('view_finances') && activeTab === 'finances') {
+    activeTab = 'dashboard';
+    document.querySelectorAll('.nav-item').forEach(nav => {
+      nav.classList.toggle('active', nav.getAttribute('data-tab') === 'dashboard');
+    });
+    document.querySelectorAll('.view-panel').forEach(panel => {
+      panel.classList.toggle('active', panel.id === 'view-dashboard');
+    });
+  }
+
+  if (!hasPermission('generate_invoices') && activeTab === 'invoice') {
+    activeTab = 'dashboard';
+    document.querySelectorAll('.nav-item').forEach(nav => {
+      nav.classList.toggle('active', nav.getAttribute('data-tab') === 'dashboard');
+    });
+    document.querySelectorAll('.view-panel').forEach(panel => {
+      panel.classList.toggle('active', panel.id === 'view-dashboard');
+    });
+  }
+
+  if (!isAdmin && activeTab === 'audit') {
     activeTab = 'dashboard';
     document.querySelectorAll('.nav-item').forEach(nav => {
       nav.classList.toggle('active', nav.getAttribute('data-tab') === 'dashboard');
@@ -310,43 +211,242 @@ function renderCategoryChart() {
 }
 window.renderCategoryChart = renderCategoryChart;
 
-// Dynamic Checkout Dropdown Sync
-function populateCheckoutDropdowns() {
-  const gearSelects = document.querySelectorAll('.checkout-gear-select');
-  const clientSelect = document.getElementById('checkout-client');
-  if (!clientSelect) return;
+// Finances Dashboard
+function renderFinancesDashboard() {
+  if (typeof hasPermission === 'function' && !hasPermission('view_finances')) return;
+
+  const totalRevEl = document.getElementById('finance-total-revenue');
+  const activeRevEl = document.getElementById('finance-active-revenue');
+  const totalBookingsEl = document.getElementById('finance-total-bookings');
+  const chartContainer = document.getElementById('finance-category-chart');
+  const topEarnersTbody = document.getElementById('finance-top-earners');
+  const catFilter = document.getElementById('finance-cat-filter');
+
+  if (!totalRevEl || !chartContainer) return;
+
+  // Populate category filter if empty
+  if (catFilter && catFilter.options.length <= 1) {
+    const uniqueCats = [...new Set(state.gear.map(g => g.category || 'Uncategorized'))].sort();
+    uniqueCats.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c;
+      opt.textContent = c;
+      catFilter.appendChild(opt);
+    });
+    catFilter.value = activeFinanceCat;
+  }
+
+  let totalRevenue = 0;
+  let activeRevenue = 0;
+  let totalCompletedBookings = 0;
   
-  const currentClientVal = clientSelect.value;
-  clientSelect.innerHTML = '<option value="" disabled selected>Select client...</option>';
-  state.clients.forEach(client => {
-    const opt = document.createElement('option');
-    opt.value = client.id;
-    opt.innerText = client.name;
-    if (client.id === currentClientVal) opt.selected = true;
-    clientSelect.appendChild(opt);
+  const categoryRevenue = {};
+  const gearRevenue = {};
+
+  const now = new Date();
+  const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+
+  state.bookings.forEach(booking => {
+    if (booking.status === 'Cancelled') return;
+
+    const item = state.gear.find(g => g.id === booking.gearId);
+    if (!item) return;
+
+    // Apply Category Filter
+    const cat = item.category || 'Uncategorized';
+    if (activeFinanceCat !== 'all' && cat !== activeFinanceCat) return;
+
+    const start = new Date(booking.startDate);
+    
+    // Apply Date Range Filter (Using Booking Start Date as the reference point)
+    if (activeFinanceDateStart) {
+      if (booking.startDate < activeFinanceDateStart) return;
+    }
+    if (activeFinanceDateEnd) {
+      if (booking.startDate > activeFinanceDateEnd) return;
+    }
+
+    const end = new Date(booking.endDate);
+    const diffTime = Math.abs(end - start);
+    const durationDays = Math.max(1, Math.round(diffTime / (1000 * 60 * 60 * 24)) + 1);
+    const dailyRate = Number(item.dailyRate) || 0;
+    const bookingRevenue = dailyRate * durationDays;
+
+    totalRevenue += bookingRevenue;
+    
+    const todayStr = now.toISOString().split('T')[0];
+    let computedStatus = booking.status;
+    if (!computedStatus) {
+      if (booking.startDate > todayStr) computedStatus = 'Booked';
+      else if (booking.endDate < todayStr) computedStatus = 'Overdue';
+      else computedStatus = 'Active';
+    }
+
+    if (computedStatus === 'Active' || computedStatus === 'Overdue') {
+      activeRevenue += bookingRevenue;
+    }
+
+    if (computedStatus === 'Returned') {
+      totalCompletedBookings++;
+    }
+
+    categoryRevenue[cat] = (categoryRevenue[cat] || 0) + bookingRevenue;
+
+    if (!gearRevenue[item.id]) {
+      gearRevenue[item.id] = { gear: item, revenue: 0, days: 0 };
+    }
+    gearRevenue[item.id].revenue += bookingRevenue;
+    gearRevenue[item.id].days += durationDays;
   });
 
-  const allSelectedValues = Array.from(document.querySelectorAll('.checkout-gear-select'))
-    .map(s => s.value)
-    .filter(val => val);
+  totalRevEl.innerText = `GH₵${totalRevenue.toFixed(2)}`;
+  activeRevEl.innerText = `GH₵${activeRevenue.toFixed(2)}`;
+  totalBookingsEl.innerText = totalCompletedBookings;
 
-  gearSelects.forEach(gearSelect => {
-    const currentValue = gearSelect.value;
-    gearSelect.innerHTML = '<option value="" disabled selected>Choose available gear...</option>';
+  chartContainer.innerHTML = '';
+  const totalCatRevenue = Object.values(categoryRevenue).reduce((a, b) => a + b, 0) || 1;
+  
+  const sortedCategories = Object.entries(categoryRevenue).sort((a, b) => b[1] - a[1]);
+
+  sortedCategories.forEach(([name, rev]) => {
+    if (rev === 0) return;
+    const percentage = Math.round((rev / totalCatRevenue) * 100);
+    const item = document.createElement('div');
+    item.className = 'category-item';
+    item.innerHTML = `
+      <div class="category-info">
+        <span class="category-name">${escapeHtmlText(name)}</span>
+        <span class="category-count">GH₵${rev.toFixed(2)} (${percentage}%)</span>
+      </div>
+      <div class="category-bar-wrapper">
+        <div class="category-bar" style="width: ${percentage}%"></div>
+      </div>
+    `;
+    chartContainer.appendChild(item);
+  });
+  
+  if (sortedCategories.length === 0 || totalRevenue === 0) {
+     chartContainer.innerHTML = `<div style="text-align:center; color: var(--text-muted); padding: 1rem;">No revenue found for this filter.</div>`;
+  }
+
+  if (topEarnersTbody) {
+    topEarnersTbody.innerHTML = '';
+    const sortedGear = Object.values(gearRevenue).sort((a, b) => b.revenue - a.revenue).slice(0, 10);
     
-    const otherSelectedValues = allSelectedValues.filter(val => val !== currentValue);
-    const availableGear = state.gear.filter(g => 
-      (g.status === 'Available' && !otherSelectedValues.includes(g.id)) || 
-      g.id === currentValue
-    );
+    if (sortedGear.length === 0) {
+      topEarnersTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No revenue data available.</td></tr>`;
+    } else {
+      sortedGear.forEach(itemData => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${escapeHtmlText(itemData.gear.name)}</strong></td>
+          <td><span class="status-badge status-active">${escapeHtmlText(itemData.gear.assetTag || '—')}</span></td>
+          <td>${escapeHtmlText(itemData.gear.category || '—')}</td>
+          <td style="text-align: right;">${itemData.days}</td>
+          <td style="text-align: right;"><strong>GH₵${itemData.revenue.toFixed(2)}</strong></td>
+        `;
+        topEarnersTbody.appendChild(tr);
+      });
+    }
+  }
+}
+window.renderFinancesDashboard = renderFinancesDashboard;
+window.renderCategoryChart = renderCategoryChart;
+
+function setupAutocomplete(searchInput, valueInput, listbox, getOptionsCb, renderOptionCb, getInputValueCb) {
+  if (!searchInput || !valueInput || !listbox) return;
+  if (searchInput.dataset.acBound === "true") return; // Prevent double binding
+  searchInput.dataset.acBound = "true";
+
+  function renderList(query) {
+    const data = getOptionsCb(query);
+    listbox.innerHTML = '';
+    if (data.length === 0) {
+      listbox.style.display = 'none';
+      return;
+    }
     
-    availableGear.forEach(item => {
-      const opt = document.createElement('option');
-      opt.value = item.id;
-      opt.innerText = `${item.name} (${item.serialNumber})`;
-      if (item.id === currentValue) opt.selected = true;
-      gearSelect.appendChild(opt);
+    data.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'autocomplete-item';
+      div.innerHTML = renderOptionCb(item);
+      div.onmousedown = (e) => {
+        e.preventDefault(); // Prevent blur
+        valueInput.value = item.id;
+        searchInput.value = getInputValueCb ? getInputValueCb(item) : div.innerText.trim();
+        listbox.style.display = 'none';
+        const event = new Event('change');
+        valueInput.dispatchEvent(event);
+      };
+      listbox.appendChild(div);
     });
+    listbox.style.display = 'block';
+  }
+
+  searchInput.addEventListener('input', (e) => {
+    valueInput.value = '';
+    renderList(e.target.value.toLowerCase());
+  });
+
+  searchInput.addEventListener('focus', (e) => {
+    if (!valueInput.value) {
+      renderList(e.target.value.toLowerCase());
+    }
+  });
+
+  searchInput.addEventListener('blur', () => {
+    setTimeout(() => { listbox.style.display = 'none'; }, 150);
+  });
+}
+
+// Dynamic Checkout Dropdown Sync
+function populateCheckoutDropdowns() {
+  const clientSearch = document.getElementById('checkout-client-search');
+  const clientValue = document.getElementById('checkout-client-value');
+  const clientListbox = document.getElementById('checkout-client-listbox');
+  
+  if (clientSearch && clientValue && clientListbox) {
+    setupAutocomplete(clientSearch, clientValue, clientListbox, (query) => {
+      if (!query) return state.clients;
+      return state.clients.filter(c => 
+        (c.name || '').toLowerCase().includes(query) || 
+        (c.email || '').toLowerCase().includes(query)
+      );
+    }, 
+    (client) => `<strong>${escapeHtmlText(client.name)}</strong> <span style="color:var(--text-muted);font-size:0.75rem;">${escapeHtmlText(client.email || '')}</span>`,
+    (client) => client.name);
+  }
+
+  const gearRows = document.querySelectorAll('.gear-select-row');
+  gearRows.forEach(row => {
+    const searchInput = row.querySelector('.checkout-gear-search');
+    const valueInput = row.querySelector('.checkout-gear-value');
+    const listbox = row.querySelector('.checkout-gear-listbox');
+    
+    if (searchInput && valueInput && listbox) {
+      setupAutocomplete(searchInput, valueInput, listbox, (query) => {
+        // Collect currently selected gear from ALL rows except this one
+        const otherSelectedValues = Array.from(document.querySelectorAll('.checkout-gear-value'))
+          .filter(input => input !== valueInput && input.value)
+          .map(input => input.value);
+        
+        let availableGear = state.gear.filter(g => 
+          g.status === 'Available' && !otherSelectedValues.includes(g.id)
+        );
+        
+        if (query) {
+          availableGear = availableGear.filter(g => 
+            (g.name || '').toLowerCase().includes(query) || 
+            (g.assetTag || '').toLowerCase().includes(query)
+          );
+        }
+        return availableGear;
+      }, 
+      (gear) => `<strong>${escapeHtmlText(gear.name)}</strong> <span style="color:var(--text-muted);font-size:0.75rem;">(${escapeHtmlText(gear.assetTag || 'No Tag')})</span>`,
+      (gear) => gear.assetTag ? `${gear.name} (${gear.assetTag})` : gear.name);
+    }
   });
 }
 window.populateCheckoutDropdowns = populateCheckoutDropdowns;
@@ -581,6 +681,7 @@ async function refreshData(query = '') {
   safeComponentRender('Audit Trail', () => renderAuditTrail(activeAuditCategory, query), 'audit-trail-body');
   safeComponentRender('Checkout Dropdowns', () => populateCheckoutDropdowns());
   safeComponentRender('Category Distribution', () => renderCategoryChart());
+  safeComponentRender('Finances Dashboard', () => renderFinancesDashboard());
   safeComponentRender('User Permissions', () => applyPermissions());
 }
 window.refreshData = refreshData;
@@ -633,6 +734,18 @@ function setupModals() {
     if (btn) {
       btn.addEventListener('click', () => {
         clearModalForm(modal);
+        if (modal === 'modal-checkout') {
+          // Set default start time (now) and return time (12:00 PM next day)
+          const now = new Date();
+          const tomorrow = new Date(now);
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          
+          document.getElementById('checkout-start-date').value = now.toISOString().split('T')[0];
+          document.getElementById('checkout-start-time').value = now.toTimeString().substring(0, 5);
+          
+          document.getElementById('checkout-end-date').value = tomorrow.toISOString().split('T')[0];
+          document.getElementById('checkout-end-time').value = '12:00';
+        }
         openModal(modal);
       });
     }
@@ -768,8 +881,13 @@ function setupForms() {
       }
       const clientData = {
         name: document.getElementById('client-name').value.trim(),
+        companyName: document.getElementById('client-company').value.trim(),
         email: document.getElementById('client-email').value.trim(),
-        phone: document.getElementById('client-phone').value.trim()
+        phone: document.getElementById('client-phone').value.trim(),
+        ghanaCardNumber: document.getElementById('client-ghana-card').value.trim().toUpperCase(),
+        guarantorName: document.getElementById('client-guarantor-name').value.trim(),
+        guarantorGhanaCard: document.getElementById('client-guarantor-ghana-card').value.trim().toUpperCase(),
+        guarantorPhone: document.getElementById('client-guarantor-phone').value.trim()
       };
 
       const valErr = validateClientPayload(clientData);
@@ -815,8 +933,13 @@ function setupForms() {
       const id = document.getElementById('edit-client-id').value;
       const clientData = {
         name: document.getElementById('edit-client-name').value.trim(),
+        companyName: document.getElementById('edit-client-company').value.trim(),
         email: document.getElementById('edit-client-email').value.trim(),
-        phone: document.getElementById('edit-client-phone').value.trim()
+        phone: document.getElementById('edit-client-phone').value.trim(),
+        ghanaCardNumber: document.getElementById('edit-client-ghana-card').value.trim().toUpperCase(),
+        guarantorName: document.getElementById('edit-client-guarantor-name').value.trim(),
+        guarantorGhanaCard: document.getElementById('edit-client-guarantor-ghana-card').value.trim().toUpperCase(),
+        guarantorPhone: document.getElementById('edit-client-guarantor-phone').value.trim()
       };
 
       const valErr = validateClientPayload(clientData, id);
@@ -860,15 +983,22 @@ function setupForms() {
         return;
       }
       
-      const gearSelects = document.querySelectorAll('.checkout-gear-select');
-      const gearIds = Array.from(gearSelects).map(s => s.value).filter(val => val);
+      const gearValues = document.querySelectorAll('.checkout-gear-value');
+      const gearIds = Array.from(gearValues).map(s => s.value).filter(val => val);
+
+      const startDateStr = document.getElementById('checkout-start-date').value;
+      const startTimeStr = document.getElementById('checkout-start-time').value;
+      const endDateStr = document.getElementById('checkout-end-date').value;
+      const endTimeStr = document.getElementById('checkout-end-time').value;
+
+      const checkoutType = document.querySelector('input[name="checkout-type"]:checked')?.value || 'Booked';
 
       const bookingData = {
         gearIds: gearIds,
-        clientId: document.getElementById('checkout-client').value,
-        startDate: document.getElementById('checkout-start').value,
-        endDate: document.getElementById('checkout-end').value,
-        status: 'Active'
+        clientId: document.getElementById('checkout-client-value').value,
+        startDate: startDateStr && startTimeStr ? `${startDateStr}T${startTimeStr}` : '',
+        endDate: endDateStr && endTimeStr ? `${endDateStr}T${endTimeStr}` : '',
+        status: checkoutType
       };
 
       if (!bookingData.clientId) {
@@ -880,11 +1010,11 @@ function setupForms() {
         return;
       }
       if (!bookingData.startDate || !bookingData.endDate) {
-        showToast('Both start date and end date are required.', 'danger');
+        showToast('Both date and time are required for Pick Up and Return.', 'danger');
         return;
       }
       if (new Date(bookingData.startDate) > new Date(bookingData.endDate)) {
-        showToast('Rental start date cannot be after the return date.', 'danger');
+        showToast('Pick Up Date/Time cannot be after Return Date/Time.', 'danger');
         return;
       }
 
@@ -938,7 +1068,7 @@ function setupForms() {
       const accountType = document.getElementById('user-account-type').value;
       const isAdmin = accountType === 'Admin';
       const checkedPerms = isAdmin
-        ? ['manage_gear', 'manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals', 'manage_users']
+        ? ['manage_gear', 'manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals', 'manage_users', 'view_finances', 'delete_records', 'export_data', 'override_status']
         : Array.from(document.querySelectorAll('input[name="add-perm"]:checked'))
             .map(c => c.value)
             .filter(p => p !== 'manage_users');
@@ -1000,7 +1130,7 @@ function setupForms() {
       const accountType = document.getElementById('edit-user-account-type').value;
       const isAdmin = accountType === 'Admin';
       const checkedPerms = isAdmin
-        ? ['manage_gear', 'manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals', 'manage_users']
+        ? ['manage_gear', 'manage_clients', 'create_rentals', 'return_rentals', 'cancel_rentals', 'manage_users', 'view_finances', 'delete_records', 'export_data', 'override_status']
         : Array.from(document.querySelectorAll('input[name="edit-perm"]:checked'))
             .map(c => c.value)
             .filter(p => p !== 'manage_users');
@@ -1304,6 +1434,78 @@ function applyTheme(theme) {
 }
 window.applyTheme = applyTheme;
 
+// Finances Logic
+function exportFinancesCSV() {
+  if (typeof hasPermission === 'function' && !hasPermission('export_data')) {
+    showToast('Permission Denied: You do not have permission to export data.', 'danger');
+    return;
+  }
+  const tbody = document.getElementById('finance-top-earners');
+  if (!tbody) return;
+
+  const rows = tbody.querySelectorAll('tr');
+  if (rows.length === 0 || (rows.length === 1 && rows[0].innerText.includes('No revenue data'))) {
+    showToast('No financial data to export.', 'warning');
+    return;
+  }
+
+  let csvContent = "data:text/csv;charset=utf-8,";
+  csvContent += "Gear Item,Asset Tag,Category,Total Days Rented,Revenue Generated (GHC)\n";
+
+  rows.forEach(row => {
+    const cols = row.querySelectorAll('td');
+    if (cols.length === 5) {
+      const name = cols[0].innerText.replace(/,/g, '');
+      const asset = cols[1].innerText.replace(/,/g, '');
+      const cat = cols[2].innerText.replace(/,/g, '');
+      const days = cols[3].innerText.replace(/,/g, '');
+      const rev = cols[4].innerText.replace(/,/g, '').replace('GH₵', '').trim();
+      csvContent += `${name},${asset},${cat},${days},${rev}\n`;
+    }
+  });
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', `ek_finances_export_${new Date().toISOString().split('T')[0]}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function setupFinances() {
+  const dateStart = document.getElementById('finance-date-start');
+  const dateEnd = document.getElementById('finance-date-end');
+  const catFilter = document.getElementById('finance-cat-filter');
+  const btnExport = document.getElementById('btn-export-finances');
+
+  if (dateStart) {
+    dateStart.addEventListener('change', (e) => {
+      activeFinanceDateStart = e.target.value;
+      safeComponentRender('Finances Dashboard', () => renderFinancesDashboard());
+    });
+  }
+
+  if (dateEnd) {
+    dateEnd.addEventListener('change', (e) => {
+      activeFinanceDateEnd = e.target.value;
+      safeComponentRender('Finances Dashboard', () => renderFinancesDashboard());
+    });
+  }
+
+  if (catFilter) {
+    catFilter.addEventListener('change', (e) => {
+      activeFinanceCat = e.target.value;
+      safeComponentRender('Finances Dashboard', () => renderFinancesDashboard());
+    });
+  }
+
+  if (btnExport) {
+    btnExport.addEventListener('click', exportFinancesCSV);
+  }
+}
+window.setupFinances = setupFinances;
+
 // App Bootstrap
 async function initApp() {
   setupTheme();
@@ -1316,6 +1518,7 @@ async function initApp() {
   if (window.setupInventoryFilter) setupInventoryFilter();
   setupRentalsFilter();
   setupAuditTrail();
+  setupFinances();
   setupDomainEvents();
 
   checkAuthSession();

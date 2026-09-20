@@ -8,6 +8,10 @@ function validateClientPayload(data, currentId = null) {
   if (!data.name || data.name.trim().length < 2) return 'Client Full Name must be at least 2 characters long.';
   if (!data.email || !EMAIL_REGEX.test(data.email.trim())) return 'Please enter a valid email address (e.g., client@domain.com).';
   if (!data.phone || !PHONE_REGEX.test(data.phone.trim())) return 'Please enter a valid phone number (minimum 7 digits).';
+  if (!data.ghanaCardNumber || data.ghanaCardNumber.trim().length < 5) return 'Ghana Card Number is strictly required.';
+  if (!data.guarantorName || data.guarantorName.trim().length < 2) return 'Guarantor Name is strictly required.';
+  if (!data.guarantorGhanaCard || data.guarantorGhanaCard.trim().length < 5) return 'Guarantor Ghana Card is strictly required.';
+  if (!data.guarantorPhone || !PHONE_REGEX.test(data.guarantorPhone.trim())) return 'Valid Guarantor Phone Number is required.';
 
   const cleanEmail = data.email.trim().toLowerCase();
   const emailConflict = (state.clients || []).find(c => c.id !== currentId && c.email && c.email.trim().toLowerCase() === cleanEmail);
@@ -39,6 +43,8 @@ function renderClients(query = '') {
     const q = query.toLowerCase();
     list = list.filter(c => 
       (c.name && c.name.toLowerCase().includes(q)) || 
+      (c.companyName && c.companyName.toLowerCase().includes(q)) ||
+      (c.ghanaCardNumber && c.ghanaCardNumber.toLowerCase().includes(q)) ||
       (c.email && c.email.toLowerCase().includes(q)) || 
       (c.phone && c.phone.toLowerCase().includes(q))
     );
@@ -56,7 +62,7 @@ function renderClients(query = '') {
         currentUser.role === 'admin' ||
         (currentUser.permissions && currentUser.permissions.includes('manage_clients'))
       ));
-  const canDelete = canManageClients;
+  const canDelete = typeof hasPermission === 'function' ? hasPermission('delete_records') : false;
   
   list.forEach(client => {
     const card = document.createElement('div');
@@ -89,15 +95,41 @@ function renderClients(query = '') {
         </div>
       </div>
       
-      <div class="client-contact-details">
-        <div class="contact-line">
-          <i data-lucide="mail"></i>
-          <a href="${safeEmail !== '—' ? `mailto:${safeEmail}` : 'javascript:void(0)'}">${safeEmail}</a>
+      <div class="client-contact-details" style="display: flex; flex-direction: column; gap: 0.4rem;">
+        ${client.companyName ? `
+        <div class="contact-line" style="font-size: 0.85rem; color: var(--text-main);">
+          <i data-lucide="building" style="width:14px; height:14px;"></i>
+          <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtmlText(client.companyName)}</span>
+        </div>` : ''}
+        <div class="contact-line" style="font-size: 0.85rem; color: var(--text-main);">
+          <i data-lucide="mail" style="width:14px; height:14px;"></i>
+          <a href="${safeEmail !== '—' ? `mailto:${safeEmail}` : 'javascript:void(0)'}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main);">${safeEmail}</a>
         </div>
-        <div class="contact-line">
-          <i data-lucide="phone"></i>
-          <a href="${safePhone !== '—' ? `tel:${safePhone.replace(/\s+/g, '')}` : 'javascript:void(0)'}">${safePhone}</a>
+        <div class="contact-line" style="font-size: 0.85rem; color: var(--text-main);">
+          <i data-lucide="phone" style="width:14px; height:14px;"></i>
+          <a href="${safePhone !== '—' ? `tel:${safePhone.replace(/\s+/g, '')}` : 'javascript:void(0)'}" style="color: var(--text-main);">${safePhone}</a>
         </div>
+        ${client.ghanaCardNumber ? `
+        <div class="contact-line" style="font-size: 0.85rem; color: var(--text-main);">
+          <i data-lucide="credit-card" style="width:14px; height:14px;"></i>
+          <span style="font-family: monospace;">${escapeHtmlText(client.ghanaCardNumber)}</span>
+        </div>` : ''}
+        ${client.guarantorName ? `
+        <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 0.3rem;">
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;">Guarantor</div>
+          <div class="contact-line" style="font-size: 0.85rem; color: var(--text-main);">
+            <i data-lucide="user" style="width:14px; height:14px;"></i>
+            <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtmlText(client.guarantorName)}</span>
+          </div>
+          <div class="contact-line" style="font-size: 0.85rem; color: var(--text-main);">
+            <i data-lucide="credit-card" style="width:14px; height:14px;"></i>
+            <span style="font-family: monospace;">${escapeHtmlText(client.guarantorGhanaCard || '—')}</span>
+          </div>
+          <div class="contact-line" style="font-size: 0.85rem; color: var(--text-main);">
+            <i data-lucide="phone" style="width:14px; height:14px;"></i>
+            <a href="tel:${(client.guarantorPhone || '').replace(/\s+/g, '')}" style="color: var(--text-main);">${escapeHtmlText(client.guarantorPhone || '—')}</a>
+          </div>
+        </div>` : ''}
       </div>
       
       <div class="client-card-footer">
@@ -131,16 +163,21 @@ function editClient(id) {
   if (!client) return;
   
   document.getElementById('edit-client-id').value = client.id;
-  document.getElementById('edit-client-name').value = client.name;
-  document.getElementById('edit-client-email').value = client.email;
-  document.getElementById('edit-client-phone').value = client.phone;
+  document.getElementById('edit-client-name').value = client.name || '';
+  document.getElementById('edit-client-company').value = client.companyName || '';
+  document.getElementById('edit-client-email').value = client.email || '';
+  document.getElementById('edit-client-phone').value = client.phone || '';
+  document.getElementById('edit-client-ghana-card').value = client.ghanaCardNumber || '';
+  document.getElementById('edit-client-guarantor-name').value = client.guarantorName || '';
+  document.getElementById('edit-client-guarantor-ghana-card').value = client.guarantorGhanaCard || '';
+  document.getElementById('edit-client-guarantor-phone').value = client.guarantorPhone || '';
   
   openModal('modal-edit-client');
 }
 window.editClient = editClient;
 
 async function deleteClient(id) {
-  if (typeof hasPermission === 'function' && !hasPermission('manage_clients')) {
+  if (typeof hasPermission === 'function' && !hasPermission('delete_records')) {
     showToast('Permission Denied: You do not have permission to delete clients.', 'danger');
     return;
   }

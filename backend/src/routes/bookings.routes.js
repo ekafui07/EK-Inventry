@@ -5,12 +5,14 @@ const {
   getBookingsHandler,
   createBookingHandler,
   returnBookingHandler,
-  cancelBookingHandler
+  cancelBookingHandler,
+  checkoutBookingHandler
 } = require('../controllers/bookings.controller');
 
 router.get('/', authenticate, getBookingsHandler);
 router.post('/', authenticate, requirePermission('create_rentals'), createBookingHandler);
 router.put('/:id/return', authenticate, requirePermission('return_rentals'), returnBookingHandler);
+router.put('/:id/checkout', authenticate, requirePermission('create_rentals'), checkoutBookingHandler);
 router.put(
   '/:id/cancel',
   authenticate,

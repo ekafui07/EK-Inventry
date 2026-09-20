@@ -1,4 +1,4 @@
-const { getBookings, createBooking, returnBooking, cancelBooking } = require('../services/bookings.service');
+const { getBookings, createBooking, returnBooking, cancelBooking, checkoutBooking } = require('../services/bookings.service');
 const { recordAuditLog } = require('../services/audit.service');
 
 async function getBookingsHandler(req, res) {
@@ -57,9 +57,26 @@ async function cancelBookingHandler(req, res) {
   }
 }
 
+async function checkoutBookingHandler(req, res) {
+  try {
+    const result = await checkoutBooking(req.params.id);
+    await recordAuditLog({
+      req,
+      action: 'CHECKOUT_RENTAL',
+      category: 'Rentals',
+      summary: `Checked out reserved rental #${req.params.id}`,
+      details: { bookingId: req.params.id }
+    });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
 module.exports = {
   getBookingsHandler,
   createBookingHandler,
   returnBookingHandler,
-  cancelBookingHandler
+  cancelBookingHandler,
+  checkoutBookingHandler
 };

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { authenticate, requireRole, requirePermission } = require('../../middleware/auth');
+const { authenticate, requireRole, requirePermission, requireAnyPermission } = require('../../middleware/auth');
 const {
   getGearHandler,
   createGearHandler,
@@ -10,7 +10,7 @@ const {
 
 router.get('/', authenticate, getGearHandler);
 router.post('/', authenticate, requirePermission('manage_gear'), createGearHandler);
-router.put('/:id', authenticate, requirePermission('manage_gear'), updateGearHandler);
+router.put('/:id', authenticate, requireAnyPermission('manage_gear', 'override_status'), updateGearHandler);
 router.delete('/:id', authenticate, requirePermission('manage_gear'), deleteGearHandler);
 
 module.exports = router;

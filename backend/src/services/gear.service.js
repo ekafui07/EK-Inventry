@@ -6,12 +6,14 @@ function recomputeGearStatusLocal(db, gearId) {
   const gearItem = (db.gear || []).find(g => g.id === gearId);
   if (!gearItem || gearItem.status === 'Maintenance') return;
 
-  const isCurrentlyRented = (db.bookings || []).some(b => 
-    b.gearId === gearId && 
-    (b.status === 'Active' || !b.status) && 
-    b.startDate <= todayStr && 
-    b.endDate >= todayStr
-  );
+  const now = new Date();
+  const isCurrentlyRented = (db.bookings || []).some(b => {
+    if (b.gearId !== gearId || (b.status !== 'Active' && b.status)) return false;
+    if (b.startDate.includes('T') && b.endDate.includes('T')) {
+      return now >= new Date(b.startDate) && now <= new Date(b.endDate);
+    }
+    return b.startDate <= todayStr && b.endDate >= todayStr;
+  });
   gearItem.status = isCurrentlyRented ? 'Rented' : 'Available';
 }
 
@@ -29,12 +31,14 @@ async function recomputeGearStatus(gearId) {
   if (!gearItem || gearItem.status === 'Maintenance') return;
 
   const bookingsRes = await docClient.send(new ScanCommand({ TableName: TABLES.BOOKINGS }));
-  const isCurrentlyRented = (bookingsRes.Items || []).some(b => 
-    b.gearId === gearId && 
-    (b.status === 'Active' || !b.status) && 
-    b.startDate <= todayStr && 
-    b.endDate >= todayStr
-  );
+  const now = new Date();
+  const isCurrentlyRented = (bookingsRes.Items || []).some(b => {
+    if (b.gearId !== gearId || (b.status !== 'Active' && b.status)) return false;
+    if (b.startDate.includes('T') && b.endDate.includes('T')) {
+      return now >= new Date(b.startDate) && now <= new Date(b.endDate);
+    }
+    return b.startDate <= todayStr && b.endDate >= todayStr;
+  });
 
   await docClient.send(new UpdateCommand({
     TableName: TABLES.GEAR,

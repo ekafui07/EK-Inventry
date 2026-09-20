@@ -57,6 +57,9 @@ function renderInventory(filterOrCategory = (window.activeInventoryFilter || 'al
         (currentUser.permissions && currentUser.permissions.includes('manage_gear'))
       ));
 
+  const canDeleteGear = typeof hasPermission === 'function' ? hasPermission('delete_records') : false;
+  const canOverrideStatus = typeof hasPermission === 'function' ? hasPermission('override_status') : false;
+
   if (tbody) {
     tbody.innerHTML = '';
     if (items.length === 0) {
@@ -67,22 +70,24 @@ function renderInventory(filterOrCategory = (window.activeInventoryFilter || 'al
         const actionText = item.status === 'Maintenance' ? 'Put In Service' : 'Send to Repair';
         const actionIcon = item.status === 'Maintenance' ? 'check-circle' : 'wrench';
         
-        const toggleButton = item.status === 'Rented' 
-          ? `<span style="font-size: 0.75rem; color: var(--text-muted)">Rented Out</span>` 
-          : `<button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem" onclick="toggleMaintenance('${item.id}')">
+        let toggleButton = `<span style="font-size: 0.75rem; color: var(--text-muted)">—</span>`;
+        if (item.status === 'Rented') {
+          toggleButton = `<span style="font-size: 0.75rem; color: var(--text-muted)">Rented Out</span>`;
+        } else if (canOverrideStatus) {
+          toggleButton = `<button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem" onclick="toggleMaintenance('${item.id}')">
               <i data-lucide="${actionIcon}" style="width:12px; height:12px"></i> ${actionText}
              </button>`;
+        }
 
-        const modifyButtons = canEditGear ? `
-          <div style="display: flex; gap: 0.4rem;">
-            <button class="btn btn-secondary btn-icon" onclick="editGear('${item.id}')" title="Edit Gear" style="padding: 0.35rem 0.6rem; font-size: 0.75rem;">
-              <i data-lucide="edit" style="width:13px; height:13px;"></i>
-            </button>
-            <button class="btn btn-secondary btn-icon" onclick="deleteGear('${item.id}')" title="Delete Gear" style="padding: 0.35rem 0.6rem; font-size: 0.75rem; color: var(--color-danger);">
-              <i data-lucide="trash-2" style="width:13px; height:13px;"></i>
-            </button>
-          </div>
-        ` : '<span style="color: var(--text-muted); font-size: 0.75rem;">—</span>';
+        let modifyButtons = '';
+        if (canEditGear) {
+          modifyButtons += `<button class="btn btn-secondary btn-icon" onclick="editGear('${item.id}')" title="Edit Gear" style="padding: 0.35rem 0.6rem; font-size: 0.75rem;"><i data-lucide="edit" style="width:13px; height:13px;"></i></button>`;
+        }
+        if (canDeleteGear) {
+          modifyButtons += `<button class="btn btn-secondary btn-icon" onclick="deleteGear('${item.id}')" title="Delete Gear" style="padding: 0.35rem 0.6rem; font-size: 0.75rem; color: var(--color-danger); margin-left: 0.4rem;"><i data-lucide="trash-2" style="width:13px; height:13px;"></i></button>`;
+        }
+        
+        modifyButtons = modifyButtons ? `<div style="display: flex; gap: 0.4rem;">${modifyButtons}</div>` : '<span style="color: var(--text-muted); font-size: 0.75rem;">—</span>';
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -151,8 +156,8 @@ function renderInventory(filterOrCategory = (window.activeInventoryFilter || 'al
 window.renderInventory = renderInventory;
 
 async function toggleMaintenance(id) {
-  if (typeof hasPermission === 'function' && !hasPermission('manage_gear')) {
-    showToast('Permission Denied: You do not have permission to manage gear.', 'danger');
+  if (typeof hasPermission === 'function' && !hasPermission('override_status')) {
+    showToast('Permission Denied: You do not have permission to override gear status.', 'danger');
     return;
   }
   const item = state.gear.find(g => g.id === id);
@@ -219,7 +224,7 @@ function editGear(id) {
 window.editGear = editGear;
 
 async function deleteGear(id) {
-  if (typeof hasPermission === 'function' && !hasPermission('manage_gear')) {
+  if (typeof hasPermission === 'function' && !hasPermission('delete_records')) {
     showToast('Permission Denied: You do not have permission to delete gear.', 'danger');
     return;
   }
