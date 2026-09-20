@@ -21,3 +21,7 @@ When making UI fixes, layout adjustments, or debugging frontend issues in this r
 ## 5. Defensive Javascript
 - Rely on `hasPermission()` for feature flags and tab visibility. Remember that `Admin` accounts intrinsically pass all `hasPermission` checks.
 - When dynamically modifying DOM elements, use optional chaining (`?.`) or explicit null checks (`if (!element) return;`) since many modals are injected or heavily manipulated at runtime.
+
+## 6. Git & Version Control Policy
+- **NO Unprompted Git Commits or Pushes:** NEVER execute `git commit`, `git push`, or modify branches/git history without explicit, direct user instruction and permission. All changes should remain local working tree edits unless the user explicitly commands a commit.
+
