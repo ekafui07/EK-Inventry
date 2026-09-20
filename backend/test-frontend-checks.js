@@ -7,7 +7,9 @@ console.log('======================================================');
 
 const rootDir = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(rootDir, 'frontend/index.html'), 'utf8');
-const appJs = fs.readFileSync(path.join(rootDir, 'frontend/app.js'), 'utf8');
+const jsDir = path.join(rootDir, 'frontend/js');
+const jsFiles = fs.existsSync(jsDir) ? fs.readdirSync(jsDir).filter(f => f.endsWith('.js')).map(f => fs.readFileSync(path.join(jsDir, f), 'utf8')) : [];
+const appJs = fs.readFileSync(path.join(rootDir, 'frontend/app.js'), 'utf8') + '\n' + jsFiles.join('\n');
 const dbMock = JSON.parse(fs.readFileSync(path.join(__dirname, 'db-mock.json'), 'utf8'));
 
 // 1. Check placeholders in HTML do not match any db records

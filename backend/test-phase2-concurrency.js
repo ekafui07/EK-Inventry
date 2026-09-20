@@ -76,7 +76,11 @@ async function runConcurrencyTests() {
     const createClientRes = await request('POST', '/api/clients', {
       name: `Concurrent Client ${timestamp}`,
       email: `client_cc_${timestamp}@example.com`,
-      phone: `+233 20 ${Math.floor(1000000 + Math.random() * 9000000)}`
+      phone: `+233 20 ${Math.floor(1000000 + Math.random() * 9000000)}`,
+      ghanaCardNumber: `GHA-${timestamp.toString().slice(-9)}-1`,
+      guarantorName: `Guarantor ${timestamp}`,
+      guarantorGhanaCard: `GHA-${timestamp.toString().slice(-9)}-2`,
+      guarantorPhone: `+233 24 ${Math.floor(1000000 + Math.random() * 9000000)}`
     }, adminToken);
     assert(createClientRes.status === 201, 'Created primary test client');
     const clientId = createClientRes.data.id;

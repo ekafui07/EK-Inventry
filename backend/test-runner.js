@@ -46,6 +46,25 @@ async function runAllSuites() {
   if (fs.existsSync(mockPath)) {
     try {
       mockBackup = fs.readFileSync(mockPath);
+      const db = JSON.parse(mockBackup);
+      if (Array.isArray(db.users)) {
+        const defaultPasswords = {
+          'admin@ekgearflow.com': 'admin123',
+          'sarah@ekgearflow.com': 'BerlinB1214@',
+          'admin@gearflow.com': 'Admin@123',
+          'staff@gearflow.com': 'Staff@123'
+        };
+        let changed = false;
+        db.users.forEach(u => {
+          if (defaultPasswords[u.email] && u.password !== defaultPasswords[u.email]) {
+            u.password = defaultPasswords[u.email];
+            changed = true;
+          }
+        });
+        if (changed) {
+          fs.writeFileSync(mockPath, JSON.stringify(db, null, 2));
+        }
+      }
     } catch (e) {}
   }
 

@@ -246,7 +246,11 @@ async function runComprehensiveTests() {
     const clientRes = await request('POST', '/api/clients', {
       name: 'Universal Visuals Ltd',
       email: `contact_${ts}@universalvisuals.com`,
-      phone: `+1 555-444-${tsSuffix}`
+      phone: `+1 555-444-${tsSuffix}`,
+      ghanaCardNumber: `GHA-${tsSuffix}-1`,
+      guarantorName: 'Chief Guarantor',
+      guarantorGhanaCard: `GHA-${tsSuffix}-G1`,
+      guarantorPhone: `+1 555-333-${tsSuffix}`
     }, adminToken);
     if (clientRes.statusCode !== 201) {
       throw new Error(`Failed to create client: ${JSON.stringify(clientRes.body)}`);
@@ -348,7 +352,11 @@ async function runComprehensiveTests() {
     const dupClientEmail = await request('POST', '/api/clients', {
       name: 'Duplicate Client Name',
       email: testClient.email,
-      phone: `+1 999-888-${tsSuffix}`
+      phone: `+1 999-888-${tsSuffix}`,
+      ghanaCardNumber: `GHA-${tsSuffix}-2`,
+      guarantorName: 'Chief Guarantor',
+      guarantorGhanaCard: `GHA-${tsSuffix}-G2`,
+      guarantorPhone: `+1 555-333-8888`
     }, adminToken);
     if (dupClientEmail.statusCode !== 400 || !dupClientEmail.body.error.includes('already exists') || dupClientEmail.body.error.includes('(')) {
       throw new Error(`Expected 400 without leaking owner identity, got ${dupClientEmail.statusCode}: ${JSON.stringify(dupClientEmail.body)}`);
@@ -359,7 +367,11 @@ async function runComprehensiveTests() {
     const dupClientPhone = await request('POST', '/api/clients', {
       name: 'Another Client Name',
       email: `another_${ts}@test.com`,
-      phone: testClient.phone
+      phone: testClient.phone,
+      ghanaCardNumber: `GHA-${tsSuffix}-3`,
+      guarantorName: 'Chief Guarantor',
+      guarantorGhanaCard: `GHA-${tsSuffix}-G3`,
+      guarantorPhone: `+1 555-333-9999`
     }, adminToken);
     if (dupClientPhone.statusCode !== 400 || !dupClientPhone.body.error.includes('already exists') || dupClientPhone.body.error.includes('(')) {
       throw new Error(`Expected 400 without leaking owner identity, got ${dupClientPhone.statusCode}: ${JSON.stringify(dupClientPhone.body)}`);
@@ -370,7 +382,11 @@ async function runComprehensiveTests() {
     const client2Res = await request('POST', '/api/clients', {
       name: 'Client Two',
       email: `client2_${ts}@unique.com`,
-      phone: `+1 555-123-${tsSuffix}`
+      phone: `+1 555-123-${tsSuffix}`,
+      ghanaCardNumber: `GHA-${tsSuffix}-4`,
+      guarantorName: 'Chief Guarantor',
+      guarantorGhanaCard: `GHA-${tsSuffix}-G4`,
+      guarantorPhone: `+1 555-333-7777`
     }, adminToken);
     const client2 = client2Res.body;
     const clientCollision = await request('PUT', `/api/clients/${client2.id}`, {

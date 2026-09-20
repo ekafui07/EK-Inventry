@@ -144,7 +144,11 @@ async function runSecurityTests() {
     const createXssClient = await request('POST', '/api/clients', {
       name: xssClientName,
       email: `client_xss_${Date.now()}@example.com`,
-      phone: `+233 24 ${Math.floor(1000000 + Math.random() * 9000000)}`
+      phone: `+233 24 ${Math.floor(1000000 + Math.random() * 9000000)}`,
+      ghanaCardNumber: `GHA-${Date.now().toString().slice(-9)}-1`,
+      guarantorName: 'Guarantor Safety',
+      guarantorGhanaCard: `GHA-${Date.now().toString().slice(-9)}-2`,
+      guarantorPhone: `+233 20 ${Math.floor(1000000 + Math.random() * 9000000)}`
     }, adminToken);
     assert(createXssClient.status === 201, 'Client with script characters stored safely');
     const clientId = createXssClient.data.id;
