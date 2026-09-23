@@ -2,17 +2,21 @@ const { GetCommand, PutCommand, ScanCommand, UpdateCommand, DeleteCommand } = re
 const { isLambda, docClient, TABLES, readLocalDb, writeLocalDb } = require('../config/db');
 
 function recomputeGearStatusLocal(db, gearId) {
-  const todayStr = new Date().toISOString().split('T')[0];
   const gearItem = (db.gear || []).find(g => g.id === gearId);
   if (!gearItem || gearItem.status === 'Maintenance') return;
 
-  const now = new Date();
+  // Always use UTC ISO string for "now" — UTC equals Ghana (Africa/Accra) time permanently
+  const nowUtc = new Date().toISOString();
+  const todayUtcDate = nowUtc.split('T')[0]; // "YYYY-MM-DD" in UTC = Ghana date
+
   const isCurrentlyRented = (db.bookings || []).some(b => {
-    if (b.gearId !== gearId || (b.status !== 'Active' && b.status)) return false;
-    if (b.startDate.includes('T') && b.endDate.includes('T')) {
-      return now >= new Date(b.startDate) && now <= new Date(b.endDate);
-    }
-    return b.startDate <= todayStr && b.endDate >= todayStr;
+    if (b.gearId !== gearId) return false;
+    // Only Active bookings make gear "Rented". Booked = reserved but not yet deployed.
+    if (b.status !== 'Active') return false;
+    // Normalise both sides to UTC ISO strings for comparison
+    const startUtc = b.startDate.includes('T') ? b.startDate : `${b.startDate}T00:00:00.000Z`;
+    const endUtc   = b.endDate.includes('T')   ? b.endDate   : `${b.endDate}T23:59:59.999Z`;
+    return nowUtc >= startUtc && nowUtc <= endUtc;
   });
   gearItem.status = isCurrentlyRented ? 'Rented' : 'Available';
 }
@@ -25,19 +29,18 @@ async function recomputeGearStatus(gearId) {
     return;
   }
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const nowUtc = new Date().toISOString();
   const gearRes = await docClient.send(new GetCommand({ TableName: TABLES.GEAR, Key: { id: gearId } }));
   const gearItem = gearRes.Item;
   if (!gearItem || gearItem.status === 'Maintenance') return;
 
   const bookingsRes = await docClient.send(new ScanCommand({ TableName: TABLES.BOOKINGS }));
-  const now = new Date();
   const isCurrentlyRented = (bookingsRes.Items || []).some(b => {
-    if (b.gearId !== gearId || (b.status !== 'Active' && b.status)) return false;
-    if (b.startDate.includes('T') && b.endDate.includes('T')) {
-      return now >= new Date(b.startDate) && now <= new Date(b.endDate);
-    }
-    return b.startDate <= todayStr && b.endDate >= todayStr;
+    if (b.gearId !== gearId) return false;
+    if (b.status !== 'Active') return false;
+    const startUtc = b.startDate.includes('T') ? b.startDate : `${b.startDate}T00:00:00.000Z`;
+    const endUtc   = b.endDate.includes('T')   ? b.endDate   : `${b.endDate}T23:59:59.999Z`;
+    return nowUtc >= startUtc && nowUtc <= endUtc;
   });
 
   await docClient.send(new UpdateCommand({
@@ -66,16 +69,17 @@ async function getGear() {
   ]);
   const gear = gearRes.Items || [];
   const bookings = bookingsRes.Items || [];
-  const todayStr = new Date().toISOString().split('T')[0];
+  const nowUtc = new Date().toISOString();
 
   for (let g of gear) {
     if (g.status === 'Maintenance') continue;
-    const isCurrentlyRented = bookings.some(b => 
-      b.gearId === g.id && 
-      (b.status === 'Active' || !b.status) && 
-      b.startDate <= todayStr && 
-      b.endDate >= todayStr
-    );
+    const isCurrentlyRented = bookings.some(b => {
+      if (b.gearId !== g.id) return false;
+      if (b.status !== 'Active') return false;
+      const startUtc = b.startDate.includes('T') ? b.startDate : `${b.startDate}T00:00:00.000Z`;
+      const endUtc   = b.endDate.includes('T')   ? b.endDate   : `${b.endDate}T23:59:59.999Z`;
+      return nowUtc >= startUtc && nowUtc <= endUtc;
+    });
     const targetStatus = isCurrentlyRented ? 'Rented' : 'Available';
     if (g.status !== targetStatus) {
       g.status = targetStatus;

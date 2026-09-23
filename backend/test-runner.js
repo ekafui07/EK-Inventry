@@ -46,27 +46,29 @@ async function runAllSuites() {
   if (fs.existsSync(mockPath)) {
     try {
       mockBackup = fs.readFileSync(mockPath);
-      const db = JSON.parse(mockBackup);
-      if (Array.isArray(db.users)) {
-        const defaultPasswords = {
-          'admin@ekgearflow.com': 'admin123',
-          'sarah@ekgearflow.com': 'BerlinB1214@',
-          'admin@gearflow.com': 'Admin@123',
-          'staff@gearflow.com': 'Staff@123'
-        };
-        let changed = false;
-        db.users.forEach(u => {
-          if (defaultPasswords[u.email] && u.password !== defaultPasswords[u.email]) {
-            u.password = defaultPasswords[u.email];
-            changed = true;
-          }
-        });
-        if (changed) {
-          fs.writeFileSync(mockPath, JSON.stringify(db, null, 2));
-        }
-      }
     } catch (e) {}
   }
+
+  const restoreMock = () => {
+    if (mockBackup !== null) fs.writeFileSync(mockPath, mockBackup);
+  };
+
+  const prepareSuiteFixture = () => {
+    restoreMock();
+    const db = JSON.parse(mockBackup);
+    const defaultPasswords = {
+      'admin@ekgearflow.com': 'admin123',
+      'sarah@ekgearflow.com': 'BerlinB1214@',
+      'admin@gearflow.com': 'Admin@123',
+      'staff@gearflow.com': 'Staff@123'
+    };
+    if (Array.isArray(db.users)) {
+      db.users.forEach(user => {
+        if (defaultPasswords[user.email]) user.password = defaultPasswords[user.email];
+      });
+    }
+    fs.writeFileSync(mockPath, JSON.stringify(db, null, 2));
+  };
 
   let serverProc = null;
   const isListening = await checkServerListening(3000);
@@ -110,6 +112,7 @@ async function runAllSuites() {
 
   try {
     for (const suite of testSuites) {
+      prepareSuiteFixture();
       process.stdout.write(`⏳ Running [${suite.name}] ... `);
       const start = Date.now();
       const res = spawnSync('node', [suite.file], {
@@ -130,8 +133,10 @@ async function runAllSuites() {
         console.error('----------------------\n');
         results.push({ name: suite.name, file: suite.file, status: 'FAILED', duration });
         overallPassed = false;
+        restoreMock();
         break;
       }
+      restoreMock();
     }
   } finally {
     if (serverProc && !serverProc.killed) {
@@ -139,11 +144,7 @@ async function runAllSuites() {
       serverProc.kill('SIGTERM');
       console.log('Done.');
     }
-    if (mockBackup !== null) {
-      try {
-        fs.writeFileSync(mockPath, mockBackup);
-      } catch (e) {}
-    }
+    try { restoreMock(); } catch (e) {}
   }
 
   console.log('\n================================================================');

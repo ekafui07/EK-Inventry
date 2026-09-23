@@ -1,5 +1,16 @@
-# UI & Layout Guardrails for EK-Inventry
+# Engineering Guardrails & Architectural Policies for EK-Inventry
 
+## 0. Core Engineering Principle: No Shortcuts & Full Dependency Awareness
+- **NEVER Take the Shortest Route:** Never apply quick hacks, superficial patches, or isolated band-aids that merely mask a symptom.
+- **Trace All Upstream & Downstream Dependencies:** Before proposing, designing, or modifying any line of code, component, data model, API contract, or UI handler, you **MUST** map out:
+  1. What other components, endpoints, or DOM elements rely on this code?
+  2. What global/local state, caches, or event listeners are affected?
+  3. How does this impact RBAC permissions, role policies, and offline vs. online database schemas?
+  4. What secondary side-effects or regressions could this introduce?
+- **Root-Cause Resolution:** Always identify and resolve the fundamental underlying architecture issue rather than treating the immediate surface error.
+- **Explicit Approval Required:** Never execute hasty changes; always align on the full dependency impact before execution.
+
+## UI & Layout Guardrails
 When making UI fixes, layout adjustments, or debugging frontend issues in this repository, you **must** adhere to the following rules to prevent regression bugs:
 
 ## 1. HTML Structural Integrity

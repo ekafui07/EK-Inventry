@@ -1,0 +1,41 @@
+[
+  {
+    "id": "c_rdc_001",
+    "name": "Kofi Mensah",
+    "companyName": "Accra Visuals Media",
+    "email": "kofi.mensah@accravisuals.com",
+    "phone": "+233 24 456 7890",
+    "ghanaCardNumber": "GHA-712345678-1",
+    "guarantorName": "Dr. Samuel Okyere",
+    "guarantorGhanaCard": "GHA-112233445-9",
+    "guarantorPhone": "+233 24 999 1122",
+    "status": "Active",
+    "createdAt": "2026-09-20T18:00:00.000Z"
+  },
+  {
+    "id": "c_rdc_002",
+    "name": "Ama Serwaa Darko",
+    "companyName": "Golden Lens Productions",
+    "email": "ama.darko@goldenlensmedia.gh",
+    "phone": "+233 20 876 5432",
+    "ghanaCardNumber": "GHA-823456789-2",
+    "guarantorName": "Nana Kwame Frimpong",
+    "guarantorGhanaCard": "GHA-223344556-8",
+    "guarantorPhone": "+233 20 888 3344",
+    "status": "Active",
+    "createdAt": "2026-09-20T18:00:00.000Z"
+  },
+  {
+    "id": "c_rdc_003",
+    "name": "Emmanuel Osei",
+    "companyName": "Horizon Creative Agency",
+    "email": "emmanuel@horizoncreatives.com",
+    "phone": "+233 55 987 6543",
+    "ghanaCardNumber": "GHA-934567890-3",
+    "guarantorName": "Elizabeth Addo",
+    "guarantorGhanaCard": "GHA-334455667-7",
+    "guarantorPhone": "+233 55 777 5566",
+    "status": "Active",
+    "createdAt": "2026-09-20T18:00:00.000Z"
+  }
+]

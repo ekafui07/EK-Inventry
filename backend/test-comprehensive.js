@@ -275,6 +275,45 @@ async function runComprehensiveTests() {
     // -------------------------------------------------------------------------
     console.log('\n--- 5. RENTAL SCHEDULING, CONFLICT CHECK & STATUS SYNC ---');
 
+    console.log('Bug 1: Checkout flips gear from Available to Rented...');
+    const currentStart = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const currentEnd = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+    const availableBeforeCheckout = await request('GET', '/api/gear', null, staffToken);
+    const gearBeforeCheckout = (availableBeforeCheckout.body || []).find(g => g.id === testGear.id);
+    const rentedCountBeforeCheckout = (availableBeforeCheckout.body || []).filter(g => g.status === 'Rented').length;
+    if (availableBeforeCheckout.statusCode !== 200 || !gearBeforeCheckout || gearBeforeCheckout.status !== 'Available') {
+      throw new Error(`Bug 1 precondition failed: expected Available gear, got ${JSON.stringify(gearBeforeCheckout)}`);
+    }
+    const activeCheckoutRes = await request('POST', '/api/bookings', {
+      gearId: testGear.id,
+      clientId: testClient.id,
+      startDate: currentStart,
+      endDate: currentEnd,
+      status: 'Active'
+    }, staffToken);
+    if (activeCheckoutRes.statusCode !== 201 || activeCheckoutRes.body.status !== 'Active') {
+      throw new Error(`Bug 1 checkout creation failed: ${JSON.stringify(activeCheckoutRes.body)}`);
+    }
+    const rentedAfterCheckout = await request('GET', '/api/gear', null, staffToken);
+    const gearAfterCheckout = (rentedAfterCheckout.body || []).find(g => g.id === testGear.id);
+    if (rentedAfterCheckout.statusCode !== 200 || !gearAfterCheckout || gearAfterCheckout.status !== 'Rented') {
+      throw new Error(`Bug 1 failed: gear did not become Rented after checkout: ${JSON.stringify(gearAfterCheckout)}`);
+    }
+    console.log('✅ Bug 1 PASS: checkout changed gear from Available to Rented.');
+
+    console.log('Bug 2: Deployed count reflects actual Rented gear count...');
+    const deployedCount = (rentedAfterCheckout.body || []).filter(g => g.status === 'Rented').length;
+    const expectedDeployedCount = rentedCountBeforeCheckout + 1;
+    if (deployedCount !== expectedDeployedCount) {
+      throw new Error(`Bug 2 failed: deployed count ${deployedCount} did not increase from ${rentedCountBeforeCheckout} to expected ${expectedDeployedCount}`);
+    }
+    console.log(`✅ Bug 2 PASS: deployed count is ${deployedCount}, matching Rented gear count.`);
+
+    const activeReturnRes = await request('PUT', `/api/bookings/${activeCheckoutRes.body.id}/return`, null, staffToken);
+    if (activeReturnRes.statusCode !== 200) {
+      throw new Error(`Failed to clean up Bug 1 checkout: ${JSON.stringify(activeReturnRes.body)}`);
+    }
+
     console.log('Test 5.1: Booking rejection when start date > end date...');
     const invalidDatesBooking = await request('POST', '/api/bookings', {
       gearId: testGear.id,
@@ -298,6 +337,9 @@ async function runComprehensiveTests() {
       throw new Error(`Failed to create booking: ${JSON.stringify(validBookingRes.body)}`);
     }
     const testBooking = validBookingRes.body;
+    if (testBooking.status !== 'Booked') {
+      throw new Error(`Reserve-for-later booking should be Booked, got ${testBooking.status}`);
+    }
     console.log(`✅ Success: Booking confirmed with ID: ${testBooking.id}`);
 
     console.log('Test 5.3: Double-booking prevention during overlapping period...');
@@ -324,6 +366,25 @@ async function runComprehensiveTests() {
     if (cancelRes.statusCode !== 200) {
       throw new Error(`Failed to cancel booking: ${JSON.stringify(cancelRes.body)}`);
     }
+    const cancelledBookings = await request('GET', '/api/bookings', null, staffToken);
+    const cancelledGear = await request('GET', '/api/gear', null, staffToken);
+    const cancelledBooking = (cancelledBookings.body || []).find(b => b.id === testBooking.id);
+    const cancelledGearItem = (cancelledGear.body || []).find(g => g.id === testGear.id);
+    if (!cancelledBooking || cancelledBooking.status !== 'Cancelled') {
+      throw new Error(`Cancel did not preserve a Cancelled booking record: ${JSON.stringify(cancelledBooking)}`);
+    }
+    if (!cancelledGearItem || cancelledGearItem.status !== 'Available') {
+      throw new Error(`Cancel did not restore gear to Available: ${JSON.stringify(cancelledGearItem)}`);
+    }
+    const auditRes = await request('GET', '/api/audit-logs?category=Rentals', null, adminToken);
+    const auditLogs = auditRes.body && Array.isArray(auditRes.body.auditLogs) ? auditRes.body.auditLogs : [];
+    const hasCancelAudit = auditLogs.some(log =>
+      log.action === 'CANCEL_RENTAL' && log.details && log.details.bookingId === testBooking.id
+    );
+    if (auditRes.statusCode !== 200 || !hasCancelAudit) {
+      throw new Error(`Cancel audit record was not retained: ${JSON.stringify(auditRes.body)}`);
+    }
+    console.log('✅ Success: Cancel marked the booking Cancelled, restored gear to Available, and retained the audit record.');
     const rebookRes = await request('POST', '/api/bookings', {
       gearId: testGear.id,
       clientId: testClient.id,

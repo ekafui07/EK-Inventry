@@ -96,13 +96,13 @@ async function runDoubleBookingTests() {
     const targetGear2 = gearList[1] ? gearList[1].id : 'g_test_2';
     const clientId = clientList[0] ? clientList[0].id : 'c_test_1';
 
-    const testYear = 2029; // Use future year to avoid colliding with active production bookings
+    const testYear = 2090 + Math.floor(Math.random() * 100); // Isolate every run from fixture and production bookings
 
     // Clean up any lingering testYear bookings to ensure test idempotency
     const existingBookingsRes = await request('GET', '/api/bookings', null, adminToken);
     if (Array.isArray(existingBookingsRes.body)) {
       for (const b of existingBookingsRes.body) {
-        if (b.startDate && b.startDate.startsWith(`${testYear}`) && b.status === 'Active') {
+        if (b.startDate && b.startDate.startsWith(`${testYear}`) && !['Returned', 'Cancelled'].includes(b.status)) {
           await request('PUT', `/api/bookings/${b.id}/cancel`, null, adminToken);
         }
       }
@@ -237,7 +237,7 @@ async function runDoubleBookingTests() {
     const finalBookingsRes = await request('GET', '/api/bookings', null, adminToken);
     if (Array.isArray(finalBookingsRes.body)) {
       for (const b of finalBookingsRes.body) {
-        if (b.startDate && b.startDate.startsWith(`${testYear}`) && b.status === 'Active') {
+        if (b.startDate && b.startDate.startsWith(`${testYear}`) && !['Returned', 'Cancelled'].includes(b.status)) {
           await request('PUT', `/api/bookings/${b.id}/cancel`, null, adminToken);
         }
       }

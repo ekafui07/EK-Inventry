@@ -499,6 +499,22 @@
               <div id="invoice-client-dropdown" class="autocomplete-dropdown" style="display:none; position:absolute; top:100%; left:0; width:100%; z-index:50;"></div>
               <input type="hidden" id="invoice-client-id" name="invoice-client-id">
             </div>
+            <div class="form-group" style="position: relative; flex: 2;">
+              <label for="statement-client-search">Booking Statement Client</label>
+              <input type="text" id="statement-client-search" name="statement-client-search" class="form-control" placeholder="Search company or client name..." autocomplete="off">
+              <div id="statement-client-dropdown" class="autocomplete-dropdown" style="display:none; position:absolute; top:100%; left:0; width:100%; z-index:50;"></div>
+              <input type="hidden" id="statement-client-id" name="statement-client-id">
+              <select id="statement-booking-select" name="statement-booking-select" class="form-control" style="margin-top: 0.5rem;" disabled>
+                <option value="">Select a booking</option>
+              </select>
+              <select id="statement-invoice-status" name="statement-invoice-status" class="form-control" style="margin-top: 0.5rem;">
+                <option value="Unpaid" selected>Unpaid</option>
+                <option value="Paid">Paid</option>
+              </select>
+              <button type="button" class="btn btn-secondary" id="btn-preview-statement" style="margin-top: 0.5rem; width: 100%; justify-content: center;">
+                <i data-lucide="file-text" style="width: 14px; height: 14px;"></i> Preview Statement
+              </button>
+            </div>
             <div class="form-group" style="flex: 1;">
               <label for="invoice-sale-date">Sale Date</label>
               <input type="date" id="invoice-sale-date" name="invoice-sale-date" class="form-control">
@@ -797,6 +813,7 @@
               <div><strong style="color: #0f172a;">Sale date:</strong> <span id="invoice-print-date">01 Jan 2026</span></div>
             </div>
           </div>
+          <div id="invoice-print-booking-reference" style="display: none; font-size: 0.95rem; color: #334155; margin: -1rem 0 2rem;"></div>
 
           <!-- Items Table -->
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 2.5rem; font-size: 0.95rem;">
@@ -1167,11 +1184,11 @@
   <script src="js/api.js?v=33"></script>
   <script src="js/inventory.js?v=36"></script>
   <script src="js/clients.js?v=34"></script>
-  <script src="js/rentals.js?v=39"></script>
+  <script src="js/rentals.js?v=41"></script>
   <script src="js/staff.js?v=33"></script>
   <script src="js/audit.js?v=34"></script>
-  <script src="js/invoice.js?v=3"></script>
-  <script src="app.js?v=43"></script>
+  <script src="js/invoice.js?v=6"></script>
+  <script src="app.js?v=47"></script>
 
 </body>
 

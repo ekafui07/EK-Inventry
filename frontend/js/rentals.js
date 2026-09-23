@@ -3,13 +3,35 @@
  */
 
 function getBookingStatus(booking) {
-  if (booking.status === 'Returned') return 'Returned';
+  // Always trust terminal states from the database first
+  if (booking.status === 'Returned')  return 'Returned';
   if (booking.status === 'Cancelled') return 'Cancelled';
-  const todayStr = new Date().toISOString().split('T')[0];
-  if (booking.startDate > todayStr) return 'Booked';
-  if (booking.endDate < todayStr) return 'Overdue';
+
+  // For Active bookings: check if the return deadline has passed in UTC (= Ghana/Accra time)
+  if (booking.status === 'Active') {
+    const nowUtc = new Date().toISOString();
+    const endUtc = booking.endDate.includes('T')
+      ? booking.endDate
+      : `${booking.endDate}T23:59:59.999Z`;
+    return nowUtc > endUtc ? 'Overdue' : 'Active';
+  }
+
+  // Booked = reserved, not yet deployed — always show as Booked regardless of dates
+  if (booking.status === 'Booked') return 'Booked';
+
+  // Fallback for legacy bookings with no status: derive from UTC dates
+  const nowUtc  = new Date().toISOString();
+  const startUtc = booking.startDate.includes('T')
+    ? booking.startDate
+    : `${booking.startDate}T00:00:00.000Z`;
+  const endUtc = booking.endDate.includes('T')
+    ? booking.endDate
+    : `${booking.endDate}T23:59:59.999Z`;
+  if (nowUtc < startUtc) return 'Booked';
+  if (nowUtc > endUtc)   return 'Overdue';
   return 'Active';
 }
+
 window.getBookingStatus = getBookingStatus;
 
 function renderRentalsList(query = '') {
@@ -47,26 +69,37 @@ function renderRentalsList(query = '') {
     const statusClass = calculatedStatus.toLowerCase();
 
     const canReturn = hasPermission('return_rentals');
+    const canCancel = hasPermission('cancel_rentals') || canReturn;
     let actionButton = '—';
-    if (canReturn) {
-      if (calculatedStatus === 'Booked') {
+    if (calculatedStatus === 'Booked') {
+      const actions = [];
+      if (hasPermission('create_rentals')) {
+        actions.push(`
+          <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-primary); border-color: rgba(37, 99, 235, 0.3);" onclick="checkoutBookingAction('${booking.id}')" title="Check Out Gear">
+            <i data-lucide="log-out" style="width:12px; height:12px"></i> Check Out
+          </button>
+        `);
+      }
+      if (canCancel) {
+        actions.push(`
+          <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-danger); border-color: rgba(239, 68, 68, 0.3);" onclick="cancelBookingAction('${booking.id}')" title="Void Reservation">
+            <i data-lucide="x-circle" style="width:12px; height:12px"></i> Cancel
+          </button>
+        `);
+      }
+      if (actions.length > 0) {
         actionButton = `
           <div style="display: flex; gap: 0.5rem; justify-content: flex-start;">
-            <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-primary); border-color: rgba(37, 99, 235, 0.3);" onclick="checkoutBookingAction('${booking.id}')" title="Check Out Gear">
-              <i data-lucide="log-out" style="width:12px; height:12px"></i> Check Out
-            </button>
-            <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-danger); border-color: rgba(239, 68, 68, 0.3);" onclick="cancelBookingAction('${booking.id}')" title="Void Reservation">
-              <i data-lucide="x-circle" style="width:12px; height:12px"></i> Cancel
-            </button>
+            ${actions.join('')}
           </div>
         `;
-      } else if (calculatedStatus === 'Active' || calculatedStatus === 'Overdue') {
-        actionButton = `
+      }
+    } else if (canReturn && (calculatedStatus === 'Active' || calculatedStatus === 'Overdue')) {
+      actionButton = `
           <button class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--color-success); border-color: rgba(16, 185, 129, 0.3);" onclick="returnGear('${booking.id}')" title="Return Gear">
             <i data-lucide="check-square" style="width:12px; height:12px"></i> Check In
           </button>
         `;
-      }
     }
 
     const tr = document.createElement('tr');
@@ -139,23 +172,26 @@ function renderDashboardRentals(query = '') {
 }
 window.renderDashboardRentals = renderDashboardRentals;
 
-function openRentalInvoice(bookingId) {
-  const booking = state.bookings.find(b => b.id === bookingId);
-  if (!booking) return;
+function getInvoiceClientDisplayName(client) {
+  return (client?.companyName || client?.name || 'Valued Client').trim();
+}
+window.getInvoiceClientDisplayName = getInvoiceClientDisplayName;
 
-  const item = state.gear.find(g => g.id === booking.gearId) || {
+function buildRentalInvoiceModel(booking, gear, client, paymentStatus = null) {
+  if (!booking) return null;
+
+  const item = gear || {
     name: 'Cinema Equipment',
     category: 'Media Gear',
     assetTag: '—',
     serialNumber: '—',
     dailyRate: 0
   };
-  const client = state.clients.find(c => c.id === booking.clientId) || {
+  const resolvedClient = client || {
     name: 'Valued Client',
     email: '—',
     phone: '—'
   };
-
   const start = new Date(booking.startDate);
   const end = new Date(booking.endDate);
   const diffTime = Math.abs(end - start);
@@ -163,11 +199,31 @@ function openRentalInvoice(bookingId) {
   const dailyRate = Number(item.dailyRate) || 0;
   const lineTotal = dailyRate * durationDays;
   const invoiceNumber = `INV-${booking.id.replace(/^b_/, '').slice(-6).toUpperCase()}`;
-  const todayFormatted = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
   const status = getBookingStatus(booking);
 
+  return {
+    booking,
+    gear: item,
+    client: resolvedClient,
+    clientDisplayName: getInvoiceClientDisplayName(resolvedClient),
+    durationDays,
+    dailyRate,
+    lineTotal,
+    invoiceNumber,
+    status,
+    paymentStatus: paymentStatus || status
+  };
+}
+window.buildRentalInvoiceModel = buildRentalInvoiceModel;
+
+function renderRentalInvoice(model) {
+  if (!model) return false;
+
+  const { booking, gear: item, client, clientDisplayName, durationDays, dailyRate, lineTotal, invoiceNumber, paymentStatus } = model;
+  const todayFormatted = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
   const container = document.getElementById('printable-invoice-content');
-  if (!container) return;
+  if (!container) return false;
 
   container.innerHTML = `
     <div class="inv-brand-row">
@@ -182,7 +238,7 @@ function openRentalInvoice(bookingId) {
         <div class="inv-meta-title">RENTAL INVOICE</div>
         <div class="inv-meta-detail"><strong>Invoice #:</strong> ${invoiceNumber}</div>
         <div class="inv-meta-detail"><strong>Date Issued:</strong> ${todayFormatted}</div>
-        <div class="inv-meta-detail"><strong>Status:</strong> <span style="display:inline-block; padding: 2px 8px; border-radius: 12px; font-weight:700; font-size:0.75rem; background:#e0f2fe; color:#0369a1;">${status.toUpperCase()}</span></div>
+          <div class="inv-meta-detail"><strong>Status:</strong> <span style="display:inline-block; padding: 2px 8px; border-radius: 12px; font-weight:700; font-size:0.75rem; background:#e0f2fe; color:#0369a1;">${paymentStatus.toUpperCase()}</span></div>
       </div>
     </div>
 
@@ -190,7 +246,7 @@ function openRentalInvoice(bookingId) {
       <div>
         <div class="inv-section-title">Billed To (Client Details)</div>
         <div class="inv-info-block">
-          <strong>${escapeHtmlText(client.name)}</strong><br>
+          <strong>${escapeHtmlText(clientDisplayName)}</strong><br>
           Email: ${escapeHtmlText(client.email || '—')}<br>
           Phone: ${escapeHtmlText(client.phone || '—')}
         </div>
@@ -268,6 +324,33 @@ function openRentalInvoice(bookingId) {
     </div>
   `;
 
+  return true;
+}
+window.renderRentalInvoice = renderRentalInvoice;
+
+function openRentalInvoice(bookingId) {
+  const booking = state.bookings.find(b => b.id === bookingId);
+  if (!booking) return;
+
+  const gear = state.gear.find(g => g.id === booking.gearId);
+  const client = state.clients.find(c => c.id === booking.clientId);
+  const model = buildRentalInvoiceModel(booking, gear, client);
+  if (!renderRentalInvoice(model)) return;
+
+  if (window.apiLogActivity) {
+    window.apiLogActivity(
+      'CLIENT_BOOKING_INVOICE_GENERATED',
+      'Finances',
+      `Generated rental invoice ${model.invoiceNumber} for ${model.clientDisplayName}`,
+      {
+        clientId: booking.clientId,
+        bookingId: booking.id,
+        invoiceNumber: model.invoiceNumber,
+        total: model.lineTotal
+      }
+    );
+  }
+
   openModal('modal-invoice-preview');
   if (window.lucide) lucide.createIcons();
 }
@@ -296,7 +379,7 @@ async function returnGear(bookingId) {
 window.returnGear = returnGear;
 
 async function cancelBookingAction(bookingId) {
-  if (!hasPermission('return_rentals')) {
+  if (!hasPermission('cancel_rentals') && !hasPermission('return_rentals')) {
     showToast('Permission Denied: You do not have permission to cancel bookings.', 'danger');
     return;
   }

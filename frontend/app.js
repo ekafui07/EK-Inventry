@@ -159,24 +159,53 @@ window.applyPermissions = applyPermissions;
 
 // Statistics & Metrics
 function updateStats() {
-  const avail = state.gear.filter(g => g.status === 'Available').length;
+  const avail  = state.gear.filter(g => g.status === 'Available').length;
   const rented = state.gear.filter(g => g.status === 'Rented').length;
-  const maint = state.gear.filter(g => g.status === 'Maintenance').length;
-  
-  const todayStr = new Date().toISOString().split('T')[0];
-  const overdue = state.bookings.filter(b => (b.status === 'Active' || !b.status) && b.endDate < todayStr).length;
+  const maint  = state.gear.filter(g => g.status === 'Maintenance').length;
 
-  const elAvail = document.getElementById('stat-avail-count');
-  const elRented = document.getElementById('stat-rented-count');
-  const elMaint = document.getElementById('stat-maint-count');
+  // Overdue: Active bookings whose endDate has passed — compare in UTC (= Ghana/Accra time)
+  const nowUtc = new Date().toISOString();
+  const overdue = state.bookings.filter(b => {
+    if (b.status !== 'Active') return false;
+    const endUtc = b.endDate.includes('T') ? b.endDate : `${b.endDate}T23:59:59.999Z`;
+    return nowUtc > endUtc;
+  }).length;
+
+  // Active badge: require both an Active booking and gear currently marked Rented.
+  const activeBookings = state.bookings.filter(b => b.status === 'Active');
+  const activeGearIds = new Set(activeBookings.map(b => b.gearId));
+  const mismatches = [];
+  activeBookings.forEach(booking => {
+    const gearItem = state.gear.find(g => g.id === booking.gearId);
+    if (!gearItem || gearItem.status !== 'Rented') {
+      mismatches.push({ bookingId: booking.id, gearId: booking.gearId, bookingStatus: booking.status, gearStatus: gearItem?.status || 'Missing' });
+    }
+  });
+  state.gear.filter(g => g.status === 'Rented').forEach(gearItem => {
+    if (!activeGearIds.has(gearItem.id)) {
+      mismatches.push({ bookingId: null, gearId: gearItem.id, bookingStatus: 'Missing', gearStatus: gearItem.status });
+    }
+  });
+  window.rentalStatusMismatches = mismatches;
+  if (mismatches.length > 0) {
+    console.warn('[Rental Status Mismatch]', mismatches);
+  }
+  const activeBookingCount = activeBookings.filter(booking => {
+    const gearItem = state.gear.find(g => g.id === booking.gearId);
+    return gearItem?.status === 'Rented';
+  }).length;
+
+  const elAvail   = document.getElementById('stat-avail-count');
+  const elRented  = document.getElementById('stat-rented-count');
+  const elMaint   = document.getElementById('stat-maint-count');
   const elOverdue = document.getElementById('stat-overdue-count');
-  const elBadge = document.getElementById('active-rentals-badge');
+  const elBadge   = document.getElementById('active-rentals-badge');
 
-  if (elAvail) elAvail.innerText = avail;
-  if (elRented) elRented.innerText = rented;
-  if (elMaint) elMaint.innerText = maint;
+  if (elAvail)   elAvail.innerText   = avail;
+  if (elRented)  elRented.innerText  = rented;
+  if (elMaint)   elMaint.innerText   = maint;
   if (elOverdue) elOverdue.innerText = overdue;
-  if (elBadge) elBadge.innerText = `${rented} active`;
+  if (elBadge)   elBadge.innerText   = `${activeBookingCount} active`;
 }
 window.updateStats = updateStats;
 
@@ -411,6 +440,7 @@ function populateCheckoutDropdowns() {
     setupAutocomplete(clientSearch, clientValue, clientListbox, (query) => {
       if (!query) return state.clients;
       return state.clients.filter(c => 
+        (c.companyName || '').toLowerCase().includes(query) ||
         (c.name || '').toLowerCase().includes(query) || 
         (c.email || '').toLowerCase().includes(query)
       );
@@ -454,14 +484,17 @@ window.populateCheckoutDropdowns = populateCheckoutDropdowns;
 // Local Gear Availability Calculation
 function recomputeGearStatusLocally() {
   if (!Array.isArray(state.gear) || !Array.isArray(state.bookings)) return;
-  const todayStr = new Date().toISOString().split('T')[0];
+  const nowUtc = new Date().toISOString();
   state.gear.forEach(g => {
     if (g.status === 'Maintenance') return;
     const isOutToday = state.bookings.some(b => 
       b.gearId === g.id && 
-      (b.status === 'Active' || !b.status) && 
-      b.startDate <= todayStr && 
-      b.endDate >= todayStr
+      (b.status === 'Active') && 
+      (() => {
+        const startUtc = b.startDate.includes('T') ? b.startDate : `${b.startDate}T00:00:00.000Z`;
+        const endUtc = b.endDate.includes('T') ? b.endDate : `${b.endDate}T23:59:59.999Z`;
+        return nowUtc >= startUtc && nowUtc <= endUtc;
+      })()
     );
     g.status = isOutToday ? 'Rented' : 'Available';
   });
