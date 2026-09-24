@@ -58,38 +58,26 @@
 ```text
 EK-Inventry/
 ├── backend/
-│   ├── index.js                  # Express API entry point & AWS Lambda handler
-│   ├── serverless.yml            # AWS CloudFormation & Infrastructure-as-Code blueprint
-│   ├── deploy-frontend.js        # S3 asset uploader & CloudFront cache invalidator
-│   ├── wipe-demo-data.js         # Production demo data purge & reset script
-│   ├── seed-dynamodb.js          # Production database seeder
-│   ├── db-mock.json              # Local zero-config mock database
-│   ├── middleware/
-│   │   └── auth.js               # JWT verification & RBAC permission checks
-│   ├── src/
-│   │   ├── config/               # Database and environment configuration
-│   │   ├── controllers/          # API route controllers
-│   │   ├── routes/               # Modular Express API domain routers
-│   │   └── services/             # Core business logic (Gear, Clients, Bookings, Users, Audit)
-│   ├── test-runner.js            # Unified 8-suite test harness
-│   └── test-*.js                 # Automated contract & integration test suites
+│   ├── index.js                       # Express API entry point & AWS Lambda handler
+│   ├── serverless.yml                 # AWS infrastructure blueprint
+│   ├── deploy-frontend.js             # S3 uploader & CloudFront cache invalidator
+│   ├── db-mock.json                   # Local JSON database
+│   ├── seed-rentdecam-mock.js         # LOCAL: reset db-mock.json with demo gear + clients
+│   ├── wipe-local-data.js             # LOCAL: empty db-mock.json
+│   ├── rentdecam-formatted-gear.json  # Demo gear catalog (131 items)
+│   ├── rentdecam-clients.json         # Demo clients (3)
+│   ├── seed-dynamodb.js               # AWS: upload db-mock.json data to DynamoDB
+│   ├── wipe-demo-data.js              # AWS: wipe demo data from DynamoDB
+│   ├── middleware/auth.js             # JWT verification & permission checks
+│   ├── src/                           # config, controllers, routes, services
+│   ├── test-runner.js                 # Runs all 8 test suites
+│   └── test-*.js                      # Test suites
 ├── frontend/
-│   ├── index.html                # Main application interface
-│   ├── app.js                    # Core client state management & bootstrap
-│   ├── style.css                 # Custom responsive stylesheet
-│   └── js/                       # Domain-driven modular frontend scripts
-│       ├── api.js                # API client & fetch wrappers
-│       ├── audit.js              # Audit trail interface & filtering
-│       ├── clients.js            # Client directory & validation logic
-│       ├── inventory.js          # Gear inventory management
-│       ├── invoice.js            # Dedicated invoice generator & PDF preview
-│       ├── rentals.js            # Rental tracker & checkout workflow
-│       ├── staff.js              # Staff accounts & permissions management
-│       └── utils.js              # Formatting & helper utilities
-├── SETUP_WINDOWS_NATIVE.md       # Standalone Native Windows PC installation guide
-├── SETUP_WINDOWS_WSL2.md         # Standalone Windows + WSL2 (Ubuntu) installation guide
-├── package.json                  # Root runner & deployment scripts
-└── README.md                     # Project documentation
+│   ├── index.html, app.js, style.css
+│   └── js/                            # api, audit, clients, inventory, invoice, rentals, staff, utils
+├── SETUP_WINDOWS_NATIVE.md            # Windows PC install guide
+├── SETUP_WINDOWS_WSL2.md              # Windows + WSL2 install guide
+└── package.json                       # Root runner & deploy shortcuts
 ```
 
 ---
@@ -141,8 +129,8 @@ Open your browser and navigate to: **[http://localhost:8080](http://localhost:80
 
 For permanent client workstation installations where the app should boot automatically when the PC turns on:
 
-- 📄 **[Native Windows Setup Guide (SETUP_WINDOWS_NATIVE.md)](file:///wsl.localhost/Ubuntu/home/ekafui07/EK-Inventry/SETUP_WINDOWS_NATIVE.md):** Step-by-step instructions for standard Windows 10/11 machines using native Node.js, `launch.bat`, `start-silent.vbs`, and Windows Startup integration.
-- 📄 **[Windows + WSL2 Ubuntu Setup Guide (SETUP_WINDOWS_WSL2.md)](file:///wsl.localhost/Ubuntu/home/ekafui07/EK-Inventry/SETUP_WINDOWS_WSL2.md):** Complete setup for running the Linux backend daemon inside WSL2 with seamless Windows desktop app integration.
+- 📄 **[Native Windows Setup Guide (SETUP_WINDOWS_NATIVE.md)](SETUP_WINDOWS_NATIVE.md):** Step-by-step instructions for standard Windows 10/11 machines using native Node.js, `launch.bat`, `start-silent.vbs`, and Windows Startup integration.
+- 📄 **[Windows + WSL2 Ubuntu Setup Guide (SETUP_WINDOWS_WSL2.md)](SETUP_WINDOWS_WSL2.md):** Complete setup for running the Linux backend daemon inside WSL2 with seamless Windows desktop app integration.
 
 ---
 
@@ -153,7 +141,7 @@ Sign in using one of the pre-configured accounts:
 | Role | Email | Password | Permissions / Access |
 | :--- | :--- | :--- | :--- |
 | **Admin** | `admin@ekgearflow.com` | `admin123` | Full system access, add/edit/delete gear & clients, manage staff, finances |
-| **Staff** | `sarah@ekgearflow.com` | `BerlinB1214@` | Rental management, client directory, equipment check-in/return, invoicing |
+| **Staff** | `sarah@ekgearflow.com` | *(set in `seedInitialUsers()`)* | Rental management, client directory, equipment check-in/return, invoicing |
 | **Admin (Test)** | `admin@gearflow.com` | `Admin@123` | Automated testing & system administrator account |
 | **Staff (Test)** | `staff@gearflow.com` | `Staff@123` | Automated testing & desk specialist account |
 
@@ -163,51 +151,69 @@ Sign in using one of the pre-configured accounts:
 
 ---
 
-## 💾 Local Database Architecture & Post-Setup Handover
+## 💾 Database Scripts (Load & Wipe Demo Data)
 
-### 1. How the Local Database Works
-When running locally on a client machine, EK GearFlow uses an embedded JSON database located at:
-📁 `backend/db-mock.json`
+The app stores data in one of two places. Each has its own scripts. **Run all commands from the `backend/` folder** (`cd backend`).
 
-* **No DB Server Required:** There is no need to install or configure MongoDB, PostgreSQL, or DynamoDB locally.
-* **Instant Persistence:** All equipment additions, client records, rentals, and invoices are automatically saved to `db-mock.json`.
+| I want to... | Target | Command |
+| :--- | :--- | :--- |
+| **Load demo data** | Local (`db-mock.json`) | `node seed-rentdecam-mock.js` |
+| **Wipe everything** | Local (`db-mock.json`) | `node wipe-local-data.js` |
+| **Load demo data** | AWS DynamoDB | `node seed-dynamodb.js --stage prod` |
+| **Wipe demo data** | AWS DynamoDB | `node wipe-demo-data.js --stage prod` |
 
----
+> Stop the backend before running a local script, then start it again.
 
-### 2. Post-Setup Client Handover (Wiping Test Data)
-After completing setup and testing on the client's PC, purge all test/dummy data to deliver a pristine system:
+### Load demo data: local
 
-1. Open `backend/db-mock.json`.
-2. Replace its content with the clean starter template:
-   ```json
-   {
-     "gear": [],
-     "clients": [],
-     "bookings": [],
-     "users": [
-       {
-         "id": "u1",
-         "name": "Admin",
-         "email": "admin@ekgearflow.com",
-         "role": "admin",
-         "accountType": "Admin",
-         "status": "Active",
-         "password": "admin123"
-       },
-       {
-         "id": "u_sarah_ek",
-         "name": "Sarah Adjei",
-         "email": "sarah@ekgearflow.com",
-         "role": "staff",
-         "accountType": "Staff",
-         "status": "Active",
-         "password": "BerlinB1214@"
-       }
-     ],
-     "auditLogs": []
-   }
-   ```
-3. Save the file. When the client opens the app, all tables will start fresh at **0 records**, with admin login accounts intact and ready.
+```bash
+node seed-rentdecam-mock.js
+```
+
+| Effect | Result |
+| :--- | :--- |
+| Gear | Replaced with the 131 items from `rentdecam-formatted-gear.json` |
+| Clients | Replaced with the 3 demo clients |
+| Bookings | Emptied |
+| Audit logs | Reset to one "inventory initialized" entry |
+| Users | **Kept.** The four default accounts are created only if the file has no users |
+| Backup | Old file saved to `db-mock.backup.json` (overwritten on every run) |
+
+Undo: copy `db-mock.backup.json` over `db-mock.json`.
+
+### Wipe all data: local
+
+```bash
+node wipe-local-data.js               # empty everything, including users
+node wipe-local-data.js --keep-users  # empty everything except users
+```
+
+| Effect | Result |
+| :--- | :--- |
+| Gear, clients, bookings, audit logs | Emptied |
+| Users | Deleted, or kept with `--keep-users`. Without the flag, the four default accounts are recreated when the backend next starts |
+| Backup | Old file saved to `db-mock.backup.json` (overwritten on every run) |
+
+### Load demo data: AWS
+
+```bash
+node seed-dynamodb.js --stage prod
+```
+
+Copies gear, clients, bookings and users from your local `db-mock.json` up to DynamoDB. **Add-only:** items whose ID or email already exist in AWS are skipped. Nothing is overwritten or deleted. Audit logs are not copied.
+
+### Wipe demo data: AWS
+
+```bash
+node wipe-demo-data.js --stage prod
+```
+
+| Table | Result |
+| :--- | :--- |
+| Gear, Clients, Bookings, Audit logs | **All items deleted** |
+| Users | All deleted **except** `admin@ekgearflow.com`, `admin@gearflow.com`, `staff@gearflow.com` |
+
+> ⚠️ **This deletes live data with no confirmation prompt and defaults to `--stage prod`.** It does not touch your local file. `sarah@ekgearflow.com` is not in the keep-list and is deleted, but the app recreates her with the default password the next time the backend starts.
 
 ---
 
@@ -241,27 +247,6 @@ npm run deploy
 
 ---
 
-## 🧹 Preparing Clean Data for a Cloud Demo (AWS DynamoDB)
-
-### Scenario A: Purging Live AWS Cloud Data
-To wipe all test gear, test clients, dummy rentals, and audit logs from AWS DynamoDB while **preserving your core admin and staff login accounts**:
-
-```bash
-cd backend
-node wipe-demo-data.js --stage prod
-```
-*After running this, refresh your live CloudFront link ([https://dbjo34z68f2kg.cloudfront.net](https://dbjo34z68f2kg.cloudfront.net)) to start with a fresh, clean database.*
-
-### Scenario B: Pre-Loading Catalog Gear to AWS (Optional)
-If you want to sync curated catalog items from local `db-mock.json` up to AWS DynamoDB before a presentation:
-
-```bash
-cd backend
-node seed-dynamodb.js --stage prod
-```
-
----
-
 ## 🧪 Automated Testing & Pre-Push Guardrails
 
 The project includes an 8-suite automated test harness that runs before every `git push` to protect against regressions:
@@ -270,6 +255,8 @@ The project includes an 8-suite automated test harness that runs before every `g
 npm test
 ```
 *(Or inside `backend/`: `npm test`)*
+
+> **Note:** Suite 8 relies on the demo data committed in `backend/db-mock.json`. If you ran a seed or wipe script locally, restore it first with `git checkout backend/db-mock.json`, otherwise `npm test` fails (and `npm run deploy` is blocked, because it runs the tests first).
 
 ### Test Suites Included:
 1. **Phase 2: Concurrency & Lock Serialization** (Simultaneous checkout race condition testing)
@@ -285,29 +272,32 @@ npm test
 
 ## 🔌 API Endpoints Reference
 
-| Method | Endpoint | Description | Access Level |
+Admins have every permission. Staff accounts only get the permissions assigned to them.
+
+| Method | Endpoint | Description | Access |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/api/auth/login` | Authenticate user & obtain JWT token | Public |
-| `POST` | `/api/login` | Login alias (backward compatibility) | Public |
-| `GET` | `/api/auth/me` | Retrieve profile of authenticated user | Authenticated |
-| `GET` | `/api/gear` | Retrieve list of all equipment | Authenticated |
-| `POST` | `/api/gear` | Register new equipment item | Admin |
-| `PUT` | `/api/gear/:id` | Update equipment details | Admin |
-| `DELETE` | `/api/gear/:id` | Remove equipment item | Admin |
-| `GET` | `/api/clients` | Retrieve all registered clients | Authenticated |
-| `POST` | `/api/clients` | Register a new client profile (requires Ghana Card) | Staff / Admin |
-| `PUT` | `/api/clients/:id` | Update client profile | Staff / Admin |
-| `DELETE` | `/api/clients/:id` | Delete client profile (blocked if active bookings exist) | Admin |
-| `GET` | `/api/bookings` | Retrieve all bookings with details | Authenticated |
-| `POST` | `/api/bookings` | Create new booking (conflict checked & lock-serialized) | Staff / Admin |
-| `PUT` | `/api/bookings/:id/checkout` | Check out reserved booking | Staff / Admin |
-| `PUT` | `/api/bookings/:id/return` | Mark rented gear as returned / checked in | Staff / Admin |
-| `PUT` | `/api/bookings/:id/cancel` | Cancel an existing booking | Staff / Admin |
-| `GET` | `/api/users` | List all system users | Admin |
-| `POST` | `/api/users` | Register new user (Single Admin policy) | Admin |
-| `PUT` | `/api/users/:id` | Update user profile | Admin or Self |
-| `DELETE` | `/api/users/:id` | Remove user (prevents deleting last admin) | Admin |
-| `POST` | `/api/users/:id/reset-password` | Reset user password to default | Admin |
-| `POST` | `/api/users/:id/change-password` | Change user password | Authenticated |
-| `PUT` | `/api/users/:id/status` | Activate or deactivate user (instant ban) | Admin |
-| `GET` | `/api/audit-logs` | Retrieve tamper-resistant system audit history | Admin |
+| `POST` | `/api/auth/login` (alias `/api/login`) | Log in and get a JWT | Public |
+| `POST` | `/api/forgot-password` | Reset password to the temporary default | Public |
+| `GET` | `/api/auth/me` (alias `/api/me`) | Profile of the logged-in user | Logged in |
+| `GET` | `/api/gear` | List all equipment | Logged in |
+| `POST` | `/api/gear` | Add equipment | `manage_gear` |
+| `PUT` | `/api/gear/:id` | Update equipment | `manage_gear` or `override_status` |
+| `DELETE` | `/api/gear/:id` | Delete equipment | `manage_gear` |
+| `GET` | `/api/clients` | List all clients | Logged in |
+| `POST` | `/api/clients` | Add client (Ghana Card required) | `manage_clients` |
+| `PUT` | `/api/clients/:id` | Update client | `manage_clients` |
+| `DELETE` | `/api/clients/:id` | Delete client (blocked if active bookings) | `manage_clients` |
+| `GET` | `/api/bookings` | List all bookings | Logged in |
+| `POST` | `/api/bookings` | Create booking (conflict-checked) | `create_rentals` |
+| `PUT` | `/api/bookings/:id/checkout` | Check out a reserved booking | `create_rentals` |
+| `PUT` | `/api/bookings/:id/return` | Check equipment back in | `return_rentals` |
+| `PUT` | `/api/bookings/:id/cancel` | Cancel a booking | `cancel_rentals` or `return_rentals` |
+| `GET` | `/api/users` | List users | Admin |
+| `POST` | `/api/users` | Create user | Admin |
+| `PUT` | `/api/users/:id` | Update user | Admin or self |
+| `DELETE` | `/api/users/:id` | Delete user (last admin protected) | Admin |
+| `POST` | `/api/users/:id/reset-password` | Reset password to default | Admin |
+| `POST` | `/api/users/:id/change-password` | Change password | Logged in |
+| `PUT` | `/api/users/:id/status` | Activate / deactivate user | Admin |
+| `GET` | `/api/audit-logs` | View audit history | Admin |
+| `POST` | `/api/audit-logs/log` | Record an audit entry | Logged in |
